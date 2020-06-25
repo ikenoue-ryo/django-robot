@@ -1,0 +1,15 @@
+.tgt {opacity: 0;}
+.tgt span{opacity: 0;}
+
+.question_robot{
+    display: inline-block;
+    float: left;
+    width: 300px;
+    margin: 0 0 400px 0;
+}
+
+.question_form{
+    display: inline-block;
+    float: left;
+    width: 400px;
+}

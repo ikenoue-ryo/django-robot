@@ -1,0 +1,71 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+    <div class="container mt-5">
+    
+
+        <p>{{ user.profname }}さんの情報です。</p><br><br>
+
+        <p>基本情報</p>
+        <table>
+            <tr><td>住所：</td><td>{{ address.answer }}</td></tr>
+            <tr><td>好きな食べ物：</td><td>{{ favorite_food.answer }}</td></tr>
+            <tr><td>年齢：</td><td>{{ age.answer }}</td></tr>
+            <tr><td>好きなスポーツ：</td><td>{{ favorite_sports.answer }}</td></tr>
+            <tr><td>綺麗好きか？：</td><td>{{ cleanliness.answer }}</td></tr>
+            <tr><td>車が欲しい？：</td><td>{{ mycar.answer }}</td></tr>
+            <tr><td>好きな車メーカー：</td><td>{{ car_brand.answer }}</td></tr>
+        </table><br><br><br><br>
+
+        <p>マーケティング情報</p>
+        <p>ぐるなび検索回数：{{ gurunavi_search_count }}回</p>
+        <p>検索キーワード：
+            {% for gkey in gurunavi_key %}
+                {{ gkey.answer }}、
+            {% endfor %}
+        </p>
+    <br>
+        <p>Youtube検索回数：{{ youtube_search_count }}回</p>
+        <p>検索キーワード：
+            {% for ykey in youtube_key %}
+                {{ ykey.answer }}、
+            {% endfor %}
+        </p>
+
+        <br><br><br><br>
+        <div class="qanda">
+        {% for question in questions %}
+        <p>{{ question.question }}：{{ question.answer }}</p>
+        {% endfor %}
+        </div>  
+    </div>
+
+<script>
+    var id = $('form').attr('id');
+    // 上記の入力欄にフォーカスを与える
+    document.getElementById(id).focus();
+</script>
+
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+{% endblock content %}

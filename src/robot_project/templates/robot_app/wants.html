@@ -1,0 +1,150 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+    <ul id="tenki">
+        {% for tenki, data in tenki_api.items %}
+         <li>{{ tenki }}：{{ data }}</li>
+        {% endfor %}
+        <!-- ぐるなび  -->
+        <div class="result" style="
+            width: 800px;
+            display: inline-block;
+            float: left;
+        "><br>
+        今日は暑いので冷たい蕎麦やうどんはいかがでしょうか？
+            {% for gnavi_rec in gnavi_records %}
+                <p><a href="{{ gnavi_rec.url }}"><img src="{{ gnavi_rec.image_url.shop_image1 }}" width="100">
+                店名：{{ gnavi_rec.name }}</a></p>
+            {% endfor %}
+        </div>
+        <!-- ぐるなび  -->
+    </ul>
+    <input type="button" id="tenki_button" value="天気を表示" style="margin-left: 20px;">
+
+<div class="container mt-5">
+    <div class="question_robot">
+        <img src="/media/robot.png" width="230">
+    </div>
+
+
+    <!-- ログインしている場合 from-->
+    {% if user.is_authenticated %}
+        {% if thanks %}
+            {{ thanks }}
+        {% else %}
+        <div class="question_form">
+            <p>{{ nav_menu }}</p>
+
+            <ul>
+                <li class="tgt" style="list-style: none;">{{ gurunavi_search }}</li>
+                <li class="tgt" style="list-style: none;">{{ youtube_search }}</li>
+                <li class="tgt" style="list-style: none;">{{ add_questions }}</li>
+            </ul>
+            <form method="POST" action="" name="form1">{% csrf_token %}
+                <input type="hidden" name="question" class="form-control" value="{{ type }}">
+                <input type="text" name="answer" class="form-control" placeholder="番号を入力してください">
+            </form>
+
+            <br><br><br><br>
+            <div class="suggestion" style="width: 600px;">
+                {{ car_news }}
+                <ul style="width: 804px;">
+{#                    {% for name, data in carsensor_api.items %}#}
+{#                     <li style="#}
+{#                        display: inline-block;#}
+{#                        float: left;#}
+{#                        margin: 0 10px;">#}
+{#                         <img src="{{ data }}" width="120">#}
+{#                     </li>#}
+{#                    {% endfor %}#}
+                </ul>
+                    <div class="result">
+                        <div class="recommend_car clearfix">
+                            {% for carsensor_rec in carsensor_records %}
+                                <div class="result" style="
+                                    width: 160px;
+                                    display: inline-block;
+                                    float: left;">
+                                    <p>{{ carsensor_rec.brand.name }}</p>
+                                        <p><a href="{{ carsensor_rec.urls.pc }}"><img src="{{ carsensor_rec.photo.main.s }}"></a></p>
+                                    <p>{{ carsensor_rec.price | intcomma }}円</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <hr>
+                        <div class="recommend_car">
+                            <!-- ちなみに・・・ -->
+                            <p>{{ add_car_news | linebreaksbr }}</p>
+                            {% for carsensor_rec_ver2 in carsensor_records_ver2 %}
+                                <div class="result" style="
+                                    width: 160px;
+                                    display: inline-block;
+                                    float: left;">
+                                    <p>{{ carsensor_rec_ver2.brand.name }}</p>
+                                        <p><a href="{{ carsensor_rec_ver2.urls.pc }}"><img src="{{ carsensor_rec_ver2.photo.main.s }}"></a></p>
+                                    <p>{{ carsensor_rec_ver2.price | intcomma }}円</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- ログインしていない場合 from-->
+    {% if user.is_anonymous %}
+        新規登録かログインをしてください
+    {% endif %}
+
+</div>
+
+
+
+
+<script>
+    var id = $('form').attr('id');
+    // 上記の入力欄にフォーカスを与える
+    document.getElementById(id).focus();
+</script>
+
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function() {
+	// 初期表示は非表示にする
+	$('#tenki').toggle();
+
+	$("#tenki_button").click(function() {
+		$("#tenki").toggle("1000",function(){
+			$("#tenki_button").attr("value","天気を表示する");
+		});
+	});
+});
+</script>
+
+{% endblock content %}

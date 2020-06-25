@@ -1,0 +1,8 @@
+django
+uwsgi>=2.0.18, <3.0
+mysqlclient>=1.4.6, <2.0
+python-dotenv
+requests
+google-api-python-client
+apiclient
+Pillow
