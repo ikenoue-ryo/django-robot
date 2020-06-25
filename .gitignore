@@ -5,6 +5,6 @@
 __pycach
 src/robot_project/db.sqlite3
 media
-src/robot_project/settings_local.py
+settings_local.py
 .DS_Store
 /.env
