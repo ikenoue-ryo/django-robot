@@ -5,8 +5,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from robot_app.models import User_Question, Youtube_Question, GNAVI_Question
 from users.models import User
-from robot_app.forms import LoginForm, SignUpForm
-from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.shortcuts import redirect
 from robot_project import settings
 import requests
