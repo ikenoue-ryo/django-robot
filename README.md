@@ -12,17 +12,19 @@
 ## ファイル作成1
 cd django-robot/src/robot_project/robot_project && touch settings_local.py
 
-- settings_local.pyファイル内記述
-SECRET_KEY = 'ここにsecret_key'
+settings_local.pyファイル内記述
+
+- SECRET_KEY = 'ここにsecret_key'
 
 ## ファイル作成2
 cd django-robot && touch .env
 
-- .envファイル内記述
-API_KEY=ここにopenweatherのAPIキー
-GNAVI_API_KEY=ここにぐるなびのAPIキー
-YOUTUBE_API_KEY=ここにopenweatherのAPIキー
-CARSENSOR_API_KEY=ここにカーセンサーのAPIキー
+.envファイル内記述
+
+- API_KEY=ここにopenweatherのAPIキー
+- GNAVI_API_KEY=ここにぐるなびのAPIキー
+- YOUTUBE_API_KEY=ここにopenweatherのAPIキー
+- CARSENSOR_API_KEY=ここにカーセンサーのAPIキー
 
 APIキー取得先
 - #openwathermap：https://openweathermap.org/api
