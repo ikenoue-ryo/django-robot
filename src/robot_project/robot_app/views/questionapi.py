@@ -124,7 +124,7 @@ def tenki_api(request):
     now_w = "{0:%A}".format(today)
     day = date_time + now_w
 
-    context = {"場所": city_name, "日付": day, "天気": weather, "最高気温": str(temp_max) + "度",
+    context = {"場所": city_name, "日付": day, "最高気温": str(temp_max) + "度",
                "最低気温": str(temp_min) + "度", "湿度": str(humidity) + "%"}
     return context
 

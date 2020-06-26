@@ -17,7 +17,7 @@ settings_local.pyファイル内記述
 - SECRET_KEY = 'ここにsecret_key'
 
 ## ファイル作成2
-cd django-robot && touch .env
+cd django-robot/src/robot_project/robot_project && touch .env
 
 .envファイル内記述
 
@@ -38,3 +38,6 @@ APIキー取得先
 - docker exec -it django.web sh
 - python manage.py migrate
 - python manage.py createsuperuser
+
+## 画面イメージ
+<img src="https://user-images.githubusercontent.com/61681360/85812198-f9ae0780-b79a-11ea-8a1f-d44316e1b3cf.png">
