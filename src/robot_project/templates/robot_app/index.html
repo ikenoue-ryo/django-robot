@@ -9,7 +9,7 @@
 
     <div class="container mt-5">
         <div class="question_robot">
-            <img src="/media/robot.png" width="230">
+            <img src="/media/robot.png">
         </div>
        
             {% if thanks %}
@@ -19,7 +19,7 @@
                 <form method="POST" action="" name="form1">{% csrf_token %}
                     <p class="tgt">{{ mesg }}</p>
                     <input type="hidden" name="question" value="{{ type }}">
-                    <input type="text" name="answer" class="form-control">
+                    <input type="text" name="answer" class="form-control" autocomplete="off">
                 </form>
             </div>
             {% endif %}

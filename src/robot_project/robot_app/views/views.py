@@ -281,6 +281,8 @@ def g_navi(request):
         if request.POST['question'] == 'keyword':
             freeword = request.POST['answer']
             info.append(freeword)
+            question_type = 'thanks'
+            question_mesg = '検索結果を表示します。'
 
         #レストラン検索APIのURL
         Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
@@ -297,6 +299,7 @@ def g_navi(request):
         if freeword:
             city = info[0]
             params['pref'] = questionapi.search(city)
+            print(params['pref'])
             params['freeword'] = info[1]
             Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
             result_api = requests.get(Url, params)
@@ -331,6 +334,8 @@ def youtube(request):
         question.save()
         if request.POST['question'] == 'keyword':
             keyword = request.POST['answer']
+            question_type = 'thanks'
+            question_mesg = '検索結果を表示します。'
 
         YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
         youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)

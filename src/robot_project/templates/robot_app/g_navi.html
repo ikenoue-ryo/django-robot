@@ -11,16 +11,18 @@
         <img src="/media/robot.png" width="230">
     </div>
 
-    <p>ぐるなび情報を紹介していきますね。</p>
-
-
     <div class="question_form">
         <form method="POST" action="" name="form1">{% csrf_token %}
             <p class="tgt">{{ mesg }}</p>
-            <input type="hidden" name="question" value="{{ type }}">
-            <input type="text" name="answer" class="form-control">
+            {% if type == "thanks" %}
+                {{ thanks }}
+            {% endif %}
+            {% if type != "thanks" %}
+                <input type="hidden" name="question" value="{{ type }}">
+                <input type="text" name="answer" class="form-control" autocomplete="off">
+            {% endif %}
         </form>
-    </div><br><br><br><br>
+    </div>
 
     <div class="result">
         {% for gnavi_rec in gnavi_records %}

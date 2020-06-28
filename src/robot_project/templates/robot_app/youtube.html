@@ -18,25 +18,25 @@
     <div class="question_form">
         <form method="POST" action="" name="form1">{% csrf_token %}
             <p class="tgt">{{ mesg }}</p>
+            {% if type == "thanks" %}
+                {{ thanks }}
+            {% endif %}
+            {% if type != "thanks" %}
             <input type="hidden" name="question" value="{{ type }}">
-            <input type="text" name="answer" class="form-control">
+            <input type="text" name="answer" class="form-control" autocomplete="off">
+            {% endif %}
         </form>
-    </div><br><br><br><br>
+    </div>
 
     <div class="result">
-{#        <p>{{ channelname }}</p>#}
-{#        <p><a href="{{ url }}"><img src="{{ image }}" width="200"></a></p>#}
-{#        <p>{{ title }}</p>#}
-
         {% for youtube_rec in youtube_records %}
             <div class="result">
                 <a href="https://www.youtube.com/watch?v={{ youtube_rec.id.videoId }}">
                     <p>{{ youtube_rec.snippet.title }}</p>
                     <p><img src="{{ youtube_rec.snippet.thumbnails.medium.url }}"></p>
                 </a>
-            </div><br><br>
+            </div>
         {% endfor %}
-
     </div>
 
 </div>

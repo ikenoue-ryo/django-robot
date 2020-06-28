@@ -1,15 +1,56 @@
-.tgt {opacity: 0;}
-.tgt span{opacity: 0;}
 
-.question_robot{
+
+/*-- スマホ版表示CSS  --*/
+@media screen and (max-width: 480px) {
+  .question_robot img{
+    width: 50px;
+  }
+
+  .question_robot {
+    width: 20%;
     display: inline-block;
     float: left;
-    width: 300px;
-    margin: 0 0 400px 0;
+  }
+
+  .question_form p{
+    padding: 15px 0;
+  }
+
+  .question input{
+    /*display: none;*/
+  }
+
 }
 
-.question_form{
-    display: inline-block;
-    float: left;
-    width: 400px;
-}
+  /*-- PC版表示CSS  --*/
+  @media screen and (min-width: 1200px) {
+    .tgt {
+      opacity: 0;
+    }
+    .tgt span{
+      opacity: 0;
+    }
+
+    .question_robot{
+      display: inline-block;
+      float: left;
+      width: 300px;
+      margin: 0 0 400px 0;
+    }
+
+    .question_form{
+      display: inline-block;
+      float: left;
+      width: 400px;
+    }
+
+
+    body{
+      background: rgb(245,245,245);
+    }
+
+
+    .fa-heart{
+      color: rgb(237, 73, 86);
+    }
+  }

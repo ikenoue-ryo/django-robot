@@ -3,7 +3,7 @@
 {% load humanize %}
 
 {% block customcss %}
-<link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
+<link href="{% static 'robot_app/wants.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
 {% block content %}
@@ -46,13 +46,14 @@
                 <li class="tgt" style="list-style: none;">{{ youtube_search }}</li>
                 <li class="tgt" style="list-style: none;">{{ add_questions }}</li>
             </ul>
-            <form method="POST" action="" name="form1">{% csrf_token %}
-                <input type="hidden" name="question" class="form-control" value="{{ type }}">
-                <input type="text" name="answer" class="form-control" placeholder="番号を入力してください">
-            </form>
+            <div class="question">
+                <form method="POST" action="" name="form1">{% csrf_token %}
+                    <input type="hidden" name="question" class="form-control" value="{{ type }}" autocomplete="off">
+                    <input type="text" name="answer" class="form-control" placeholder="番号を入力してください" autocomplete="off">
+                </form>
+            </div>
 
-            <br><br><br><br>
-            <div class="suggestion" style="width: 600px;">
+            <div class="suggestion">
                 {{ car_news }}
                 <ul style="width: 804px;">
 {#                    {% for name, data in carsensor_api.items %}#}

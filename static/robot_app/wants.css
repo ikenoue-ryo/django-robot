@@ -1,0 +1,31 @@
+
+
+/*-- スマホ版表示CSS  --*/
+@media screen and (max-width: 480px) {
+  .question_robot img{
+    width: 50px;
+  }
+
+  .question_robot {
+    width: 20%;
+    display: inline-block;
+    float: left;
+  }
+
+  .question_form p{
+    padding: 15px 0;
+  }
+
+  .result p{
+    padding: 0;
+  }
+
+  .suggestion{
+    margin: 30px 10px;
+  }
+}
+
+  /*-- PC版表示CSS  --*/
+  @media screen and (min-width: 1200px) {
+
+  }
