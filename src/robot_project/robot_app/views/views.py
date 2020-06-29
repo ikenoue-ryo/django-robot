@@ -136,6 +136,21 @@ def indexfunc(request):
                 weight_result = '少し運動をした方が良いかも。'
                 overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
 
+            #体重から太っている人にYoutubeでダイエット動画を提供
+            YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
+            youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+
+            search_response = youtube.search().list(
+                part='snippet',
+                # 検索したい文字列を指定
+                q='ダイエット',
+                # 視聴回数が多い順に取得
+                order='viewCount',
+                type='video',
+            ).execute()
+
+            youtube_records = search_response['items']
+
             return render(request, 'robot_app/wants.html', {
                 'nav_menu': '何をしたいですか？',
                 'gurunavi_search': '1. ぐるなびで検索する',
@@ -155,6 +170,7 @@ def indexfunc(request):
                 'suitable_weight': suitable_weight,
                 'overweight': overweight,
                 'overweight_text': overweight_text,
+                'youtube_records': youtube_records,
             })
     # ユーザーのfavorite_foodが存在しない場合、初回の質問をする
     else:

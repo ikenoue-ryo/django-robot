@@ -56,6 +56,7 @@
         <div class="robot_route clearfix">
             <div class="question_robot">
                 <img src="/media/robot2.png" width="50">
+
             </div>
         </div>
         <div class="question_route">
@@ -104,7 +105,8 @@
         <div class="suggest_area">
             <div class="robot_route clearfix">
                 <div class="question_robot">
-                    <img src="/media/robot2.png" width="50">
+                    <img src="/media/robot2.png" width="50"><i class="fa fa-heart" aria-hidden="true"></i>
+
                 </div>
             </div>
             <div class="question_route">
@@ -121,6 +123,24 @@
                                 <tr><td>標準の体重</td><td>{{ suitable_weight | floatformat:0 }}kg</td></tr>
                                 <tr><td>体重差</td><td>{{ overweight }}kg</td></tr>
                             </table>
+                            <div id="text-wrap">
+                            <div class="show-text">
+                                <p>ダイエット方法を動画で見ませんか？</p>
+                            </div>
+                            <div class="hide-text">
+                                {% for youtube_rec in youtube_records %}
+                                    <div class="result">
+                                        <a href="https://www.youtube.com/watch?v={{ youtube_rec.id.videoId }}">
+                                            <p>{{ youtube_rec.snippet.title | truncatechars:17 }}</p>
+                                            <p><img src="{{ youtube_rec.snippet.thumbnails.medium.url }}"></p>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                                <button class="readmore">動画をみる</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -205,6 +225,15 @@ $(function() {
 		$("#weight_news").toggle("1000",function(){
 			$("#weight_news_button").attr("value","体に変化があります！");
 		});
+	});
+});
+</script>
+
+<script>
+$(function(){
+	$(".readmore").on("click", function() {
+		$(this).toggleClass("on-click");
+		$(".hide-text").slideToggle(1000);
 	});
 });
 </script>

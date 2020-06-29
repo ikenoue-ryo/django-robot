@@ -61,6 +61,14 @@
     margin: 0;
   }
 
+  .fa-heart{
+    position: relative;
+    top: -20px;
+    left: 33px;
+    color: rgb(224, 36, 94);
+    font-size: 20px;
+  }
+
   .recommend_car .result img{
     width: 100%;
   }
@@ -84,6 +92,71 @@
   }
 
 
+#text-wrap p {
+	margin: 0;
+}
+
+#text-wrap {
+	width: 100%;
+	display: block;
+}
+
+.hide-text {
+	display: none;
+}
+
+.hide-text .result {
+  margin: 20px 0;
+}
+
+button.readmore {
+	position: relative;
+	margin: 10px auto;
+	display: block;
+	background-color: transparent;
+	color: #666;
+	padding-bottom: 40px;
+	border: none;
+	outline: 0;
+	transition: .5s;
+	-erbkit-transition: .5s;
+}
+
+button.readmore::after {
+	content: " ";
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-top: solid 3px #666;
+	border-right: solid 3px #666;
+	transform: rotate(135deg);
+	-webkit-transform: rotate(135deg);
+	right: 35px;
+	top: 25px;
+	transition: .5s;
+	-erbkit-transition: .5s;
+}
+
+button.readmore:hover::after {
+	top: 25px;
+}
+
+.on-click {
+	color: transparent!important;
+}
+
+.on-click {
+	transform: rotate(-180deg);
+	-webkit-transform: rotate(-180deg);
+}
+
+.show-text p{
+  margin-bottom: 30px;
+}
+
+.result img{
+  width: 100%;
+}
 
 
 
