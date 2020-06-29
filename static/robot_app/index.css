@@ -20,6 +20,11 @@
     /*display: none;*/
   }
 
+  .messages_ul ul{
+    list-style: none;
+    padding: 0 20px;
+}
+
 }
 
   /*-- PC版表示CSS  --*/

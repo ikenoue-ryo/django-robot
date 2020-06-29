@@ -13,3 +13,9 @@
     float: left;
     width: 400px;
 }
+
+
+.messages_ul ul{
+    list-style: none;
+    padding: 0 20px;
+}

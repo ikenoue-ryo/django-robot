@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
+from django.contrib import messages
 from robot_app.models import User_Question, Youtube_Question, GNAVI_Question
 from users.models import User
 from django.shortcuts import redirect
@@ -121,6 +122,8 @@ def indexfunc(request):
                 add_car_news = 'たしか、' + str(user.profname) + 'さんは家族が' + family.answer + '人いますか？\n' + \
                                 family.answer + '人乗りの車もご紹介しておきます。'
 
+
+
             return render(request, 'robot_app/wants.html', {
                 'nav_menu': '何をしたいですか？',
                 'gurunavi_search': '1. ぐるなびで検索する',
@@ -164,11 +167,14 @@ def detailfunc(request, pk):
     user = User.objects.get(id=pk)
     #ユーザー基本情報
     questions = User_Question.objects.filter(user_name=request.user)
-    address = User_Question.objects.filter(question='address', user_name=request.user).first()
+    # addressはあえてGNAVI_Questionを使用
+    address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
     favorite_food = User_Question.objects.filter(question='favorite_food', user_name=request.user).first()
     age = User_Question.objects.filter(question='age', user_name=request.user).first()
     family = User_Question.objects.filter(question='family', user_name=request.user).first()
     favorite_sports = User_Question.objects.filter(question='favorite_sports', user_name=request.user).first()
+    height = User_Question.objects.filter(question='height', user_name=request.user).first()
+    weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
     cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
     mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
     car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
@@ -192,6 +198,8 @@ def detailfunc(request, pk):
         'age': age,
         'family': family,
         'favorite_sports': favorite_sports,
+        'height': height,
+        'weight': weight,
         'cleanliness': cleanliness,
         'mycar': mycar,
         'car_brand': car_brand,
@@ -207,21 +215,18 @@ def updatefunc(request, pk):
     user = User.objects.get(id=pk)
     # ユーザー基本情報
     questions = User_Question.objects.filter(user_name=request.user)
-    address = User_Question.objects.filter(question='address', user_name=request.user).first()
+    #addressはあえてGNAVI_Questionを使用
+    address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
     favorite_food = User_Question.objects.filter(question='favorite_food', user_name=request.user).first()
     age = User_Question.objects.filter(question='age', user_name=request.user).first()
     family = User_Question.objects.filter(question='family', user_name=request.user).first()
     favorite_sports = User_Question.objects.filter(question='favorite_sports', user_name=request.user).first()
+    height = User_Question.objects.filter(question='height', user_name=request.user).first()
+    weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
     cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
     mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
     car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
-    # address = EditForm(instance=address)
-    # favorite_food = EditForm(instance=favorite_food)
-    # age = EditForm(instance=age)
-    # favorite_sports = EditForm(instance=favorite_sports)
-    # cleanliness = EditForm(instance=cleanliness)
-    # mycar = EditForm(instance=mycar)
-    # car_brand = EditForm(instance=car_brand)
+
 
     if request.method == 'POST':
         address = User_Question.objects.filter(question='address', user_name=request.user).first()
@@ -256,13 +261,6 @@ def updatefunc(request, pk):
         car_brand.answer = request.POST['car_brand']
         car_brand.save()
 
-        # question.answer = request.POST['anwer']
-        # question.answer.save()
-        # question = questions
-        # question.question = request.POST['question']
-        # question.answer = request.POST['answer']
-        # question.user_name = request.user
-        # question.update()
         return redirect('robot_app:index')
 
     return render(request, 'robot_app/question_edit.html', {
@@ -272,6 +270,8 @@ def updatefunc(request, pk):
         'favorite_food': favorite_food,
         'age': age,
         'family': family,
+        'height': height,
+        'weight': weight,
         'favorite_sports': favorite_sports,
         'cleanliness': cleanliness,
         'mycar': mycar,
@@ -284,6 +284,9 @@ def signupfunc(request):
 
     if request.method == 'POST':
         question_type, question_mesg = questionapi.selectQuestion(request, request.POST['question'])
+        if question_type == 'thanks':
+            messages.success(request, '登録が完了しました')
+            return redirect('/')
     else:
         # POSTリクエストではなく、初回質問
         question_type = 'email'
@@ -302,7 +305,6 @@ def loginfunc(request):
     password = ''
 
     if request.method == 'POST':
-
         if request.POST['question'] == 'email':
             email = request.POST['answer']
             question_type = 'password'
@@ -315,7 +317,7 @@ def loginfunc(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            print('ログインできました')
+            messages.success(request, 'ログインしました')
             return redirect('/')
     else:
         question_type = 'email'
@@ -324,7 +326,7 @@ def loginfunc(request):
     return render(request, 'robot_app/login.html', {
         'type': question_type,
         'mesg': question_mesg,
-        'email': email
+        'email': email,
     })
 
 
@@ -454,6 +456,14 @@ def add_questions(request):
         question.user_name = request.user
         question.save()
 
+        if request.POST['question'] == 'height':
+            height = request.POST['answer']
+            question_type = 'weight'
+            question_mesg = '体重は何キロですか？'
+        if request.POST['question'] == 'weight':
+            weight = request.POST['answer']
+            question_type = 'cleanliness'
+            question_mesg = '綺麗好きですか？'
         if request.POST['question'] == 'cleanliness':
             cleanliness = request.POST['answer']
             question_type = 'mycar'
@@ -468,8 +478,8 @@ def add_questions(request):
             question_mesg = 'ありがとうございました。'
     else:
         # 初回質問
-        question_type = 'cleanliness'
-        question_mesg = '綺麗好きですか？'
+        question_type = 'height'
+        question_mesg = '身長は何センチですか？'
 
     return render(request, 'robot_app/add_questions.html', {
         'number': '1.はい  2.いいえ',

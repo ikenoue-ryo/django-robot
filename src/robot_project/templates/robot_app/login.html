@@ -8,6 +8,16 @@
 
 {% block content %}
 
+    {% if messages %}
+        <div class="messages_ul">
+            <ul>
+            {% for message in messages %}
+                <li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
 
 <div class="container mt-5">
         <div class="question_robot">
