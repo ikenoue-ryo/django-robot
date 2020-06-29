@@ -119,10 +119,22 @@ def indexfunc(request):
                 json_result = json.loads(ho)
 
                 carsensor_records_ver2 = json_result['results']['usedcar']
-                add_car_news = 'たしか、' + str(user.profname) + 'さんは家族が' + family.answer + '人いますか？\n' + \
+                add_car_news = 'たしか、' + str(user.profname) + 'さんは家族が' + family.answer + '人でしたね？\n' + \
                                 family.answer + '人乗りの車もご紹介しておきます。'
 
+            #体重の検査
+            height = User_Question.objects.filter(question='height', user_name=request.user).first()
+            height = int(height.answer) / 100
+            suitable_weight = height * height * 22
+            print('適性体重', round(suitable_weight))
+            weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
+            print('現在の体重', weight.answer)
+            overweight = int(weight.answer) - round(suitable_weight)
+            print('こえたぶん', overweight)
 
+            if int(weight.answer) >= round(suitable_weight):
+                weight_result = '少し運動をした方が良いかも。'
+                overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
 
             return render(request, 'robot_app/wants.html', {
                 'nav_menu': '何をしたいですか？',
@@ -138,6 +150,11 @@ def indexfunc(request):
                 'add_car_news': add_car_news,
                 'carsensor_records_ver2': carsensor_records_ver2,
                 'user': user,
+                'weight_result': weight_result,
+                'weight': weight,
+                'suitable_weight': suitable_weight,
+                'overweight': overweight,
+                'overweight_text': overweight_text,
             })
     # ユーザーのfavorite_foodが存在しない場合、初回の質問をする
     else:

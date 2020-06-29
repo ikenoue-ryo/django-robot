@@ -2,8 +2,14 @@
 
 /*-- スマホ版表示CSS  --*/
 @media screen and (max-width: 480px) {
-  .question_robot img{
-    width: 50px;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0px;
+  }
+  table th, table td {
+    border: solid 1px black;
+    padding: 10px;
   }
 
   .question_robot {
@@ -16,17 +22,71 @@
     padding: 15px 0;
   }
 
+  .question_form ul {
+    padding: 0 0 0 15px;
+  }
+
   .result p{
     padding: 0;
   }
 
   .suggestion{
-    margin: 30px 10px;
+    /*margin: 30px 10px;*/
   }
 
-  #car_news_button{
-    margin: 40px 0px;
+  #car_news_button, #weight_news_button{
+    margin: 10px 0px;
   }
+
+  .question_route{
+    width: 80%;
+    margin: 0 0 0 20%;
+  }
+
+  .robot_route{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top: 0;/*ブラウザの上からの距離はゼロ*/
+    width: 60px;
+    display: inline-block;
+    float: left;
+  }
+
+  .suggest_area{
+    margin-bottom: 50px;
+  }
+
+  .health p{
+    padding: 0;
+    margin: 0;
+  }
+
+  .recommend_car .result img{
+    width: 100%;
+  }
+
+  .recommend_car .result p {
+    margin: 0;
+  }
+
+  .recommend_car .result {
+      margin: 30px 0;
+  }
+
+  #car_news li{
+    background:#f2f2f2;
+    width:200px;
+    height:50px;
+    line-height:50px;
+    text-align:center;
+    border:#666 1px solid;
+    display:none;
+  }
+
+
+
+
+
 }
 
   /*-- PC版表示CSS  --*/

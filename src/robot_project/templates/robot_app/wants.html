@@ -28,76 +28,117 @@
     <input type="button" id="tenki_button" value="天気を表示" style="margin-left: 20px;">
 
 <div class="container mt-5">
-    <div class="question_robot">
-        <img src="/media/robot.png" width="230">
+    <div class="suggest_area">
+        <div class="robot_route clearfix">
+            <div class="question_robot">
+                <img src="/media/robot2.png" width="50">
+            </div>
+        </div>
+        <div class="question_route">
+                <div class="question_form">
+                    <p>{{ nav_menu }}</p>
+                    <ul>
+                        <li class="tgt" style="list-style: none;">{{ gurunavi_search }}</li>
+                        <li class="tgt" style="list-style: none;">{{ youtube_search }}</li>
+                        <li class="tgt" style="list-style: none;">{{ add_questions }}</li>
+                    </ul>
+                    <div class="question">
+                        <form method="POST" action="" name="form1">{% csrf_token %}
+                            <input type="hidden" name="question" class="form-control" value="{{ type }}" autocomplete="off">
+                            <input type="text" name="answer" class="form-control" placeholder="番号を入力してください" autocomplete="off">
+                        </form>
+                    </div>
+                </div>
+        </div>
     </div>
 
-
-    <!-- ログインしている場合 from-->
-    {% if user.is_authenticated %}
-        {% if thanks %}
-            {{ thanks }}
-        {% else %}
-        <div class="question_form">
-            <p>{{ nav_menu }}</p>
-
-            <ul>
-                <li class="tgt" style="list-style: none;">{{ gurunavi_search }}</li>
-                <li class="tgt" style="list-style: none;">{{ youtube_search }}</li>
-                <li class="tgt" style="list-style: none;">{{ add_questions }}</li>
-            </ul>
-            <div class="question">
-                <form method="POST" action="" name="form1">{% csrf_token %}
-                    <input type="hidden" name="question" class="form-control" value="{{ type }}" autocomplete="off">
-                    <input type="text" name="answer" class="form-control" placeholder="番号を入力してください" autocomplete="off">
-                </form>
+    <div class="suggest_area">
+        <div class="robot_route clearfix">
+            <div class="question_robot">
+                <img src="/media/robot2.png" width="50">
             </div>
+        </div>
+        <div class="question_route">
+            <div class="question_form">
+                <!--  おすすめの車情報を表示 -->
+                <input type="button" id="car_news_button" value="おすすめ情報を表示" style="width:100%;">
+                {% if carsensor_records %}
+                <div id='car_news' class="suggestion">
+                    {{car_news}}
+                        <div class="result">
+                            <div class="recommend_car clearfix">
+                                {% for carsensor_rec in carsensor_records %}
+                                    <div class="result">
+                                        <p>{{ carsensor_rec.brand.name }}</p>
+                                            <p><a href="{{ carsensor_rec.urls.pc }}"><img src="{{ carsensor_rec.photo.main.l }}"></a></p>
+                                        <p>価格：{{ carsensor_rec.price | intcomma }}円</p>
+                                        <p>年式：{{ carsensor_rec.year}}年</p>
+                                        <p>走行：{{ carsensor_rec.odd }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
 
-            <!--  おすすめの車情報を表示 -->
-            {% if carsensor_records %}
-            <div id='car_news' class="suggestion">
-                {{car_news}}
-                    <div class="result">
-                        <div class="recommend_car clearfix">
-                            {% for carsensor_rec in carsensor_records %}
-                                <div class="result" style="
-                                    width: 160px;
-                                    display: inline-block;
-                                    float: left;">
-                                    <p>{{ carsensor_rec.brand.name }}</p>
-                                        <p><a href="{{ carsensor_rec.urls.pc }}"><img src="{{ carsensor_rec.photo.main.s }}"></a></p>
-                                    <p>{{ carsensor_rec.price | intcomma }}円</p>
-                                </div>
-                            {% endfor %}
+                            <hr>
+                            <div class="recommend_car">
+                                <!-- ちなみに・・・ -->
+                                <p>{{ add_car_news | linebreaksbr }}</p>
+                                {% for carsensor_rec_ver2 in carsensor_records_ver2 %}
+                                    <div class="result">
+                                        <p>{{ carsensor_rec_ver2.brand.name }}</p>
+                                            <p><a href="{{ carsensor_rec_ver2.urls.pc }}"><img src="{{ carsensor_rec_ver2.photo.main.l }}"></a></p>
+                                        <p>価格：{{ carsensor_rec_ver2.price | intcomma }}円</p>
+                                        <p>年式：{{ carsensor_rec_ver2.year}}年</p>
+                                        <p>走行：{{ carsensor_rec_ver2.odd }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <hr>
-                        <div class="recommend_car">
-                            <!-- ちなみに・・・ -->
-                            <p>{{ add_car_news | linebreaksbr }}</p>
-                            {% for carsensor_rec_ver2 in carsensor_records_ver2 %}
-                                <div class="result" style="
-                                    width: 160px;
-                                    display: inline-block;
-                                    float: left;">
-                                    <p>{{ carsensor_rec_ver2.brand.name }}</p>
-                                        <p><a href="{{ carsensor_rec_ver2.urls.pc }}"><img src="{{ carsensor_rec_ver2.photo.main.s }}"></a></p>
-                                    <p>{{ carsensor_rec_ver2.price | intcomma }}円</p>
-                                </div>
-                            {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="suggest_area">
+            <div class="robot_route clearfix">
+                <div class="question_robot">
+                    <img src="/media/robot2.png" width="50">
+                </div>
+            </div>
+            <div class="question_route">
+                <div class="question_form">
+                    <input type="button" id="weight_news_button" value="体に変化があります" style="width:100%;">
+                    <!--  健康情報を表示 -->
+                    <div id='weight_news' class="suggestion">
+                        <div class="health">
+                            <p>{{ weight_result }}</p>
+                            <p>{{ overweight_text }}</p>
+
+                            <table>
+                                <tr><td style="width: 30%;">現在の体重</td><td style="width: 26%;">{{ weight.answer }}kg</td></tr>
+                                <tr><td>標準の体重</td><td>{{ suitable_weight | floatformat:0 }}kg</td></tr>
+                                <tr><td>体重差</td><td>{{ overweight }}kg</td></tr>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <input type="button" id="car_news_button" value="おすすめ情報を表示">
-            {% endif %}
-        {% endif %}
-    {% endif %}
+        </div>
+    </div>
 
-    <!-- ログインしていない場合 from-->
-    {% if user.is_anonymous %}
-        新規登録かログインをしてください
-    {% endif %}
+
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 </div>
 
@@ -150,6 +191,19 @@ $(function() {
 	$("#car_news_button").click(function() {
 		$("#car_news").toggle("1000",function(){
 			$("#car_news_button").attr("value","おすすめ情報を見る");
+		});
+	});
+});
+</script>
+
+<script>
+$(function() {
+	// 初期表示は非表示にする
+	$('#weight_news').toggle();
+
+	$("#weight_news_button").click(function() {
+		$("#weight_news").toggle("1000",function(){
+			$("#weight_news_button").attr("value","体に変化があります！");
 		});
 	});
 });
