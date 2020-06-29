@@ -29,4 +29,4 @@ ARG DGID
 USER $DUID
 
 # 実行コマンドは docker-compose.yml の方で指定するためここはシェルを指定しておく
-CMD ["/bin/sh"]
+CMD ["/bin/bash"]

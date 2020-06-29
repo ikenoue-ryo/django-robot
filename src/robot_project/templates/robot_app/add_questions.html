@@ -19,14 +19,14 @@
                 {{ number }}
             {% endif %}
             {% if type == "car_brand" %}
-                {{ car_brand }}
+            <p>{{ car_brand }}</p>
             {% endif %}
             {% if type != "thanks" %}
                 <input type="hidden" name="question" value="{{ type }}">
                 <input type="text" name="answer" class="form-control" autocomplete="off">
             {% endif %}
         </form>
-    </div><br><br><br><br>
+    </div>
 
     <div class="result">
 

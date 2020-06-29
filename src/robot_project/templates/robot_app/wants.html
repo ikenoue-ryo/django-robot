@@ -13,7 +13,7 @@
         {% endfor %}
         <!-- ぐるなび  -->
         <div class="result" style="
-            width: 800px;
+            width: 90%;
             display: inline-block;
             float: left;
         "><br>
@@ -53,18 +53,10 @@
                 </form>
             </div>
 
-            <div class="suggestion">
-                {{ car_news }}
-                <ul style="width: 804px;">
-{#                    {% for name, data in carsensor_api.items %}#}
-{#                     <li style="#}
-{#                        display: inline-block;#}
-{#                        float: left;#}
-{#                        margin: 0 10px;">#}
-{#                         <img src="{{ data }}" width="120">#}
-{#                     </li>#}
-{#                    {% endfor %}#}
-                </ul>
+            <!--  おすすめの車情報を表示 -->
+            {% if carsensor_records %}
+            <div id='car_news' class="suggestion">
+                {{car_news}}
                     <div class="result">
                         <div class="recommend_car clearfix">
                             {% for carsensor_rec in carsensor_records %}
@@ -95,8 +87,10 @@
                             {% endfor %}
                         </div>
                     </div>
+                </div>
             </div>
-        </div>
+            <input type="button" id="car_news_button" value="おすすめ情報を表示">
+            {% endif %}
         {% endif %}
     {% endif %}
 
@@ -143,6 +137,19 @@ $(function() {
 	$("#tenki_button").click(function() {
 		$("#tenki").toggle("1000",function(){
 			$("#tenki_button").attr("value","天気を表示する");
+		});
+	});
+});
+</script>
+
+<script>
+$(function() {
+	// 初期表示は非表示にする
+	$('#car_news').toggle();
+
+	$("#car_news_button").click(function() {
+		$("#car_news").toggle("1000",function(){
+			$("#car_news_button").attr("value","おすすめ情報を見る");
 		});
 	});
 });

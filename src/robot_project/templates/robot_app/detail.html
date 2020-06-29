@@ -11,16 +11,17 @@
 
         <p>{{ user.profname }}さんの情報です。</p><br><br>
 
-        <p>基本情報</p>
+        <p>基本情報</p><a href="{% url 'robot_app:update' user.id %}">編集</a>
         <table>
             <tr><td>住所：</td><td>{{ address.answer }}</td></tr>
             <tr><td>好きな食べ物：</td><td>{{ favorite_food.answer }}</td></tr>
             <tr><td>年齢：</td><td>{{ age.answer }}</td></tr>
+            <tr><td>家族：</td><td>{{ family.answer }}人</td></tr>
             <tr><td>好きなスポーツ：</td><td>{{ favorite_sports.answer }}</td></tr>
             <tr><td>綺麗好きか？：</td><td>{{ cleanliness.answer }}</td></tr>
             <tr><td>車が欲しい？：</td><td>{{ mycar.answer }}</td></tr>
             <tr><td>好きな車メーカー：</td><td>{{ car_brand.answer }}</td></tr>
-        </table><br><br><br><br>
+        </table><br><br>
 
         <p>マーケティング情報</p>
         <p>ぐるなび検索回数：{{ gurunavi_search_count }}回</p>

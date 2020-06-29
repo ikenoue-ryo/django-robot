@@ -16,6 +16,7 @@ import time
 from googleapiclient.discovery import build
 from robot_app.views import questionapi
 from urllib.parse import urlencode
+from robot_app.forms import EditForm
 
 
 DEFAULT_ROBOT_NAME = 'Roboko'
@@ -99,7 +100,7 @@ def indexfunc(request):
                 json_result = json.loads(fu)
 
                 carsensor_records = json_result['results']['usedcar']
-                car_news = str(user.profname) + 'さんにおすすめ情報があります！' + car_brand.answer + 'の車をご紹介します！'
+                car_news = str(user.profname) + 'さんにおすすめ情報があります！'
 
                 #家族の人数から乗員を満たした車を案内する処理
                 family = User_Question.objects.filter(question='family', user_name=request.user).first()
@@ -163,9 +164,10 @@ def detailfunc(request, pk):
     user = User.objects.get(id=pk)
     #ユーザー基本情報
     questions = User_Question.objects.filter(user_name=request.user)
-    address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
+    address = User_Question.objects.filter(question='address', user_name=request.user).first()
     favorite_food = User_Question.objects.filter(question='favorite_food', user_name=request.user).first()
     age = User_Question.objects.filter(question='age', user_name=request.user).first()
+    family = User_Question.objects.filter(question='family', user_name=request.user).first()
     favorite_sports = User_Question.objects.filter(question='favorite_sports', user_name=request.user).first()
     cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
     mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
@@ -188,6 +190,7 @@ def detailfunc(request, pk):
         'address': address,
         'favorite_food': favorite_food,
         'age': age,
+        'family': family,
         'favorite_sports': favorite_sports,
         'cleanliness': cleanliness,
         'mycar': mycar,
@@ -198,6 +201,83 @@ def detailfunc(request, pk):
         'youtube_key': youtube_key,
     }
     return render(request, 'robot_app/detail.html', context)
+
+
+def updatefunc(request, pk):
+    user = User.objects.get(id=pk)
+    # ユーザー基本情報
+    questions = User_Question.objects.filter(user_name=request.user)
+    address = User_Question.objects.filter(question='address', user_name=request.user).first()
+    favorite_food = User_Question.objects.filter(question='favorite_food', user_name=request.user).first()
+    age = User_Question.objects.filter(question='age', user_name=request.user).first()
+    family = User_Question.objects.filter(question='family', user_name=request.user).first()
+    favorite_sports = User_Question.objects.filter(question='favorite_sports', user_name=request.user).first()
+    cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
+    mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
+    car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
+    # address = EditForm(instance=address)
+    # favorite_food = EditForm(instance=favorite_food)
+    # age = EditForm(instance=age)
+    # favorite_sports = EditForm(instance=favorite_sports)
+    # cleanliness = EditForm(instance=cleanliness)
+    # mycar = EditForm(instance=mycar)
+    # car_brand = EditForm(instance=car_brand)
+
+    if request.method == 'POST':
+        address = User_Question.objects.filter(question='address', user_name=request.user).first()
+        address.answer = request.POST['address']
+        address.save()
+
+        favorite_food = User_Question.objects.filter(question='favorite_food', user_name=request.user).first()
+        favorite_food.answer = request.POST['favorite_food']
+        favorite_food.save()
+
+        age = User_Question.objects.filter(question='age', user_name=request.user).first()
+        age.answer = request.POST['age']
+        age.save()
+
+        family = User_Question.objects.filter(question='family', user_name=request.user).first()
+        family.answer = request.POST['family']
+        family.save()
+
+        favorite_sports = User_Question.objects.filter(question='favorite_sports', user_name=request.user).first()
+        favorite_sports.answer = request.POST['favorite_sports']
+        favorite_sports.save()
+
+        cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
+        cleanliness.answer = request.POST['cleanliness']
+        cleanliness.save()
+
+        mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
+        mycar.answer = request.POST['mycar']
+        mycar.save()
+
+        car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
+        car_brand.answer = request.POST['car_brand']
+        car_brand.save()
+
+        # question.answer = request.POST['anwer']
+        # question.answer.save()
+        # question = questions
+        # question.question = request.POST['question']
+        # question.answer = request.POST['answer']
+        # question.user_name = request.user
+        # question.update()
+        return redirect('robot_app:index')
+
+    return render(request, 'robot_app/question_edit.html', {
+        'users': user,
+        'questions': questions,
+        'address': address,
+        'favorite_food': favorite_food,
+        'age': age,
+        'family': family,
+        'favorite_sports': favorite_sports,
+        'cleanliness': cleanliness,
+        'mycar': mycar,
+        'car_brand': car_brand,
+    })
+
 
 
 def signupfunc(request):

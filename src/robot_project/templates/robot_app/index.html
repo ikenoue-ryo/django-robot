@@ -11,19 +11,18 @@
         <div class="question_robot">
             <img src="/media/robot.png">
         </div>
-       
-            {% if thanks %}
-                {{ thanks }}
-            {% else %}
-            <div class="question_form">
-                <form method="POST" action="" name="form1">{% csrf_token %}
-                    <p class="tgt">{{ mesg }}</p>
-                    <input type="hidden" name="question" value="{{ type }}">
-                    <input type="text" name="answer" class="form-control" autocomplete="off">
-                </form>
-            </div>
-            {% endif %}
-
+        <div class="question_form">
+            <form method="POST" action="" name="form1">{% csrf_token %}
+                <p class="tgt">{{ mesg }}</p>
+                {% if type == "thanks" %}
+                    {{ thanks }}
+                {% endif %}
+                {% if type != "thanks" %}
+                <input type="hidden" name="question" value="{{ type }}">
+                <input type="text" name="answer" class="form-control" autocomplete="off">
+                {% endif %}
+            </form>
+        </div>
         <!-- ログインしていない場合 from-->
         {% if user.is_anonymous %}
             新規登録かログインをしてください

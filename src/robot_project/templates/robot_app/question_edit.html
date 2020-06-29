@@ -1,0 +1,47 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+    <form id="" action="" method="POST">{% csrf_token %}
+        <table>
+            <tr><td>住所：</td><td><input type="text" name="address" value="{{ address.answer }}"></td></tr>
+            <tr><td>好きな食べ物：</td><td><input type="text" name="favorite_food" value="{{ favorite_food.answer }}"></td></tr>
+            <tr><td>年齢：</td><td><input type="text" name="age" value="{{ age.answer }}"></td></tr>
+            <tr><td>家族：</td><td><input type="text" name="family" value="{{ family.answer }}"></td></tr>
+            <tr><td>好きなスポーツ：</td><td><input type="text" name="favorite_sports" value="{{ favorite_sports.answer }}"></td></tr>
+            <tr><td>綺麗好きか？：</td><td><input type="text" name="cleanliness" value="{{ cleanliness.answer }}"></td></tr>
+            <tr><td>車が欲しい？：</td><td><input type="text" name="mycar" value="{{ mycar.answer }}"></td></tr>
+            <tr><td>好きな車メーカー：</td><td><input type="text" name="car_brand" value="{{ car_brand.answer }}"></td></tr>
+        </table>
+    <input type='submit' value='保存'>
+    </form>
+        <br><br>
+
+<script>
+    var id = $('form').attr('id');
+    // 上記の入力欄にフォーカスを与える
+    document.getElementById(id).focus();
+</script>
+
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+{% endblock content %}

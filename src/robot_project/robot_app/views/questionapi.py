@@ -43,7 +43,8 @@ def firstQuestion(request, previous_question):
         question_type = 'family'
         question_mesg = '家族は何人ですか？'
     elif request.POST['question'] == 'family':
-        thanks = 'ありがとうございました。'
+        question_type = 'thanks'
+        question_mesg = 'ありがとうございました。'
 
     return (question_type, question_mesg)
 
@@ -78,6 +79,8 @@ def selectQuestion(request, previous_question):
             user = User.objects.get(email__exact=user.email)
             user.set_password(user.password)
             user.save()
+            question_type = 'thanks'
+            question_mesg = '登録が完了しました'
             return(question_type, question_mesg)
         else:
             # パスワード2が間違っていた場合の処理
@@ -193,7 +196,6 @@ def carsensor_api(request):
         urlencode({
             'key': settings.CARSENSOR_API_KEY,
             # "keyword": "HONDA S660",
-            'keyword': 'ホンダ',
             'format': 'json'
              }))
 

@@ -18,3 +18,9 @@ class LoginForm(AuthenticationForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
+
+
+class EditForm(forms.ModelForm):
+    class Meta:
+        model = User_Question
+        fields = '__all__'
