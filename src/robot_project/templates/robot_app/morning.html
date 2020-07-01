@@ -7,62 +7,56 @@
 
 {% block content %}
 
-    <div class="morning">
-        <p>平日の起床時間：{{ user_wake_up }}時</p>
-        <p>家を出る時間：{{ user_going_work }}時</p>
-        <p>朝やること</p>
-        <ul>
-            {% for morning in user_morning %}
-            <li>{{ morning.answer }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-<div class="container mt-5">
-    <div class="question_robot">
-        <img src="/media/robot2.png" width="50">
-    </div>
-
-    {% if type == 'todo_morning' %}
-    <p class="tgt">{{ mesg }}</p>
-        <form method="POST" action="" name="form1">{% csrf_token %}
-<!--            <div id="input_pluralBox">-->
-<!--                <div id="input_plural">-->
-<!--                    <input type="hidden" name="question" value="{{ type }}">-->
-<!--                    <input type="text" class="form-control" placeholder="やること" name="answer" autocomplete="off">-->
-<!--                    <input type="button" value="＋" class="add pluralBtn" name="answer" value="{{ type }}">-->
-<!--                    <input type="button" value="－" class="del pluralBtn" name="answer" value="{{ type }}">-->
-<!--                </div>-->
-<!--            </div>-->
-
-            <input type="hidden" name="question" value="{{ type }}">
-            <input type="text" class="form-control" placeholder="やること" name="answer1" autocomplete="off" style="margin: 10px 0;">
-            <input type="text" class="form-control" placeholder="やること" name="answer2" autocomplete="off" style="margin: 10px 0;">
-            <input type="text" class="form-control" placeholder="やること" name="answer3" autocomplete="off" style="margin: 10px 0;">
-
-
-            <input type="submit" value="作成">
-        </form>
-
+    {% if type == "no_question" %}
+        <div class="morning">
+            <p>平日の起床時間：{{ wake_up.answer }}時</p>
+            <p>家を出る時間：{{ going_work.answer }}時</p>
+            <p>朝やること</p>
+            <ul>
+                {% for morning in todo_morning %}
+                <li>{{ morning.answer }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     {% else %}
+
+    <div class="container mt-5">
+        <div class="question_robot">
+            <img src="/media/robot2.png" width="50">
+        </div>
+
         <div class="question_form">
             <form method="POST" action="" name="form1">{% csrf_token %}
                 <p class="tgt">{{ mesg }}</p>
-                {% if type != "thanks" %}
+                {% if type != "thanks" and type != "no_question" and type != "todo_morning" %}
                     <input type="hidden" name="question" value="{{ type }}">
                     <input type="text" name="answer" class="form-control" autocomplete="off">
+                {% elif type == "thanks" %}
+                    <script>
+                        window.location.href = 'http://localhost:8080/';
+                    </script>
+                {% else %}
+                    <form method="POST" action="" name="form1">{% csrf_token %}
+            <!--            <div id="input_pluralBox">-->
+            <!--                <div id="input_plural">-->
+            <!--                    <input type="hidden" name="question" value="{{ type }}">-->
+            <!--                    <input type="text" class="form-control" placeholder="やること" name="answer" autocomplete="off">-->
+            <!--                    <input type="button" value="＋" class="add pluralBtn" name="answer" value="{{ type }}">-->
+            <!--                    <input type="button" value="－" class="del pluralBtn" name="answer" value="{{ type }}">-->
+            <!--                </div>-->
+            <!--            </div>-->
+                        <input type="hidden" name="question" value="{{ type }}">
+                        <input type="text" class="form-control" placeholder="やること" name="answer1" autocomplete="off" style="margin: 10px 0;">
+                        <input type="text" class="form-control" placeholder="やること" name="answer2" autocomplete="off" style="margin: 10px 0;">
+                        <input type="text" class="form-control" placeholder="やること" name="answer3" autocomplete="off" style="margin: 10px 0;">
+                        <input type="submit" value="作成">
+                    </form>
                 {% endif %}
             </form>
         </div>
-    {% endif %}
-
-
-    <div class="result">
 
     </div>
-
-</div>
-
+    {% endif %}
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
@@ -87,6 +81,8 @@ $(window).on('load',function(){
     };
 });
 </script>
+
+
 
 <!--<script type="text/javascript">-->
 <!--$(document).on("click", ".add", function() {-->

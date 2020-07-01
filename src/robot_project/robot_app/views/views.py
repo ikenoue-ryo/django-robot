@@ -551,7 +551,7 @@ def add_questions(request):
 
         if not None:
             question_type = 'no_question'
-            question_mesg = '今、質問はありません。'
+            question_mesg = 'ただいま、質問はありません。'
         if car_brand is None:
             question_type = 'car_brand'
             question_mesg = '好きな車メーカーはありますか？'
@@ -579,6 +579,9 @@ def add_questions(request):
 
 
 def morning(request):
+    wake_up = ''
+    going_work = ''
+    todo_morning = ''
     question_type = ''
     question_mesg = ''
 
@@ -621,17 +624,31 @@ def morning(request):
             question_mesg = 'ありがとうございました。'
             redirect('/')
     else:
-        user_wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).first()
-        user_going_work = User_Question.objects.filter(question='going_work', user_name=request.user).first()
-        user_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:3]
-        # 初回質問
-        question_type = 'wake_up'
-        question_mesg = '平日は何時に起きますか？'
+        wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).last()
+        going_work = User_Question.objects.filter(question='going_work', user_name=request.user).last()
+        user_morning = User_Question.objects.order_by('id').reverse().filter(question='todo_morning',
+                                                                             user_name=request.user)[0:3]
+        todo_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:3]
+
+        if not None:
+            question_type = 'no_question'
+            question_mesg = 'ただいま、質問はありません。'
+        if todo_morning is None:
+            question_type = 'todo_morning'
+            question_mesg = '朝のやることリストを作成しよう'
+        if going_work is None:
+            question_type = 'going_work'
+            question_mesg = '何時に家をでますか？'
+        if wake_up is None:
+            # 初回質問
+            question_type = 'wake_up'
+            question_mesg = '平日は何時に起きますか？'
+
 
     return render(request, 'robot_app/morning.html', {
-        'user_wake_up': user_wake_up.answer,
-        'user_going_work': user_going_work.answer,
-        'user_morning': user_morning,
+        'wake_up': wake_up,
+        'going_work': going_work,
+        'todo_morning': todo_morning,
         'type': question_type,
         'mesg': question_mesg,
         'thanks': question_mesg
