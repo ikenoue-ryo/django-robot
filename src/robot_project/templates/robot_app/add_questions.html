@@ -21,7 +21,7 @@
             {% if type == "car_brand" %}
             <p>{{ car_brand }}</p>
             {% endif %}
-            {% if type != "thanks" %}
+            {% if type != "thanks" and type != "no_question" %}
                 <input type="hidden" name="question" value="{{ type }}">
                 <input type="text" name="answer" class="form-control" autocomplete="off">
             {% else %}
@@ -29,6 +29,8 @@
                     window.location.href = 'http://localhost:8080/';
                 </script>
             {% endif %}
+
+
         </form>
     </div>
 

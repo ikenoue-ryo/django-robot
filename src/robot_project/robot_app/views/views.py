@@ -240,6 +240,10 @@ def detailfunc(request, pk):
     cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
     mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
     car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
+    wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).first()
+    going_work = User_Question.objects.filter(question='going_work', user_name=request.user).first()
+    todo_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:3]
+
 
     #ユーザー抜粋データ
     ##ぐるなび検索回数
@@ -265,6 +269,9 @@ def detailfunc(request, pk):
         'cleanliness': cleanliness,
         'mycar': mycar,
         'car_brand': car_brand,
+        'wake_up': wake_up,
+        'going_work': going_work,
+        'todo_morning': todo_morning,
         'gurunavi_search_count': gurunavi_search_count,
         'gurunavi_key': gurunavi_key,
         'youtube_search_count': youtube_search_count,
@@ -507,6 +514,7 @@ def youtube(request):
 
 
 def add_questions(request):
+    weight = ''
     question_type = ''
     question_mesg = ''
 
@@ -518,28 +526,45 @@ def add_questions(request):
         question.save()
 
         if request.POST['question'] == 'height':
-            height = request.POST['answer']
             question_type = 'weight'
             question_mesg = '体重は何キロですか？'
         if request.POST['question'] == 'weight':
-            weight = request.POST['answer']
             question_type = 'cleanliness'
             question_mesg = '綺麗好きですか？'
         if request.POST['question'] == 'cleanliness':
-            cleanliness = request.POST['answer']
             question_type = 'mycar'
             question_mesg = '車がほしいですか？'
         if request.POST['question'] == 'mycar':
-            mycar = request.POST['answer']
             question_type = 'car_brand'
             question_mesg = '好きな車メーカーはありますか？'
         if request.POST['question'] == 'car_brand':
-            car_brand = request.POST['answer']
             question_type = 'thanks'
             question_mesg = 'ありがとうございました。'
             redirect('/')
 
     else:
+        height = User_Question.objects.filter(question='height', user_name=request.user).first()
+        weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
+        cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
+        mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
+        car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
+
+        if not None:
+            question_type = 'no_question'
+            question_mesg = '今、質問はありません。'
+        if car_brand is None:
+            question_type = 'car_brand'
+            question_mesg = '好きな車メーカーはありますか？'
+        if mycar is None:
+            question_type = 'mycar'
+            question_mesg = '車がほしいですか？'
+        if cleanliness is None:
+            question_type = 'cleanliness'
+            question_mesg = '綺麗好きですか？'
+        if weight is None:
+            question_type = 'weight'
+            question_mesg = '体重は何キロですか？'
+        if height is None:
             # 初回質問
             question_type = 'height'
             question_mesg = '身長は何センチですか？'

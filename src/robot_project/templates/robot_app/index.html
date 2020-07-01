@@ -30,6 +30,10 @@
                 {% if type != "thanks" %}
                 <input type="hidden" name="question" value="{{ type }}">
                 <input type="text" name="answer" class="form-control" autocomplete="off">
+                {% else %}
+                <script>
+                    window.location.href = 'http://localhost:8080/';
+                </script>
                 {% endif %}
             </form>
         </div>
