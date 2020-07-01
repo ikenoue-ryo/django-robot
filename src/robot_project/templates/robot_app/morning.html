@@ -1,0 +1,103 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/morning.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+
+    <div class="morning">
+        <p>平日の起床時間：{{ user_wake_up }}時</p>
+        <p>家を出る時間：{{ user_going_work }}時</p>
+        <p>朝やること</p>
+        <ul>
+            {% for morning in user_morning %}
+            <li>{{ morning.answer }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+<div class="container mt-5">
+    <div class="question_robot">
+        <img src="/media/robot2.png" width="50">
+    </div>
+
+    {% if type == 'todo_morning' %}
+    <p class="tgt">{{ mesg }}</p>
+        <form method="POST" action="" name="form1">{% csrf_token %}
+<!--            <div id="input_pluralBox">-->
+<!--                <div id="input_plural">-->
+<!--                    <input type="hidden" name="question" value="{{ type }}">-->
+<!--                    <input type="text" class="form-control" placeholder="やること" name="answer" autocomplete="off">-->
+<!--                    <input type="button" value="＋" class="add pluralBtn" name="answer" value="{{ type }}">-->
+<!--                    <input type="button" value="－" class="del pluralBtn" name="answer" value="{{ type }}">-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <input type="hidden" name="question" value="{{ type }}">
+            <input type="text" class="form-control" placeholder="やること" name="answer1" autocomplete="off" style="margin: 10px 0;">
+            <input type="text" class="form-control" placeholder="やること" name="answer2" autocomplete="off" style="margin: 10px 0;">
+            <input type="text" class="form-control" placeholder="やること" name="answer3" autocomplete="off" style="margin: 10px 0;">
+
+
+            <input type="submit" value="作成">
+        </form>
+
+    {% else %}
+        <div class="question_form">
+            <form method="POST" action="" name="form1">{% csrf_token %}
+                <p class="tgt">{{ mesg }}</p>
+                {% if type != "thanks" %}
+                    <input type="hidden" name="question" value="{{ type }}">
+                    <input type="text" name="answer" class="form-control" autocomplete="off">
+                {% endif %}
+            </form>
+        </div>
+    {% endif %}
+
+
+    <div class="result">
+
+    </div>
+
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<script>
+    var id = $('form').attr('id');
+    // 上記の入力欄にフォーカスを与える
+    document.getElementById(id).focus();
+</script>
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+<!--<script type="text/javascript">-->
+<!--$(document).on("click", ".add", function() {-->
+<!--    $(this).parent().clone(true).insertAfter($(this).parent());-->
+<!--});-->
+<!--$(document).on("click", ".del", function() {-->
+<!--    var target = $(this).parent();-->
+<!--    if (target.parent().children().length > 1) {-->
+<!--        target.remove();-->
+<!--    }-->
+<!--});-->
+<!--</script>-->
+
+{% endblock content %}

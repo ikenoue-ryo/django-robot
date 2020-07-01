@@ -14,5 +14,6 @@ urlpatterns = [
     path('g_navi/', views.g_navi, name='g_navi'),
     path('youtube/', views.youtube, name='youtube'),
     path('add_questions/', views.add_questions, name='add_questions'),
+    path('morning/', views.morning, name='morning'),
 
 ]

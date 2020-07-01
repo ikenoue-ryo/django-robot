@@ -12,14 +12,27 @@
     padding: 10px;
   }
 
+  ul li {
+    list-style: none;
+  }
+
+  .dtime{
+    text-align: right;
+    margin: 0 20px;
+  }
+
   .question_robot {
     width: 20%;
     display: inline-block;
     float: left;
   }
 
+  .question_form p.tgt{
+    margin: 0 0 0 10px;
+  }
+
   .question_form p{
-    padding: 15px 0;
+    padding: 10px 0;
   }
 
   .question_form ul {
@@ -92,71 +105,71 @@
   }
 
 
-#text-wrap p {
-	margin: 0;
-}
+  #text-wrap p {
+    margin: 0;
+  }
 
-#text-wrap {
-	width: 100%;
-	display: block;
-}
+  #text-wrap {
+    width: 100%;
+    display: block;
+  }
 
-.hide-text {
-	display: none;
-}
+  .hide-text {
+    display: none;
+  }
 
-.hide-text .result {
-  margin: 20px 0;
-}
+  .hide-text .result {
+    margin: 20px 0;
+  }
 
-button.readmore {
-	position: relative;
-	margin: 10px auto;
-	display: block;
-	background-color: transparent;
-	color: #666;
-	padding-bottom: 40px;
-	border: none;
-	outline: 0;
-	transition: .5s;
-	-erbkit-transition: .5s;
-}
+  button.readmore {
+    position: relative;
+    margin: 10px auto;
+    display: block;
+    background-color: transparent;
+    color: #666;
+    padding-bottom: 40px;
+    border: none;
+    outline: 0;
+    transition: .5s;
+    -erbkit-transition: .5s;
+  }
 
-button.readmore::after {
-	content: " ";
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	border-top: solid 3px #666;
-	border-right: solid 3px #666;
-	transform: rotate(135deg);
-	-webkit-transform: rotate(135deg);
-	right: 35px;
-	top: 25px;
-	transition: .5s;
-	-erbkit-transition: .5s;
-}
+  button.readmore::after {
+    content: " ";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-top: solid 3px #666;
+    border-right: solid 3px #666;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    right: 35px;
+    top: 25px;
+    transition: .5s;
+    -erbkit-transition: .5s;
+  }
 
-button.readmore:hover::after {
-	top: 25px;
-}
+  button.readmore:hover::after {
+    top: 25px;
+  }
 
-.on-click {
-	color: transparent!important;
-}
+  .on-click {
+    color: transparent!important;
+  }
 
-.on-click {
-	transform: rotate(-180deg);
-	-webkit-transform: rotate(-180deg);
-}
+  .on-click {
+    transform: rotate(-180deg);
+    -webkit-transform: rotate(-180deg);
+  }
 
-.show-text p{
-  margin-bottom: 30px;
-}
+  .show-text p{
+    margin-bottom: 30px;
+  }
 
-.result img{
-  width: 100%;
-}
+  .result img{
+    width: 100%;
+  }
 
 
 

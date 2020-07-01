@@ -7,6 +7,23 @@
 {% endblock customcss %}
 
 {% block content %}
+<!--    {% for key, gnavi_rec2 in gnavi_records2.items　 %}-->
+<!--       <ul>-->
+<!--           <li>{{ gnavi_rec2.photo.shop_name }}</li>-->
+<!--           <li>{{ gnavi_rec2.photo.photo_scene_name }}</li>-->
+<!--           <li>{{ gnavi_rec2.photo.prefname }}</li>-->
+<!--           <li>{{ gnavi_rec2.photo.menu_name }}</li>-->
+<!--           <li>{{ gnavi_rec2.photo.comment }}</li>-->
+<!--           <li>{{ gnavi_rec2.photo.total_score }}</li>-->
+<!--           <li><img src="{{ gnavi_rec2.photo.image_url.url_320 }}"></li>-->
+<!--       </ul>-->
+<!--    {% endfor %}-->
+
+<!--    <div class="dtime">-->
+<!--        <div id="datetime"></div>-->
+<!--    </div>-->
+
+    <input type="button" id="tenki_button" value="天気を表示" style="margin-left: 20px;">
     <ul id="tenki">
         {% for tenki, data in tenki_api.items %}
          <li>{{ tenki }}：{{ data }}</li>
@@ -25,7 +42,6 @@
         </div>
         <!-- ぐるなび  -->
     </ul>
-    <input type="button" id="tenki_button" value="天気を表示" style="margin-left: 20px;">
 
 <div class="container mt-5">
     <div class="suggest_area">
@@ -35,35 +51,52 @@
             </div>
         </div>
         <div class="question_route">
-                <div class="question_form">
-                    <p>{{ nav_menu }}</p>
-                    <ul>
-                        <li class="tgt" style="list-style: none;">{{ gurunavi_search }}</li>
-                        <li class="tgt" style="list-style: none;">{{ youtube_search }}</li>
-                        <li class="tgt" style="list-style: none;">{{ add_questions }}</li>
-                    </ul>
-                    <div class="question">
-                        <form method="POST" action="" name="form1">{% csrf_token %}
-                            <input type="hidden" name="question" class="form-control" value="{{ type }}" autocomplete="off">
-                            <input type="text" name="answer" class="form-control" placeholder="番号を入力してください" autocomplete="off">
-                        </form>
-                    </div>
-                </div>
+            <div class="question_form">
+                <p>{{ nav_menu }}</p>
+                <form method="post" name="form1" action="">{% csrf_token %}
+                  <input type="hidden" name="answer" value="1">
+                  <a href="javascript:form1[0].submit()"><p class="tgt">{{ gurunavi_search }}</p></a>
+                </form>
+                <form method="post" name="form1" action="">{% csrf_token %}
+                  <input type="hidden" name="answer" value="2">
+                  <a href="javascript:form1[1].submit()"><p class="tgt">{{ youtube_search }}</p></a>
+                </form>
+                <form method="post" name="form1" action="">{% csrf_token %}
+                  <input type="hidden" name="answer" value="3">
+                  <a href="javascript:form1[2].submit()"><p class="tgt">{{ add_questions }}</p></a>
+                </form>
+                <form method="post" name="form1" action="">{% csrf_token %}
+                  <input type="hidden" name="answer" value="4">
+                  <a href="javascript:form1[3].submit()"><p class="tgt">{{ morning }}</p></a>
+                </form>
+<!--                    #フォーム入力の場合-->
+<!--                    <ul>-->
+<!--                        <li class="tgt">{{ gurunavi_search }}</li>-->
+<!--                        <li class="tgt">{{ youtube_search }}</li>-->
+<!--                        <li class="tgt">{{ add_questions }}</li>-->
+<!--                    </ul>-->
+<!--                    <div class="question">-->
+<!--                        <form method="POST" action="" name="form1">{% csrf_token %}-->
+<!--                            <input type="hidden" name="question" class="form-control" value="{{ type }}" autocomplete="off">-->
+<!--                            <input type="text" name="answer" class="form-control" placeholder="番号を入力してください" autocomplete="off">-->
+<!--                        </form>-->
+<!--                    </div>-->
+            </div>
         </div>
     </div>
 
+
     <div class="suggest_area">
+        {% if carsensor_records %}
         <div class="robot_route clearfix">
             <div class="question_robot">
                 <img src="/media/robot2.png" width="50">
-
             </div>
         </div>
         <div class="question_route">
             <div class="question_form">
                 <!--  おすすめの車情報を表示 -->
                 <input type="button" id="car_news_button" value="おすすめ情報を表示" style="width:100%;">
-                {% if carsensor_records %}
                 <div id='car_news' class="suggestion">
                     {{car_news}}
                         <div class="result">
@@ -96,12 +129,11 @@
                         </div>
                     </div>
                 </div>
-
-                {% endif %}
             </div>
         </div>
+        {% endif %}
 
-
+        {% if youtube_records %}
         <div class="suggest_area">
             <div class="robot_route clearfix">
                 <div class="question_robot">
@@ -146,6 +178,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 
 
@@ -237,5 +270,23 @@ $(function(){
 	});
 });
 </script>
+
+<!--リアルタイム時間表示-->
+<script>
+function showtime(){
+  var today = new Date();
+  $weekday = ['日','月','火','水','木','金','土'];
+  month = today.getMonth() + 1 ;
+  $('#datetime').html(today.getHours() + ":" + ('0'+today.getMinutes()).slice(-2) + ":" + ('0' +today.getSeconds()).slice(-2));
+}
+setInterval(showtime,1000);
+</script>
+
+<!--消す時-->
+<!--<script>-->
+<!--$(".question_robot").on("click", function(){-->
+<!--  $(".suggest_area2").remove();-->
+<!--});-->
+<!--</script>-->
 
 {% endblock content %}

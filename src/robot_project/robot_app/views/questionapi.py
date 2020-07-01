@@ -22,9 +22,10 @@ def selectAnswer(request, answer):
         question.question = 'youtube_search'
     elif request.POST['answer'] == '3':
         question.question = 'friends_search'
+    elif request.POST['answer'] == '4':
+        question.question = 'morning'
     else:
         question.question = 'none'
-
     return question.question
 
 
@@ -99,7 +100,6 @@ def selectQuestion(request, previous_question):
     return(question_type, question_mesg)
 
 
-
 # 天気API表示
 def tenki_api(request):
     user_info = User_Question.objects.filter(user_name=request.user)
@@ -115,6 +115,7 @@ def tenki_api(request):
     data = response.json()
 
     weather = data["weather"][0]["description"]  # 最高気温
+    icon = data["weather"][0]["icon"]
     temp_max = data["main"]["temp_max"]  # 最低気温
     temp_min = data["main"]["temp_min"]  # 寒暖差
     diff_temp = temp_max - temp_min  # 湿度
@@ -127,7 +128,7 @@ def tenki_api(request):
     now_w = "{0:%A}".format(today)
     day = date_time + now_w
 
-    context = {"場所": city_name, "日付": day, "最高気温": str(temp_max) + "度",
+    context = {"場所": city_name, "日付": day, "": icon, "最高気温": str(temp_max) + "度",
                "最低気温": str(temp_min) + "度", "湿度": str(humidity) + "%"}
     return context
 
@@ -185,7 +186,6 @@ def search(city):
         '鹿児島県': 'PREF46',
         '沖縄県': 'PREF47',
     }
-
     pre_code = dict[city]
     return pre_code
 

@@ -31,7 +31,12 @@ def indexfunc(request):
     car_news = ''
     add_car_news = ''
     carsensor_records_ver2 = ''
-    person = ''
+    weight_result = ''
+    weight = ''
+    suitable_weight = ''
+    overweight = ''
+    overweight_text = ''
+    youtube_records = ''
     question_type = ''
     question_mesg = ''
 
@@ -50,6 +55,8 @@ def indexfunc(request):
                 return redirect('/youtube/')
             if request.POST['answer'] == '3':
                 return redirect('/add_questions')
+            if request.POST['answer'] == '4':
+                return redirect('/morning')
         else:
             #天気を表示
             tenki_api = questionapi.tenki_api(request)
@@ -124,38 +131,59 @@ def indexfunc(request):
 
             #体重の検査
             height = User_Question.objects.filter(question='height', user_name=request.user).first()
-            height = int(height.answer) / 100
-            suitable_weight = height * height * 22
-            print('適性体重', round(suitable_weight))
-            weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
-            print('現在の体重', weight.answer)
-            overweight = int(weight.answer) - round(suitable_weight)
-            print('こえたぶん', overweight)
+            if height:
+                height = int(height.answer) / 100
+                #適性体重
+                suitable_weight = height * height * 22
+                #現在の体重 weight.answer
+                weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
+                #超過分
+                overweight = int(weight.answer) - round(suitable_weight)
 
-            if int(weight.answer) >= round(suitable_weight):
-                weight_result = '少し運動をした方が良いかも。'
-                overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
+                if int(weight.answer) >= round(suitable_weight):
+                    weight_result = '少し運動をした方が良いかも。'
+                    overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
 
-            #体重から太っている人にYoutubeでダイエット動画を提供
-            YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
-            youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+                #体重から太っている人にYoutubeでダイエット動画を提供
+                YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
+                # youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
-            search_response = youtube.search().list(
-                part='snippet',
-                # 検索したい文字列を指定
-                q='ダイエット',
-                # 視聴回数が多い順に取得
-                order='viewCount',
-                type='video',
-            ).execute()
+                # search_response = youtube.search().list(
+                #     part='snippet',
+                #     # 検索したい文字列を指定
+                #     q='ダイエット',
+                #     # 視聴回数が多い順に取得
+                #     order='viewCount',
+                #     type='video',
+                # ).execute()
 
-            youtube_records = search_response['items']
+                # youtube_records = search_response['items']
+
+
+            # # レストラン検索APIのURL
+            # Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
+            # # パラメータの設定
+            # params = {}
+            # params['keyid'] = settings.GNAVI_API_KEY
+            # params['hit_per_page'] = 3
+            # params['shop_name'] = '焼き鳥'
+            # params['sort'] = 1
+            #
+            # Url = 'https://api.gnavi.co.jp/PhotoSearchAPI/v3/'
+            # result_api = requests.get(Url, params)
+            # result_api = result_api.json()
+            # # gnavi_records2 = result_api['response']['0']['photo']
+            # # print('yes', gnavi_records2)
+            #
+            # gnavi_records2 = result_api['response']
+
 
             return render(request, 'robot_app/wants.html', {
                 'nav_menu': '何をしたいですか？',
                 'gurunavi_search': '1. ぐるなびで検索する',
                 'youtube_search': '2. Youtubeで検索する',
                 'add_questions': '3. 質問に答える',
+                'morning': '4. 朝やることを登録する',
                 'type': question_type,
                 'mesg': question_mesg,
                 'tenki_api': tenki_api,
@@ -170,7 +198,8 @@ def indexfunc(request):
                 'suitable_weight': suitable_weight,
                 'overweight': overweight,
                 'overweight_text': overweight_text,
-                'youtube_records': youtube_records,
+                # 'youtube_records': youtube_records,
+                # 'gnavi_records2': gnavi_records2,
             })
     # ユーザーのfavorite_foodが存在しない場合、初回の質問をする
     else:
@@ -366,7 +395,7 @@ def loginfunc(request):
 class Logout(LogoutView):
     template_name = 'robot_app/index.html'
 
-
+#検索を途中で止めるとinfoのデータが残りエラーになるバグ
 info= []
 def g_navi(request):
     question_type = ''
@@ -420,7 +449,6 @@ def g_navi(request):
             result_api = requests.get(Url, params)
             result_api = result_api.json()
             gnavi_records = result_api['rest']
-
             #検索データをリセット
             info.clear()
     else:
@@ -453,7 +481,7 @@ def youtube(request):
             question_mesg = '検索結果を表示します。'
 
         YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
-        youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+        # youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
         search_response = youtube.search().list(
         part='snippet',
@@ -473,7 +501,7 @@ def youtube(request):
     return render(request, 'robot_app/youtube.html', {
         'type': question_type,
         'mesg': question_mesg,
-        'youtube_records': youtube_records,
+        # 'youtube_records': youtube_records,
     })
 
 
@@ -509,10 +537,12 @@ def add_questions(request):
             car_brand = request.POST['answer']
             question_type = 'thanks'
             question_mesg = 'ありがとうございました。'
+            redirect('/')
+
     else:
-        # 初回質問
-        question_type = 'height'
-        question_mesg = '身長は何センチですか？'
+            # 初回質問
+            question_type = 'height'
+            question_mesg = '身長は何センチですか？'
 
     return render(request, 'robot_app/add_questions.html', {
         'number': '1.はい  2.いいえ',
@@ -522,3 +552,62 @@ def add_questions(request):
         'thanks': question_mesg
     })
 
+
+def morning(request):
+    question_type = ''
+    question_mesg = ''
+
+    if request.method == 'POST':
+        if request.POST['question'] == 'wake_up':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'going_work'
+            question_mesg = '何時に家をでますか？'
+        if request.POST['question'] == 'going_work':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'todo_morning'
+            question_mesg = '朝のやることリストを作成しましょう'
+        if request.POST['question'] == 'todo_morning':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer  = request.POST['answer1']
+            question.user_name = request.user
+            question.save()
+
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer2']
+            question.user_name = request.user
+            question.save()
+
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer3']
+            question.user_name = request.user
+            question.save()
+            question_type = 'thanks'
+            question_mesg = 'ありがとうございました。'
+            redirect('/')
+    else:
+        user_wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).first()
+        user_going_work = User_Question.objects.filter(question='going_work', user_name=request.user).first()
+        user_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:3]
+        # 初回質問
+        question_type = 'wake_up'
+        question_mesg = '平日は何時に起きますか？'
+
+    return render(request, 'robot_app/morning.html', {
+        'user_wake_up': user_wake_up.answer,
+        'user_going_work': user_going_work.answer,
+        'user_morning': user_morning,
+        'type': question_type,
+        'mesg': question_mesg,
+        'thanks': question_mesg
+    })
