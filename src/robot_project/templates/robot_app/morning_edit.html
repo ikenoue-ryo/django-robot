@@ -1,0 +1,65 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/morning.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+
+
+    <div class="container mt-5">
+        <div class="question_robot">
+            <img src="/media/robot2.png" width="50">
+        </div>
+
+        <div class="question_form">
+            <form method="POST" action="" name="form1">{% csrf_token %}
+                <p class="tgt">{{ mesg }}</p>
+                {% if type != "thanks" and type != "no_question" and type != "todo_morning" %}
+                    <input type="hidden" name="question" value="{{ type }}">
+                    <input type="text" name="answer" class="form-control" autocomplete="off">
+                {% elif type == "thanks" %}
+                    <script>
+                        window.location.href = 'http://localhost:8080/';
+                    </script>
+                {% else %}
+                    <form method="POST" action="" name="form1">{% csrf_token %}
+                        <input type="hidden" name="question" value="{{ type }}">
+                        <input type="text" class="form-control" placeholder="やること" name="answer1" autocomplete="off" style="margin: 10px 0;">
+                        <input type="text" class="form-control" placeholder="やること" name="answer2" autocomplete="off" style="margin: 10px 0;">
+                        <input type="text" class="form-control" placeholder="やること" name="answer3" autocomplete="off" style="margin: 10px 0;">
+                        <input type="submit" value="作成">
+                    </form>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<script>
+    var id = $('form').attr('id');
+    // 上記の入力欄にフォーカスを与える
+    document.getElementById(id).focus();
+</script>
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+{% endblock content %}

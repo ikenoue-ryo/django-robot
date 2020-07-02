@@ -9,14 +9,26 @@
 
     {% if type == "no_question" %}
         <div class="morning">
-            <p>平日の起床時間：{{ wake_up.answer }}時</p>
-            <p>家を出る時間：{{ going_work.answer }}時</p>
-            <p>朝やること</p>
-            <ul>
-                {% for morning in todo_morning %}
-                <li>{{ morning.answer }}</li>
-                {% endfor %}
-            </ul>
+            <div class="robot_route clearfix">
+                <div class="question_robot">
+                    <img src="/media/robot2.png" width="50">
+                </div>
+            </div>
+            <div class="question_route">
+                <div class="morning_info">
+                    <p class="tgt">{{ user.profname }}さんのモーニング情報</p>
+                    <p>平日の起床時間：{{ wake_up.answer }}時</p>
+                    <p>家を出る時間：{{ going_work.answer }}時</p>
+                    <p>最寄駅：{{ nearest_station.answer }}</p>
+                    <p>到着駅：{{ arrival_station.answer }}</p>
+                    <p>朝やること</p>
+                    <ul>
+                        {% for morning in todo_morning %}
+                        <li>{{ morning.answer }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     {% else %}
 
@@ -54,9 +66,22 @@
                 {% endif %}
             </form>
         </div>
-
     </div>
     {% endif %}
+
+    <br><br>
+    {% if type == "no_question" %}
+        <div class="morning">
+            <div class="question_robot">
+                <img src="/media/robot2.png" width="50">
+            </div>
+            <div class="morning_info">
+                <p class="morning_edit">モーニング情報を変更しますか？</p>
+                <p class="edit_text"><a href="{% url 'robot_app:morning_edit' user.id %}">はい</a>　　<a href="">いいえ</a></p>
+            </div>
+        </div>
+    {% endif %}
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
@@ -81,7 +106,6 @@ $(window).on('load',function(){
     };
 });
 </script>
-
 
 
 <!--<script type="text/javascript">-->

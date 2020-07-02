@@ -15,5 +15,5 @@ urlpatterns = [
     path('youtube/', views.youtube, name='youtube'),
     path('add_questions/', views.add_questions, name='add_questions'),
     path('morning/', views.morning, name='morning'),
-
+    path('morning/edit/<int:pk>/', views.morning_edit, name='morning_edit'),
 ]

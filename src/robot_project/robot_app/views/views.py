@@ -145,36 +145,37 @@ def indexfunc(request):
                     overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
 
                 #体重から太っている人にYoutubeでダイエット動画を提供
-                YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
+                # YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
                 # youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
                 # search_response = youtube.search().list(
                 #     part='snippet',
                 #     # 検索したい文字列を指定
                 #     q='ダイエット',
+                #     # 表示件数
+                #     maxResults=3,
                 #     # 視聴回数が多い順に取得
                 #     order='viewCount',
                 #     type='video',
                 # ).execute()
-
+                #
                 # youtube_records = search_response['items']
 
 
-            # # レストラン検索APIのURL
-            # Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
-            # # パラメータの設定
-            # params = {}
-            # params['keyid'] = settings.GNAVI_API_KEY
-            # params['hit_per_page'] = 3
-            # params['shop_name'] = '焼き鳥'
-            # params['sort'] = 1
-            #
-            # Url = 'https://api.gnavi.co.jp/PhotoSearchAPI/v3/'
+            # レストラン検索APIのURL
+            Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
+            # パラメータの設定
+            params = {}
+            params['keyid'] = settings.GNAVI_API_KEY
+            params['hit_per_page'] = 1
+            params['shop_name'] = '焼き鳥'
+            params['sort'] = 1
+
+            Url = 'https://api.gnavi.co.jp/PhotoSearchAPI/v3/'
             # result_api = requests.get(Url, params)
             # result_api = result_api.json()
-            # # gnavi_records2 = result_api['response']['0']['photo']
-            # # print('yes', gnavi_records2)
-            #
+            # gnavi_records2 = result_api['response']['0']['photo']
+
             # gnavi_records2 = result_api['response']
 
 
@@ -183,7 +184,7 @@ def indexfunc(request):
                 'gurunavi_search': '1. ぐるなびで検索する',
                 'youtube_search': '2. Youtubeで検索する',
                 'add_questions': '3. 質問に答える',
-                'morning': '4. 朝やることを登録する',
+                'morning': '4. 朝のやることリスト',
                 'type': question_type,
                 'mesg': question_mesg,
                 'tenki_api': tenki_api,
@@ -242,6 +243,8 @@ def detailfunc(request, pk):
     car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
     wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).first()
     going_work = User_Question.objects.filter(question='going_work', user_name=request.user).first()
+    nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).first()
+    arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).first()
     todo_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:3]
 
 
@@ -271,6 +274,8 @@ def detailfunc(request, pk):
         'car_brand': car_brand,
         'wake_up': wake_up,
         'going_work': going_work,
+        'nearest_station': nearest_station,
+        'arrival_station': arrival_station,
         'todo_morning': todo_morning,
         'gurunavi_search_count': gurunavi_search_count,
         'gurunavi_key': gurunavi_key,
@@ -281,6 +286,7 @@ def detailfunc(request, pk):
 
 
 def updatefunc(request, pk):
+
     user = User.objects.get(id=pk)
     # ユーザー基本情報
     questions = User_Question.objects.filter(user_name=request.user)
@@ -295,10 +301,15 @@ def updatefunc(request, pk):
     cleanliness = User_Question.objects.filter(question='cleanliness', user_name=request.user).first()
     mycar = User_Question.objects.filter(question='mycar', user_name=request.user).first()
     car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
+    wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).first()
+    going_work = User_Question.objects.filter(question='going_work', user_name=request.user).first()
+    nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).first()
+    arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).first()
 
 
     if request.method == 'POST':
-        address = User_Question.objects.filter(question='address', user_name=request.user).first()
+        # addressはあえてGNAVI_Questionを使用
+        address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
         address.answer = request.POST['address']
         address.save()
 
@@ -330,6 +341,38 @@ def updatefunc(request, pk):
         car_brand.answer = request.POST['car_brand']
         car_brand.save()
 
+        wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).first()
+        wake_up.answer = request.POST['wake_up']
+        wake_up.save()
+
+        going_work = User_Question.objects.filter(question='going_work', user_name=request.user).first()
+        going_work.answer = request.POST['going_work']
+        going_work.save()
+
+        #値が予め入っていたら上書きし、入っていなければ新しいインスタンスを作る処理
+        nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).first()
+        if nearest_station:
+            nearest_station.answer = request.POST['nearest_station']
+            nearest_station.save()
+        else:
+            question = User_Question()
+            question.question = 'nearest_station'
+            question.answer = request.POST['nearest_station']
+            question.user_name = request.user
+            question.save()
+
+        # 値が予め入っていたら上書きし、入っていなければ新しいインスタンスを作る処理
+        arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).first()
+        if arrival_station:
+            arrival_station.answer = request.POST['arrival_station']
+            arrival_station.save()
+        else:
+            question = User_Question()
+            question.question = 'arrival_station'
+            question.answer = request.POST['arrival_station']
+            question.user_name = request.user
+            question.save()
+
         return redirect('robot_app:index')
 
     return render(request, 'robot_app/question_edit.html', {
@@ -345,6 +388,10 @@ def updatefunc(request, pk):
         'cleanliness': cleanliness,
         'mycar': mycar,
         'car_brand': car_brand,
+        'wake_up': wake_up,
+        'going_work': going_work,
+        'nearest_station': nearest_station,
+        'arrival_station': arrival_station,
     })
 
 
@@ -401,6 +448,7 @@ def loginfunc(request):
 
 class Logout(LogoutView):
     template_name = 'robot_app/index.html'
+
 
 #検索を途中で止めるとinfoのデータが残りエラーになるバグ
 info= []
@@ -488,7 +536,7 @@ def youtube(request):
             question_mesg = '検索結果を表示します。'
 
         YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
-        # youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+        youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
         search_response = youtube.search().list(
         part='snippet',
@@ -496,6 +544,8 @@ def youtube(request):
         q=keyword,
         #視聴回数が多い順に取得
         order='viewCount',
+        #表示件数
+        maxResults=3,
         type='video',
         ).execute()
 
@@ -508,7 +558,7 @@ def youtube(request):
     return render(request, 'robot_app/youtube.html', {
         'type': question_type,
         'mesg': question_mesg,
-        # 'youtube_records': youtube_records,
+        'youtube_records': youtube_records,
     })
 
 
@@ -581,6 +631,8 @@ def add_questions(request):
 def morning(request):
     wake_up = ''
     going_work = ''
+    nearest_station = ''
+    arrival_station = ''
     todo_morning = ''
     question_type = ''
     question_mesg = ''
@@ -600,8 +652,24 @@ def morning(request):
             question.answer = request.POST['answer']
             question.user_name = request.user
             question.save()
+            question_type = 'nearest_station'
+            question_mesg = '最寄駅はどこですか？'
+        if request.POST['question'] == 'nearest_station':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'arrival_station'
+            question_mesg = '到着駅はどこですか？'
+        if request.POST['question'] == 'arrival_station':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
             question_type = 'todo_morning'
-            question_mesg = '朝のやることリストを作成しましょう'
+            question_mesg = '朝のやることリストを作成しよう'
         if request.POST['question'] == 'todo_morning':
             question = User_Question()
             question.question = request.POST['question']
@@ -626,9 +694,10 @@ def morning(request):
     else:
         wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).last()
         going_work = User_Question.objects.filter(question='going_work', user_name=request.user).last()
-        user_morning = User_Question.objects.order_by('id').reverse().filter(question='todo_morning',
+        nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).last()
+        arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).last()
+        todo_morning = User_Question.objects.order_by('id').reverse().filter(question='todo_morning',
                                                                              user_name=request.user)[0:3]
-        todo_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:3]
 
         if not None:
             question_type = 'no_question'
@@ -636,6 +705,12 @@ def morning(request):
         if todo_morning is None:
             question_type = 'todo_morning'
             question_mesg = '朝のやることリストを作成しよう'
+        if going_work is None:
+            question_type = 'arrival_station'
+            question_mesg = '到着駅はどこですか？'
+        if going_work is None:
+            question_type = 'nearest_station'
+            question_mesg = '最寄駅はどこですか？'
         if going_work is None:
             question_type = 'going_work'
             question_mesg = '何時に家をでますか？'
@@ -648,6 +723,90 @@ def morning(request):
     return render(request, 'robot_app/morning.html', {
         'wake_up': wake_up,
         'going_work': going_work,
+        'nearest_station': nearest_station,
+        'arrival_station': arrival_station,
+        'todo_morning': todo_morning,
+        'type': question_type,
+        'mesg': question_mesg,
+        'thanks': question_mesg
+    })
+
+
+def morning_edit(request, pk):
+
+    wake_up = ''
+    going_work = ''
+    nearest_station = ''
+    arrival_station = ''
+    todo_morning = ''
+    question_type = ''
+    question_mesg = ''
+
+    if request.method == 'POST':
+        if request.POST['question'] == 'wake_up':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'going_work'
+            question_mesg = '何時に家をでますか？'
+        if request.POST['question'] == 'going_work':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'nearest_station'
+            question_mesg = '最寄駅はどこですか？'
+        if request.POST['question'] == 'nearest_station':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'arrival_station'
+            question_mesg = '到着駅はどこですか？'
+        if request.POST['question'] == 'arrival_station':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'todo_morning'
+            question_mesg = '朝のやることリストを作成しよう'
+        if request.POST['question'] == 'todo_morning':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer  = request.POST['answer1']
+            question.user_name = request.user
+            question.save()
+
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer2']
+            question.user_name = request.user
+            question.save()
+
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer3']
+            question.user_name = request.user
+            question.save()
+            question_type = 'thanks'
+            question_mesg = 'ありがとうございました。'
+            redirect('/')
+    else:
+            # 初回質問
+            question_type = 'wake_up'
+            question_mesg = '平日は何時に起きますか？'
+
+
+    return render(request, 'robot_app/morning_edit.html', {
+        'wake_up': wake_up,
+        'going_work': going_work,
+        'nearest_station': nearest_station,
+        'arrival_station': arrival_station,
         'todo_morning': todo_morning,
         'type': question_type,
         'mesg': question_mesg,

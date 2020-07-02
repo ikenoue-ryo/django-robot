@@ -156,23 +156,21 @@
                                 <tr><td>体重差</td><td>{{ overweight }}kg</td></tr>
                             </table>
                             <div id="text-wrap">
-                            <div class="show-text">
-                                <p>ダイエット方法を動画で見ませんか？</p>
+                                <div class="show-text">
+                                    <p>ダイエット方法を動画で見ませんか？</p>
+                                </div>
+                                <div class="hide-text">
+                                    {% for youtube_rec in youtube_records %}
+                                        <div class="result">
+                                            <a href="https://www.youtube.com/watch?v={{ youtube_rec.id.videoId }}">
+                                                <p>{{ youtube_rec.snippet.title | truncatechars:17 }}</p>
+                                                <p><img src="{{ youtube_rec.snippet.thumbnails.medium.url }}"></p>
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                    <button class="readmore">動画をみる</button>
                             </div>
-                            <div class="hide-text">
-                                {% for youtube_rec in youtube_records %}
-                                    <div class="result">
-                                        <a href="https://www.youtube.com/watch?v={{ youtube_rec.id.videoId }}">
-                                            <p>{{ youtube_rec.snippet.title | truncatechars:17 }}</p>
-                                            <p><img src="{{ youtube_rec.snippet.thumbnails.medium.url }}"></p>
-                                        </a>
-                                    </div>
-                                {% endfor %}
-
-                            </div>
-                                <button class="readmore">動画をみる</button>
-                            </div>
-
                         </div>
                     </div>
                 </div>

@@ -25,6 +25,8 @@
             <tr><td>好きな車：</td><td>{{ car_brand.answer }}</td></tr>
             <tr><td>起床時間：</td><td>{{ wake_up.answer }}時</td></tr>
             <tr><td>出発時間：</td><td>{{ going_work.answer }}時</td></tr>
+            <tr><td>最寄駅：</td><td>{{ nearest_station.answer }}</td></tr>
+            <tr><td>到着駅：</td><td>{{ arrival_station.answer }}</td></tr>
             {% for morning in todo_morning %}
             <tr><td>やること：</td><td>{{ morning.answer }}</td></tr>
             {% endfor %}
