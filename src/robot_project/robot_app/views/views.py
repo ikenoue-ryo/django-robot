@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.contrib import messages
-from robot_app.models import User_Question, Youtube_Question, GNAVI_Question
+from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation
 from users.models import User
 from django.shortcuts import redirect
 from robot_project import settings
@@ -40,23 +40,52 @@ def indexfunc(request):
     question_type = ''
     question_mesg = ''
 
-
     #ユーザーのfavorite_foodフィールドが存在すればロボットが常に質問する処理
     user = User.objects.get(id=request.user.id)
     user_first_question = User_Question.objects.filter(question='family', user_name=request.user)
     if user_first_question.exists():
         if request.method == 'POST':
+            if request.POST['star'] == '1':
+                robot = Robot_Evaluation()
+                robot.robot_name = request.POST['robot_name']
+                robot.score = request.POST['star']
+                robot.user_name = request.user
+                robot.save()
+            if request.POST['star'] == '2':
+                robot = Robot_Evaluation()
+                robot.robot_name = request.POST['robot_name']
+                robot.score = request.POST['star']
+                robot.user_name = request.user
+                robot.save()
+            if request.POST['star'] == '3':
+                robot = Robot_Evaluation()
+                robot.robot_name = request.POST['robot_name']
+                robot.score = request.POST['star']
+                robot.user_name = request.user
+                robot.save()
+            if request.POST['star'] == '4':
+                robot = Robot_Evaluation()
+                robot.robot_name = request.POST['robot_name']
+                robot.score = request.POST['star']
+                robot.user_name = request.user
+                robot.save()
+            if request.POST['star'] == '5':
+                robot = Robot_Evaluation()
+                robot.robot_name = request.POST['robot_name']
+                robot.score = request.POST['star']
+                robot.user_name = request.user
+                robot.save()
             #何がしたいかを番号で取得する
-            questionapi.selectAnswer(request, answer)
-            #リダイレクトさせる
-            if request.POST['answer'] == '1':
-                return redirect('/g_navi/')
-            if request.POST['answer'] == '2':
-                return redirect('/youtube/')
-            if request.POST['answer'] == '3':
-                return redirect('/add_questions')
-            if request.POST['answer'] == '4':
-                return redirect('/morning')
+            # questionapi.selectAnswer(request, answer)
+            # #リダイレクトさせる
+            # if request.POST['answer'] == '1':
+            #     return redirect('/g_navi/')
+            # if request.POST['answer'] == '2':
+            #     return redirect('/youtube/')
+            # if request.POST['answer'] == '3':
+            #     return redirect('/add_questions')
+            # if request.POST['answer'] == '4':
+            #     return redirect('/morning')
         else:
             #天気を表示
             tenki_api = questionapi.tenki_api(request)

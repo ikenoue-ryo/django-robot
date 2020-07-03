@@ -44,10 +44,48 @@
     </ul>
 
 <div class="container mt-5">
+    <!--Modal: modal1-->
+    <div class="modal fade top" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true" data-backdrop="true">
+      <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row d-flex justify-content-center align-items-center">
+              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">ぼくの対応はいかがですか？</p>
+              <p class="pt-3 pr-2">
+                  <form id="" action="" name="form2" method="POST">{% csrf_token %}
+                  <div class="evaluation">
+                    <input type="hidden" name="robot_name" value="whatdoyouwant">
+                    <input id="star5" type="radio" name="star" value="5" />
+                    <label for="star5"><span class="text">最高</span>★</label>
+                    <input id="star4" type="radio" name="star" value="4" />
+                    <label for="star4"><span class="text">良い</span>★</label>
+                    <input id="star3" type="radio" name="star" value="3" />
+                    <label for="star3"><span class="text">普通</span>★</label>
+                    <input id="star2" type="radio" name="star" value="2" />
+                    <label for="star2"><span class="text">悪い</span>★</label>
+                    <input id="star1" type="radio" name="star" value="1" />
+                    <label for="star1"><span class="text">最悪</span>★</label>
+                  </div>
+                  <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>
+                  <input type="submit" class="btn btn-primary" value="評価する">
+                </form>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+    <!--Modal: modal1-->
+
+
     <div class="suggest_area">
         <div class="robot_route clearfix">
             <div class="question_robot">
-                <img src="/media/robot2.png" width="50">
+                <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal1">
             </div>
         </div>
         <div class="question_route">
@@ -69,28 +107,53 @@
                   <input type="hidden" name="answer" value="4">
                   <a href="javascript:form1[3].submit()"><p class="tgt">{{ morning }}</p></a>
                 </form>
-<!--                    #フォーム入力の場合-->
-<!--                    <ul>-->
-<!--                        <li class="tgt">{{ gurunavi_search }}</li>-->
-<!--                        <li class="tgt">{{ youtube_search }}</li>-->
-<!--                        <li class="tgt">{{ add_questions }}</li>-->
-<!--                    </ul>-->
-<!--                    <div class="question">-->
-<!--                        <form method="POST" action="" name="form1">{% csrf_token %}-->
-<!--                            <input type="hidden" name="question" class="form-control" value="{{ type }}" autocomplete="off">-->
-<!--                            <input type="text" name="answer" class="form-control" placeholder="番号を入力してください" autocomplete="off">-->
-<!--                        </form>-->
-<!--                    </div>-->
             </div>
         </div>
     </div>
 
 
+    <!--Modal: modal2-->
+    <div class="modal fade top" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true" data-backdrop="true">
+      <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row d-flex justify-content-center align-items-center">
+              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">ぼくの対応はいかがですか？</p>
+              <p class="pt-3 pr-2">
+                  <form id="" action="" name="form2" method="POST">{% csrf_token %}
+                  <div class="evaluation">
+                    <input type="hidden" name="robot_name" value="car_news">
+                    <input id="star5" type="radio" name="star" value="5" />
+                    <label for="star5"><span class="text">最高</span>★</label>
+                    <input id="star4" type="radio" name="star" value="4" />
+                    <label for="star4"><span class="text">良い</span>★</label>
+                    <input id="star3" type="radio" name="star" value="3" />
+                    <label for="star3"><span class="text">普通</span>★</label>
+                    <input id="star2" type="radio" name="star" value="2" />
+                    <label for="star2"><span class="text">悪い</span>★</label>
+                    <input id="star1" type="radio" name="star" value="1" />
+                    <label for="star1"><span class="text">最悪</span>★</label>
+                  </div>
+                  <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>
+                  <input type="submit" class="btn btn-primary" value="評価する">
+                </form>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+    <!--Modal: modal2-->
+
     <div class="suggest_area">
         {% if carsensor_records %}
         <div class="robot_route clearfix">
             <div class="question_robot">
-                <img src="/media/robot2.png" width="50">
+                <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal2">
             </div>
         </div>
         <div class="question_route">
@@ -138,7 +201,6 @@
             <div class="robot_route clearfix">
                 <div class="question_robot">
                     <img src="/media/robot2.png" width="50"><i class="fa fa-heart" aria-hidden="true"></i>
-
                 </div>
             </div>
             <div class="question_route">
@@ -280,11 +342,14 @@ function showtime(){
 setInterval(showtime,1000);
 </script>
 
-<!--消す時-->
-<!--<script>-->
-<!--$(".question_robot").on("click", function(){-->
-<!--  $(".suggest_area2").remove();-->
-<!--});-->
-<!--</script>-->
+<!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
 
 {% endblock content %}

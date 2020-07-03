@@ -26,3 +26,23 @@ class Youtube_Question(models.Model):
 
     def __str__(self):
         return self.question
+
+
+SCORE_CHOICES = [
+    (1, '★'),
+    (2, '★★'),
+    (3, '★★★'),
+    (4, '★★★★'),
+    (5, '★★★★★'),
+]
+class Robot_Evaluation(models.Model):
+    user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
+    robot_name = models.CharField('robot_name', max_length=50, blank=True, null=True)
+    score = models.PositiveSmallIntegerField(verbose_name='ロボットスコア', choices=SCORE_CHOICES, default='3')
+
+    #ユーザーが同じロボットに2つ以上レビューを書けない設定
+    class Meta:
+        unique_together = ('robot_name', 'user_name')
+
+    def __str__(self):
+        return str(self.robot_name)

@@ -38,7 +38,7 @@
   }
 
   p.tgt{
-    margin: 0 0 15px 10px;
+    margin: 0 0 15px 0;
     padding: 15px 0 15px 0;
   }
 
@@ -57,6 +57,44 @@
   .morning{
     margin: 20px;
   }
+
+  .edit_text{
+    width: 80%;
+    margin: 0 70px;
+  }
+
+  .morning_info ul{
+    padding-left: 25px;
+  }
+
+  p.morning_edit{
+    margin: 0 0 0 10px;
+    padding: 15px 0 15px 0;
+  }
+
+  .question_route{
+    width: 80%;
+    margin: 0 0 0 20%;
+  }
+
+  .robot_route{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top: 0;/*ブラウザの上からの距離はゼロ*/
+    width: 60px;
+    display: inline-block;
+    float: left;
+  }
+
+  .robot_route{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top: 0;/*ブラウザの上からの距離はゼロ*/
+    width: 60px;
+    display: inline-block;
+    float: left;
+  }
+
 }
 
 /*-- PC版表示CSS  --*/
