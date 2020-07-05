@@ -24,6 +24,10 @@ def selectAnswer(request, answer):
         question.question = 'friends_search'
     elif request.POST['answer'] == '4':
         question.question = 'morning'
+    elif request.POST['answer'] == '5':
+        question.question = 'blog_create'
+    elif request.POST['answer'] == '6':
+        question.question = 'news'
     else:
         question.question = 'none'
     return question.question

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation
+from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, Blog
 
 
 class User_QuestionAdmin(admin.ModelAdmin):
@@ -32,3 +32,10 @@ class Robot_EvaluationAdmin(admin.ModelAdmin):
     list_display_links = ('robot_name', 'user_name')
 
 admin.site.register(Robot_Evaluation, Robot_EvaluationAdmin)
+
+
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ('user_name', 'title', 'text', 'created_at')
+    list_display_links = ('user_name', 'title')
+
+admin.site.register(Blog, BlogAdmin)

@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/django-ecs-sample" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mecab-ipadic-neologd" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/robot" vcs="Git" />
   </component>
 </project>

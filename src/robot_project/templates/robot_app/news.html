@@ -1,0 +1,122 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/morning.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+      aria-selected="true">エンタメ</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+      aria-selected="false">スポーツ</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+      aria-selected="false">その他</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+       <div class="container mt-5">
+            <div class="news_articles">
+            {% for category in categorys %}
+                <ul class="clearfix">
+                    <li><img src="{{ category.urlToImage }}" width="100"></li>
+                    <li><a href="{{ category.url }}">{{ category.title  | truncatechars:35 }}</a></li>
+                </ul>
+            {% endfor %}
+            </div>
+        </div>
+  </div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    <div class="container mt-5">
+        <div class="news_articles">
+        {% for sport in sports %}
+            <ul class="clearfix">
+                <li><img src="{{ sport.urlToImage }}" width="100"></li>
+                <li><a href="{{ sport.url }}">{{ sport.title  | truncatechars:35 }}</a></li>
+            </ul>
+        {% endfor %}
+        </div>
+    </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+     <div class="container mt-5">
+        <div class="news_articles">
+
+            <ul class="clearfix">
+                <li><img src="" width="100"></li>
+                <li><a href="#">その他</a></li>
+            </ul>
+
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<script>
+    var id = $('form').attr('id');
+    // 上記の入力欄にフォーカスを与える
+    document.getElementById(id).focus();
+</script>
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+<script>
+    $(function(){
+    $('.hide-text').each(function(i){
+        $(this).attr('id','hide-text' + (i+1));
+    });
+    $('.readmore').each(function(i){
+        $(this).attr('id','readmore' + (i+1));
+    });
+});
+</script>
+
+<!--<script>-->
+<!--    $(function(){-->
+<!--	$("#readmore2").on("click", function() {-->
+<!--		$(this).toggleClass("on-click");-->
+<!--		$("#hide-text2").slideToggle(500);-->
+<!--	});-->
+<!--});-->
+<!--</script>-->
+
+<script>
+    $(function(){
+        var num = 1;
+        $("#readmore" + num ).on("click", function() {
+            $(this).toggleClass("on-click");
+            $("#hide-text" + num ).slideToggle(500);
+        });
+        num+=1;
+});
+</script>
+
+
+{% endblock content %}

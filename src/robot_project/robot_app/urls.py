@@ -16,4 +16,6 @@ urlpatterns = [
     path('add_questions/', views.add_questions, name='add_questions'),
     path('morning/', views.morning, name='morning'),
     path('morning/edit/<int:pk>/', views.morning_edit, name='morning_edit'),
+    path('blog_create/', views.blog_create, name='blog_create'),
+    path('news/', views.news, name='news'),
 ]

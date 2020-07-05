@@ -6,3 +6,4 @@ requests
 google-api-python-client
 apiclient
 Pillow
+newsapi-python

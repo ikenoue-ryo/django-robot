@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class User_Question(models.Model):
     user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
@@ -46,3 +47,14 @@ class Robot_Evaluation(models.Model):
 
     def __str__(self):
         return str(self.robot_name)
+
+
+class Blog(models.Model):
+    user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=50, blank=True, null=True)
+    text = models.CharField(max_length=150, blank=True, null=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+    updated_at = models.DateTimeField('更新日', default=timezone.now)
+
+    def __str__(self):
+        return str(self.title)

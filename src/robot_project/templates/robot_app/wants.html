@@ -53,11 +53,12 @@
           <!--Body-->
           <div class="modal-body">
             <div class="row d-flex justify-content-center align-items-center">
-              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">ぼくの対応はいかがですか？</p>
+              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">案内ロボット</p>
               <p class="pt-3 pr-2">
-                  <form id="" action="" name="form2" method="POST">{% csrf_token %}
+                  <form id="robot1" action="" name="form2" method="POST">{% csrf_token %}
                   <div class="evaluation">
-                    <input type="hidden" name="robot_name" value="whatdoyouwant">
+                    <input type="hidden" name="robot_name" value="annai_robot">
+                    <input type="hidden" value="{{ type }}">
                     <input id="star5" type="radio" name="star" value="5" />
                     <label for="star5"><span class="text">最高</span>★</label>
                     <input id="star4" type="radio" name="star" value="4" />
@@ -91,7 +92,7 @@
         <div class="question_route">
             <div class="question_form">
                 <p>{{ nav_menu }}</p>
-                <form method="post" name="form1" action="">{% csrf_token %}
+                <form id="qanda" method="post" name="form1" action="">{% csrf_token %}
                   <input type="hidden" name="answer" value="1">
                   <a href="javascript:form1[0].submit()"><p class="tgt">{{ gurunavi_search }}</p></a>
                 </form>
@@ -107,6 +108,14 @@
                   <input type="hidden" name="answer" value="4">
                   <a href="javascript:form1[3].submit()"><p class="tgt">{{ morning }}</p></a>
                 </form>
+                <form method="post" name="form1" action="">{% csrf_token %}
+                  <input type="hidden" name="answer" value="5">
+                  <a href="javascript:form1[4].submit()"><p class="tgt">{{ blog }}</p></a>
+                </form>
+                <form method="post" name="form1" action="">{% csrf_token %}
+                  <input type="hidden" name="answer" value="6">
+                  <a href="javascript:form1[5].submit()"><p class="tgt">{{ news }}</p></a>
+                </form>
             </div>
         </div>
     </div>
@@ -121,21 +130,21 @@
           <!--Body-->
           <div class="modal-body">
             <div class="row d-flex justify-content-center align-items-center">
-              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">ぼくの対応はいかがですか？</p>
+              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">おすすめ表示ロボット</p>
               <p class="pt-3 pr-2">
-                  <form id="" action="" name="form2" method="POST">{% csrf_token %}
+                  <form id="robot2" action="/" name="form2" method="POST">{% csrf_token %}
                   <div class="evaluation">
-                    <input type="hidden" name="robot_name" value="car_news">
-                    <input id="star5" type="radio" name="star" value="5" />
-                    <label for="star5"><span class="text">最高</span>★</label>
-                    <input id="star4" type="radio" name="star" value="4" />
-                    <label for="star4"><span class="text">良い</span>★</label>
-                    <input id="star3" type="radio" name="star" value="3" />
-                    <label for="star3"><span class="text">普通</span>★</label>
-                    <input id="star2" type="radio" name="star" value="2" />
-                    <label for="star2"><span class="text">悪い</span>★</label>
-                    <input id="star1" type="radio" name="star" value="1" />
-                    <label for="star1"><span class="text">最悪</span>★</label>
+                    <input type="hidden" name="robot_name" value="carnews_robot">
+                    <input id="star6" type="radio" name="star" value="5" />
+                    <label for="star6"><span class="text">最高</span>★</label>
+                    <input id="star7" type="radio" name="star" value="4" />
+                    <label for="star7"><span class="text">良い</span>★</label>
+                    <input id="star8" type="radio" name="star" value="3" />
+                    <label for="star8"><span class="text">普通</span>★</label>
+                    <input id="star9" type="radio" name="star" value="2" />
+                    <label for="star9"><span class="text">悪い</span>★</label>
+                    <input id="star10" type="radio" name="star" value="1" />
+                    <label for="star10"><span class="text">最悪</span>★</label>
                   </div>
                   <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>
                   <input type="submit" class="btn btn-primary" value="評価する">
@@ -231,7 +240,7 @@
                                         </div>
                                     {% endfor %}
                                 </div>
-                                    <button class="readmore">動画をみる</button>
+                                <button class="readmore">動画をみる</button>
                             </div>
                         </div>
                     </div>

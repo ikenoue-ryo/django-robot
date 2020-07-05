@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
+from newsapi import NewsApiClient
 from django.shortcuts import render
 from django.contrib import messages
-from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation
+from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation, Blog
 from users.models import User
 from django.shortcuts import redirect
 from robot_project import settings
@@ -45,47 +46,31 @@ def indexfunc(request):
     user_first_question = User_Question.objects.filter(question='family', user_name=request.user)
     if user_first_question.exists():
         if request.method == 'POST':
-            if request.POST['star'] == '1':
+            if request.POST.get('star'):
                 robot = Robot_Evaluation()
                 robot.robot_name = request.POST['robot_name']
                 robot.score = request.POST['star']
                 robot.user_name = request.user
                 robot.save()
-            if request.POST['star'] == '2':
-                robot = Robot_Evaluation()
-                robot.robot_name = request.POST['robot_name']
-                robot.score = request.POST['star']
-                robot.user_name = request.user
-                robot.save()
-            if request.POST['star'] == '3':
-                robot = Robot_Evaluation()
-                robot.robot_name = request.POST['robot_name']
-                robot.score = request.POST['star']
-                robot.user_name = request.user
-                robot.save()
-            if request.POST['star'] == '4':
-                robot = Robot_Evaluation()
-                robot.robot_name = request.POST['robot_name']
-                robot.score = request.POST['star']
-                robot.user_name = request.user
-                robot.save()
-            if request.POST['star'] == '5':
-                robot = Robot_Evaluation()
-                robot.robot_name = request.POST['robot_name']
-                robot.score = request.POST['star']
-                robot.user_name = request.user
-                robot.save()
-            #何がしたいかを番号で取得する
-            # questionapi.selectAnswer(request, answer)
-            # #リダイレクトさせる
-            # if request.POST['answer'] == '1':
-            #     return redirect('/g_navi/')
-            # if request.POST['answer'] == '2':
-            #     return redirect('/youtube/')
-            # if request.POST['answer'] == '3':
-            #     return redirect('/add_questions')
-            # if request.POST['answer'] == '4':
-            #     return redirect('/morning')
+            #リダイレクトさせる
+            if request.POST.get('answer') == '1':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/g_navi/')
+            if request.POST.get('answer') == '2':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/youtube/')
+            if request.POST.get('answer') == '3':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/add_questions')
+            if request.POST.get('answer') == '4':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/morning')
+            if request.POST.get('answer') == '5':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/blog_create')
+            if request.POST.get('answer') == '6':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/news')
         else:
             #天気を表示
             tenki_api = questionapi.tenki_api(request)
@@ -214,6 +199,8 @@ def indexfunc(request):
                 'youtube_search': '2. Youtubeで検索する',
                 'add_questions': '3. 質問に答える',
                 'morning': '4. 朝のやることリスト',
+                'blog': '5. ブログを書く',
+                'news': '6. ニュースを見る',
                 'type': question_type,
                 'mesg': question_mesg,
                 'tenki_api': tenki_api,
@@ -840,4 +827,54 @@ def morning_edit(request, pk):
         'type': question_type,
         'mesg': question_mesg,
         'thanks': question_mesg
+    })
+
+
+def blog_create(request):
+    blogs = Blog.objects.filter(user_name=request.user).order_by('-created_at')
+
+    if request.method == 'POST':
+            blog = Blog()
+            blog.title  = request.POST['title']
+            blog.text  = request.POST['text']
+            blog.user_name = request.user
+            blog.save()
+            question_type = 'thanks'
+            question_mesg = 'ブログを作成しました。'
+            redirect('/')
+    else:
+        # 初回質問
+        question_type = 'blog'
+        question_mesg = 'ブログを書きましょう！'
+
+
+    return render(request, 'robot_app/blog.html', {
+        'blogs': blogs,
+        'type': question_type,
+        'mesg': question_mesg,
+        'thanks': question_mesg
+    })
+
+
+def news(request):
+
+    newsapi = NewsApiClient(api_key=settings.NEWS_API_KEY)
+    # sourcesで指定したニュースサイトからトップニュースを取得
+    categorys = newsapi.get_top_headlines(category='entertainment',
+                                          country='jp',
+                                          page_size=5
+                                          )
+    sports = newsapi.get_top_headlines(category='sports',
+                                          country='jp',
+                                          page_size=5,
+                                          )
+
+
+    categorys = categorys['articles']
+    sports = sports['articles']
+
+
+    return render(request, 'robot_app/news.html', {
+        'categorys': categorys,
+        'sports': sports,
     })
