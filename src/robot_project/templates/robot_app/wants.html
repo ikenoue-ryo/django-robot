@@ -1,6 +1,7 @@
 {% extends 'robot_app/base.html' %}
 {% load static %}
 {% load humanize %}
+{% load division_tag %}
 
 {% block customcss %}
 <link href="{% static 'robot_app/wants.css' %}" rel="stylesheet">
@@ -177,7 +178,7 @@
                                     <div class="result">
                                         <p>{{ carsensor_rec.brand.name }}</p>
                                             <p><a href="{{ carsensor_rec.urls.pc }}"><img src="{{ carsensor_rec.photo.main.l }}"></a></p>
-                                        <p>価格：{{ carsensor_rec.price | intcomma }}円</p>
+                                        <p>価格：{{ carsensor_rec.price | division:10000 | floatformat:0 }}万円</p>
                                         <p>年式：{{ carsensor_rec.year}}年</p>
                                         <p>走行：{{ carsensor_rec.odd }}</p>
                                     </div>
@@ -192,7 +193,6 @@
                                     <div class="result">
                                         <p>{{ carsensor_rec_ver2.brand.name }}</p>
                                             <p><a href="{{ carsensor_rec_ver2.urls.pc }}"><img src="{{ carsensor_rec_ver2.photo.main.l }}"></a></p>
-                                        <p>価格：{{ carsensor_rec_ver2.price | intcomma }}円</p>
                                         <p>年式：{{ carsensor_rec_ver2.year}}年</p>
                                         <p>走行：{{ carsensor_rec_ver2.odd }}</p>
                                     </div>
