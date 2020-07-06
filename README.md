@@ -25,12 +25,14 @@ cd django-robot/src/robot_project/robot_project && touch .env
 - GNAVI_API_KEY=ここにぐるなびのAPIキー
 - YOUTUBE_API_KEY=ここにopenweatherのAPIキー
 - CARSENSOR_API_KEY=ここにカーセンサーのAPIキー
+- NEWS_API_KEY=ここにカーセンサーのAPIキー
 
 APIキー取得先
 - #openwathermap：https://openweathermap.org/api
 - #ぐるなび：https://api.gnavi.co.jp/api/
 - #Youtube：Google Cloud Platform から YouTube Data API v3を取得
 - #カーセンサー：https://webservice.recruit.co.jp/doc/carsensor/
+- #News: https://newsapi.org/
 
 ## 起動
 - ./docom.sh build web

@@ -1,0 +1,242 @@
+
+
+/*-- スマホ版表示CSS  --*/
+@media screen and (max-width: 480px) {
+  ul {
+    padding: 0;
+  }
+
+  ul li {
+    list-style: none;
+    padding: 0;
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .news_area{
+    margin: 30px 0;
+  }
+
+  .news_articles{
+    margin: 10px 0;
+  }
+
+  .news_articles ul li{
+    display: inline-block;
+    float: left;
+  }
+
+  .news_articles ul li:nth-child(odd){
+    width: 30%;
+  }
+
+  .news_articles ul li:nth-child(even){
+    width: 67%;
+    padding-top: 15px;
+    margin-left: 5px;
+  }
+
+  .news_articles img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .news_articles a{
+    color: #000;
+    font-size: 14px;
+  }
+
+  .news_articles {
+    padding: 0;
+  }
+
+  .news_articles ul{
+    padding: 0;
+  }
+
+  .tab-content {
+    margin: -30px 0px;
+  }
+
+  .question_robot{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top:0;
+  }
+
+  .question_robot{
+    z-index: 10;
+  }
+
+  ul.nav {
+    padding: 0 30px;
+  }
+
+  a.nav-link{
+    padding: 10px;
+    margin: 0 10px;
+  }
+
+  #input_plural {
+    margin: 10px 0;
+    width: 80%;
+    margin-left: 69px;
+  }
+
+  #input_plural input.form-control {
+      display: inline-block;
+      width: 75%;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      color: #555;
+  }
+
+  #input_plural input.pluralBtn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 5px;
+      padding: 0;
+      margin: 0;
+  }
+
+  .question_robot {
+    width: 20%;
+    display: inline-block;
+    float: left;
+  }
+
+  .question_form p.tgt{
+    margin: 0 0 15px 10px;
+  }
+
+  p.tgt{
+    margin: 0 0 15px 0;
+    padding: 15px 0 15px 0;
+  }
+
+  .question_form p{
+    padding: 10px 0;
+  }
+
+  .question_form ul {
+    padding: 0 0 0 15px;
+  }
+
+  .result p{
+    padding: 0;
+  }
+
+  .morning{
+    margin: 20px;
+  }
+
+  .edit_text{
+    width: 80%;
+    margin: 0 70px;
+  }
+
+  .morning_info ul{
+    padding-left: 25px;
+  }
+
+  p.morning_edit{
+    margin: 0 0 0 10px;
+    padding: 15px 0 15px 0;
+  }
+
+  .question_route{
+    width: 80%;
+    margin: 0 0 0 20%;
+  }
+
+  .robot_route{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top: 0;/*ブラウザの上からの距離はゼロ*/
+    width: 60px;
+    display: inline-block;
+    float: left;
+  }
+
+  .robot_route{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top: 0;/*ブラウザの上からの距離はゼロ*/
+    width: 60px;
+    display: inline-block;
+    float: left;
+  }
+
+  .blog_textarea{
+    height: 200px;
+  }
+
+  .blog_area{
+    margin: 40px 0;
+  }
+
+  .blog_area ul li{
+    width: 80%;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .blog_area a {
+    color: #007bff !important;
+  }
+
+  p.blog_text{
+    width: 80%;
+    margin-left: 65px;
+  }
+
+  #text-wrap p {
+    margin: 0;
+  }
+
+  #text-wrap {
+    width: 100%;
+    display: block;
+  }
+
+  .hide-text {
+    display: none;
+  }
+
+  .hide-text .result {
+    margin: 20px 0;
+  }
+
+  button.readmore {
+    position: relative;
+    margin: 10px auto;
+    display: block;
+    background-color: transparent;
+    color: #666;
+
+
+    border: none;
+    outline: 0;
+    transition: .5s;
+    -erbkit-transition: .5s;
+  }
+
+
+  .show-text p{
+    margin-bottom: 30px;
+  }
+
+
+}
+
+/*-- PC版表示CSS  --*/
+@media screen and (min-width: 1200px) {
+
+}

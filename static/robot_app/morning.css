@@ -16,37 +16,18 @@
     font-weight: 600;
   }
 
-  .news_articles{
-    margin: 10px 0;
-  }
-
-  .news_articles ul li{
-    display: inline-block;
-    float: left;
-  }
-
-  .news_articles ul li:nth-child(odd){
-    width: 30%;
-  }
-
-  .news_articles ul li:nth-child(even){
-    width: 70%;
-    padding: 14px 0;
-  }
-
-  .news_articles img{
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-  }
-
-  .news_articles a{
-    color: #000;
-    font-size: 14px;
-  }
-
   .tab-content {
     margin: -30px 0px;
+  }
+
+  .question_robot{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top:0;
+  }
+
+  .question_robot{
+    z-index: 10;
   }
 
   ul.nav {

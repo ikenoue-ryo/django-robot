@@ -2,67 +2,133 @@
 {% load static %}
 
 {% block customcss %}
-<link href="{% static 'robot_app/morning.css' %}" rel="stylesheet">
+<link href="{% static 'robot_app/news.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
 {% block content %}
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-      aria-selected="true">エンタメ</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-      aria-selected="false">スポーツ</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-      aria-selected="false">その他</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-       <div class="container mt-5">
-            <div class="news_articles">
-            {% for category in categorys %}
-                <ul class="clearfix">
-                    <li><img src="{{ category.urlToImage }}" width="100"></li>
-                    <li><a href="{{ category.url }}">{{ category.title  | truncatechars:35 }}</a></li>
+<div class="container mt-5">
+    <div class="question_robot">
+        <img src="/media/robot2.png" width="50">
+    </div>
+
+    <div class="question_form">
+        <form method="POST" action="" name="form1">{% csrf_token %}
+            <p class="tgt">{{ mesg }}</p>
+            {% if type == "thanks" %}
+<!--                <script>-->
+<!--                    window.location.href = 'http://localhost:8080/';-->
+<!--                </script>-->
+            <div class="news_area">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                  aria-selected="true">エンタメ</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                  aria-selected="false">スポーツ</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" id="originals-tab" data-toggle="tab" href="#originals" role="tab" aria-controls="originals"
+                  aria-selected="false">おすすめ</a>
+                </li>
                 </ul>
-            {% endfor %}
+                <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                   <div class="container mt-5" style="padding:0;">
+                        <div class="news_articles">
+                        {% for category in categories %}
+                            <ul class="clearfix">
+                                <li><img src="{{ category.urlToImage }}" width="100"></li>
+                                <li><a href="{{ category.url }}">{{ category.title  | truncatechars:35 }}</a></li>
+                            </ul>
+                        {% endfor %}
+                        </div><br><br><br><br><br><br><br><br><br><br>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                   <div class="container mt-5" style="padding:0;">
+                        <div class="news_articles">
+                            {% for sport in sports %}
+                                <ul class="clearfix">
+                                    <li><img src="{{ sport.urlToImage }}" width="100"></li>
+                                    <li><a href="{{ sport.url }}">{{ sport.title  | truncatechars:35 }}</a></li>
+                                </ul>
+                            {% endfor %}
+                        </div><br><br><br><br><br><br><br><br><br><br>
+                   </div>
+                </div>
+                <div class="tab-pane fade" id="originals" role="tabpanel" aria-labelledby="originals-tab">
+                   <div class="container mt-5" style="padding:0;">
+                        <div class="news_articles">
+                            {% for original in originals %}
+                                <ul class="clearfix">
+                                    <li><img src="{{ original.urlToImage }}" width="100"></li>
+                                    <li><a href="{{ original.url }}">{{ original.title  | truncatechars:35 }}</a></li>
+                                </ul>
+                            {% endfor %}
+                        </div><br><br><br><br><br><br><br><br><br><br>
+                   </div>
+                </div>
             </div>
-        </div>
-  </div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-    <div class="container mt-5">
-        <div class="news_articles">
-        {% for sport in sports %}
-            <ul class="clearfix">
-                <li><img src="{{ sport.urlToImage }}" width="100"></li>
-                <li><a href="{{ sport.url }}">{{ sport.title  | truncatechars:35 }}</a></li>
-            </ul>
+            {% endif %}
+            {% if type != "thanks" and type != "interest" %}
+                <input type="hidden" name="question" value="{{ type }}">
+                <input type="text" name="answer" class="form-control" autocomplete="off">
+            {% endif %}
+            {% if type == "interest" %}
+                <form id="interest" name="interest" method="POST">{% csrf_token %}
+                    <input type="hidden" name="question" value="{{ type }}">
+                    <div class="custom-control custom-checkbox">
+                        <ul>
+                            <li>
+                                <input type="checkbox" name="answer" value="general" class="custom-control-input" id="custom-check-1">
+                                <label class="custom-control-label" for="custom-check-1">{{ general }}</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="answer" value="entertainment" class="custom-control-input" id="custom-check-2">
+                                <label class="custom-control-label" for="custom-check-2">{{ entertainment }}</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="answer" value="business" class="custom-control-input" id="custom-check-4">
+                                <label class="custom-control-label" for="custom-check-4">{{ business }}</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="answer" value="business" class="custom-control-input" id="custom-check-5">
+                                <label class="custom-control-label" for="custom-check-5">{{ health }}</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="answer" value="business" class="custom-control-input" id="custom-check-6">
+                                <label class="custom-control-label" for="custom-check-6">{{ science }}</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="answer" value="business" class="custom-control-input" id="custom-check-7">
+                                <label class="custom-control-label" for="custom-check-7">{{ technology }}</label>
+                            </li>
+                            <input type="submit" name="button" id="button" value="保存">
+                        </ul>
+                    </div>
+                </form>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="result">
+        {% for gnavi_rec in gnavi_records %}
+            <div class="result">
+                  <p><a href="{{ gnavi_rec.url }}">{{ gnavi_rec.name }}</a></p>
+                  <p><img src="{{ gnavi_rec.image_url.shop_image1 }}"></p>
+                  <p>{{ gnavi_rec.address }}</p>
+            </div>
         {% endfor %}
-        </div>
     </div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-     <div class="container mt-5">
-        <div class="news_articles">
 
-            <ul class="clearfix">
-                <li><img src="" width="100"></li>
-                <li><a href="#">その他</a></li>
-            </ul>
-
-        </div>
-    </div>
-  </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </div>
 
 
 
-
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
 <script>
@@ -87,36 +153,20 @@ $(window).on('load',function(){
 });
 </script>
 
-<script>
-    $(function(){
-    $('.hide-text').each(function(i){
-        $(this).attr('id','hide-text' + (i+1));
-    });
-    $('.readmore').each(function(i){
-        $(this).attr('id','readmore' + (i+1));
-    });
-});
-</script>
 
-<!--<script>-->
-<!--    $(function(){-->
-<!--	$("#readmore2").on("click", function() {-->
-<!--		$(this).toggleClass("on-click");-->
-<!--		$("#hide-text2").slideToggle(500);-->
-<!--	});-->
-<!--});-->
-<!--</script>-->
 
 <script>
-    $(function(){
-        var num = 1;
-        $("#readmore" + num ).on("click", function() {
-            $(this).toggleClass("on-click");
-            $("#hide-text" + num ).slideToggle(500);
-        });
-        num+=1;
-});
+    $(document).ready(function() {
+      $(window).scroll(function() {
+        if ($(this).scrollTop() > 0) {
+          $('.question_robot').css('opacity', 0.6);
+        } else {
+          $('.question_robot').css('opacity', 1);
+        }
+      });
+    });
 </script>
+
 
 
 {% endblock content %}

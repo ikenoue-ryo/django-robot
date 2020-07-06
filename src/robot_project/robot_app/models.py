@@ -58,3 +58,14 @@ class Blog(models.Model):
 
     def __str__(self):
         return str(self.title)
+
+
+# class Blog(models.Model):
+#     user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
+#     celebrity = models.CharField(max_length=50, blank=True, null=True)
+#     interest = models.CharField(max_length=150, blank=True, null=True)
+#     created_at = models.DateTimeField('作成日', default=timezone.now)
+#     updated_at = models.DateTimeField('更新日', default=timezone.now)
+#
+#     def __str__(self):
+#         return str(self.title)

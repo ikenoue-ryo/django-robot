@@ -759,36 +759,22 @@ def morning_edit(request, pk):
     question_mesg = ''
 
     if request.method == 'POST':
+        question = User_Question()
+        question.question = request.POST['question']
+        question.answer = request.POST['answer']
+        question.user_name = request.user
+        question.save()
+
         if request.POST['question'] == 'wake_up':
-            question = User_Question()
-            question.question = request.POST['question']
-            question.answer = request.POST['answer']
-            question.user_name = request.user
-            question.save()
             question_type = 'going_work'
             question_mesg = '何時に家をでますか？'
         if request.POST['question'] == 'going_work':
-            question = User_Question()
-            question.question = request.POST['question']
-            question.answer = request.POST['answer']
-            question.user_name = request.user
-            question.save()
             question_type = 'nearest_station'
             question_mesg = '最寄駅はどこですか？'
         if request.POST['question'] == 'nearest_station':
-            question = User_Question()
-            question.question = request.POST['question']
-            question.answer = request.POST['answer']
-            question.user_name = request.user
-            question.save()
             question_type = 'arrival_station'
             question_mesg = '到着駅はどこですか？'
         if request.POST['question'] == 'arrival_station':
-            question = User_Question()
-            question.question = request.POST['question']
-            question.answer = request.POST['answer']
-            question.user_name = request.user
-            question.save()
             question_type = 'todo_morning'
             question_mesg = '朝のやることリストを作成しよう'
         if request.POST['question'] == 'todo_morning':
@@ -858,23 +844,82 @@ def blog_create(request):
 
 def news(request):
 
+    if request.method == 'POST':
+
+        if request.POST['question'] == 'celebrity':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+            question_type = 'interest'
+            question_mesg = 'どんなカテゴリが好きですか？'
+        if request.POST['question'] == 'interest':
+            values = request.POST.getlist('answer')
+            if 'general' in values:
+                question = User_Question()
+                question.question = request.POST['question']
+                question.answer = 'general'
+                question.user_name = request.user
+                question.save()
+            if 'entertainment' in values:
+                question = User_Question()
+                question.question = request.POST['question']
+                question.answer = 'entertainment'
+                question.user_name = request.user
+                question.save()
+            if 'business' in values:
+                question = User_Question()
+                question.question = request.POST['question']
+                question.answer = 'business'
+                question.user_name = request.user
+                question.save()
+            question_type = 'thanks'
+            question_mesg = '記事を表示します。'
+            redirect('/')
+    else:
+        # 初回質問
+        question_type = 'celebrity'
+        question_mesg = '好きなタレントは誰ですか？'
+
+
+    celebrity = User_Question.objects.filter(question='celebrity', user_name=request.user).last()
+    celebrity_name = celebrity.answer
+
     newsapi = NewsApiClient(api_key=settings.NEWS_API_KEY)
-    # sourcesで指定したニュースサイトからトップニュースを取得
-    categorys = newsapi.get_top_headlines(category='entertainment',
+
+    categories = newsapi.get_top_headlines(category='entertainment',
                                           country='jp',
-                                          page_size=5
+                                          page_size=7,
                                           )
     sports = newsapi.get_top_headlines(category='sports',
                                           country='jp',
-                                          page_size=5,
+                                          page_size=7,
+                                          )
+    originals = newsapi.get_top_headlines(category='entertainment',
+                                          country='jp',
+                                          page_size=7,
+                                          q=celebrity_name,
                                           )
 
-
-    categorys = categorys['articles']
+    #API表示
+    categories = categories['articles']
     sports = sports['articles']
+    originals = originals['articles']
 
 
     return render(request, 'robot_app/news.html', {
-        'categorys': categorys,
+        'general': '一般',
+        'business': 'ビジネス',
+        'entertainment': 'エンタメ',
+        'health': '健康',
+        'science': 'サイエンス',
+        'technology': 'テクノロジー',
+        'categories': categories,
         'sports': sports,
+        'originals': originals,
+        'type': question_type,
+        'mesg': question_mesg,
+        'thanks': question_mesg
     })
+
