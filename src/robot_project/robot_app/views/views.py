@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from newsapi import NewsApiClient
 from django.shortcuts import render
 from django.contrib import messages
-from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation, Blog
+from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation, Blog, News
 from users.models import User
 from django.shortcuts import redirect
 from robot_project import settings
@@ -261,7 +261,9 @@ def detailfunc(request, pk):
     going_work = User_Question.objects.filter(question='going_work', user_name=request.user).first()
     nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).first()
     arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).first()
-    todo_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:3]
+    todo_morning = User_Question.objects.filter(question='todo_morning', user_name=request.user)[0:5]
+    celebrity = News.objects.filter(question='celebrity', user_name=request.user).last()
+    interest = News.objects.filter(question='interest', user_name=request.user)[0:3]
 
 
     #ユーザー抜粋データ
@@ -293,6 +295,8 @@ def detailfunc(request, pk):
         'nearest_station': nearest_station,
         'arrival_station': arrival_station,
         'todo_morning': todo_morning,
+        'celebrity': celebrity,
+        'interest': interest,
         'gurunavi_search_count': gurunavi_search_count,
         'gurunavi_key': gurunavi_key,
         'youtube_search_count': youtube_search_count,
@@ -650,6 +654,7 @@ def morning(request):
     nearest_station = ''
     arrival_station = ''
     todo_morning = ''
+    eki_record = ''
     question_type = ''
     question_mesg = ''
 
@@ -708,6 +713,29 @@ def morning(request):
             question_mesg = 'ありがとうございました。'
             redirect('/')
     else:
+
+
+        nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).first()
+        arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).first()
+
+        if nearest_station:
+            #駅の文字列を削除しAPIパラメータ加工
+            near_sta = nearest_station.answer
+            arri_sta = arrival_station.answer
+            near_sta = near_sta.replace('駅', '')
+            arri_sta = arri_sta.replace('駅', '')
+
+            params = {}
+            params['key'] = settings.EKISPART_API_KEY
+            params['from'] = near_sta
+            params['to'] = arri_sta
+
+            Url = 'http://api.ekispert.jp/v1/json/search/course/light?key='+settings.NEWS_API_KEY
+            result_api = requests.get(Url, params)
+            result_api = result_api.json()
+            eki_record = result_api['ResultSet']['ResourceURI']
+
+
         wake_up = User_Question.objects.filter(question='wake_up', user_name=request.user).last()
         going_work = User_Question.objects.filter(question='going_work', user_name=request.user).last()
         nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).last()
@@ -742,6 +770,7 @@ def morning(request):
         'nearest_station': nearest_station,
         'arrival_station': arrival_station,
         'todo_morning': todo_morning,
+        'eki_record': eki_record,
         'type': question_type,
         'mesg': question_mesg,
         'thanks': question_mesg
@@ -844,36 +873,59 @@ def blog_create(request):
 
 def news(request):
 
+    categories = ''
+    sports = ''
+    originals = ''
+
     if request.method == 'POST':
 
         if request.POST['question'] == 'celebrity':
-            question = User_Question()
-            question.question = request.POST['question']
-            question.answer = request.POST['answer']
-            question.user_name = request.user
-            question.save()
+            news = News()
+            news.question = request.POST['question']
+            news.answer = request.POST['answer']
+            news.user_name = request.user
+            news.save()
             question_type = 'interest'
             question_mesg = 'どんなカテゴリが好きですか？'
         if request.POST['question'] == 'interest':
             values = request.POST.getlist('answer')
             if 'general' in values:
-                question = User_Question()
-                question.question = request.POST['question']
-                question.answer = 'general'
-                question.user_name = request.user
-                question.save()
+                news = News()
+                news.question = request.POST['question']
+                news.answer = 'general'
+                news.user_name = request.user
+                news.save()
             if 'entertainment' in values:
-                question = User_Question()
-                question.question = request.POST['question']
-                question.answer = 'entertainment'
-                question.user_name = request.user
-                question.save()
+                news = News()
+                news.question = request.POST['question']
+                news.answer = 'entertainment'
+                news.user_name = request.user
+                news.save()
             if 'business' in values:
-                question = User_Question()
-                question.question = request.POST['question']
-                question.answer = 'business'
-                question.user_name = request.user
-                question.save()
+                news = News()
+                news.question = request.POST['question']
+                news.answer = 'business'
+                news.user_name = request.user
+                news.save()
+            if 'health' in values:
+                news = News()
+                news.question = request.POST['question']
+                news.answer = 'health'
+                news.user_name = request.user
+                news.save()
+            if 'science' in values:
+                news = News()
+                news.question = request.POST['question']
+                news.answer = 'science'
+                news.user_name = request.user
+                news.save()
+            if 'technology' in values:
+                news = News()
+                news.question = request.POST['question']
+                news.answer = 'technology'
+                news.user_name = request.user
+                news.save()
+
             question_type = 'thanks'
             question_mesg = '記事を表示します。'
             redirect('/')
@@ -883,29 +935,30 @@ def news(request):
         question_mesg = '好きなタレントは誰ですか？'
 
 
-    celebrity = User_Question.objects.filter(question='celebrity', user_name=request.user).last()
-    celebrity_name = celebrity.answer
+    celebrity = News.objects.filter(question='celebrity', user_name=request.user).last()
+    if celebrity:
+        celebrity_name = celebrity.answer
 
-    newsapi = NewsApiClient(api_key=settings.NEWS_API_KEY)
+        newsapi = NewsApiClient(api_key=settings.NEWS_API_KEY)
 
-    categories = newsapi.get_top_headlines(category='entertainment',
-                                          country='jp',
-                                          page_size=7,
-                                          )
-    sports = newsapi.get_top_headlines(category='sports',
-                                          country='jp',
-                                          page_size=7,
-                                          )
-    originals = newsapi.get_top_headlines(category='entertainment',
-                                          country='jp',
-                                          page_size=7,
-                                          q=celebrity_name,
-                                          )
+        categories = newsapi.get_top_headlines(category='entertainment',
+                                              country='jp',
+                                              page_size=7,
+                                              )
+        sports = newsapi.get_top_headlines(category='sports',
+                                              country='jp',
+                                              page_size=7,
+                                              )
+        originals = newsapi.get_top_headlines(category='entertainment',
+                                              country='jp',
+                                              page_size=7,
+                                              q=celebrity_name,
+                                              )
 
-    #API表示
-    categories = categories['articles']
-    sports = sports['articles']
-    originals = originals['articles']
+        #API表示
+        categories = categories['articles']
+        sports = sports['articles']
+        originals = originals['articles']
 
 
     return render(request, 'robot_app/news.html', {

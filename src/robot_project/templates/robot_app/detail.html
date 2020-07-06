@@ -28,8 +28,14 @@
             <tr><td>最寄駅：</td><td>{{ nearest_station.answer }}</td></tr>
             <tr><td>到着駅：</td><td>{{ arrival_station.answer }}</td></tr>
             {% for morning in todo_morning %}
-            <tr><td>やること：</td><td>{{ morning.answer }}</td></tr>
+                <tr><td>やること：</td><td>{{ morning.answer }}</td></tr>
             {% endfor %}
+            <tr><td>好きなタレント：</td><td>{{ celebrity.answer }}</td></tr>
+            <tr><td style="vertical-align: top;">好きなNews：</td>
+                {% for inte in interest %}
+                <td style="display: block;">{{ inte.answer }},</td>
+                {% endfor %}
+            </tr>
         </table><br><br>
 
         <p>マーケティング情報</p>

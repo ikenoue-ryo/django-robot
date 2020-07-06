@@ -1,11 +1,10 @@
 from django.contrib import admin
-from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, Blog
+from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, Blog, News
 
 
 class User_QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_name', 'question', 'answer')
     list_display_links = ('id', 'user_name')
-
 
 admin.site.register(User_Question, User_QuestionAdmin)
 
@@ -39,3 +38,10 @@ class BlogAdmin(admin.ModelAdmin):
     list_display_links = ('user_name', 'title')
 
 admin.site.register(Blog, BlogAdmin)
+
+
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_name', 'question', 'answer')
+    list_display_links = ('id', 'user_name')
+
+admin.site.register(News, NewsAdmin)

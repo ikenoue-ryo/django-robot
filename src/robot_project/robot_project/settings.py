@@ -14,6 +14,7 @@ GNAVI_API_KEY = os.environ.get("GNAVI_API_KEY")
 YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
 CARSENSOR_API_KEY = os.environ.get("CARSENSOR_API_KEY")
 NEWS_API_KEY = os.environ.get("NEWS_API_KEY")
+EKISPART_API_KEY = os.environ.get("EKISPERT_API_KEY")
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
