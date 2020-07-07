@@ -24,7 +24,7 @@
                 {% else %}
                     <form method="POST" action="" name="form1">{% csrf_token %}
                         <input type="text" class="form-control" placeholder="タイトル" name="title" autocomplete="off" style="margin: 10px 0;">
-                        <input type="text" class="form-control blog_textarea" name="text" autocomplete="off" style="margin: 10px 0;">
+                        <textarea type="text" class="form-control blog_textarea" name="text" rows="5" autocomplete="off" style="margin: 10px 0;"></textarea>
                         <input type="submit" value="作成">
                     </form>
                 {% endif %}
@@ -50,6 +50,7 @@
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
+
 <script>
     var id = $('form').attr('id');
     // 上記の入力欄にフォーカスを与える
@@ -72,36 +73,55 @@ $(window).on('load',function(){
 });
 </script>
 
+
+<!-- readmoreとhide-textがブログとともに増える度に末番に数字を追加する処理 -->
 <script>
-    $(function(){
-    $('.hide-text').each(function(i){
-        $(this).attr('id','hide-text' + (i+1));
+    var i = 1;
+    $('.readmore').each(function(){
+        $(this).addClass('readmore'+i);
+        i++;
     });
-    $('.readmore').each(function(i){
-        $(this).attr('id','readmore' + (i+1));
+</script>
+
+<script>
+    var i = 1;
+    $('.hide-text').each(function(){
+        $(this).addClass('hide-text'+i);
+        i++;
     });
+</script>
+
+
+
+<!--以下は動かないコード-->
+<script>
+    $(function() {
+    for (var num = 1; num < 4; num++) {
+    $(".readmore" + num).on("click", function() {
+      $(this).toggleClass("on-click");
+      $(".hide-text" + num).slideToggle(500);
+    });
+  }
 });
 </script>
 
-<!--<script>-->
-<!--    $(function(){-->
-<!--	$("#readmore2").on("click", function() {-->
-<!--		$(this).toggleClass("on-click");-->
-<!--		$("#hide-text2").slideToggle(500);-->
-<!--	});-->
-<!--});-->
-<!--</script>-->
 
+<!--以下は動くコード-->
 <script>
-    $(function(){
-        var num = 1;
-        $("#readmore" + num ).on("click", function() {
-            $(this).toggleClass("on-click");
-            $("#hide-text" + num ).slideToggle(500);
-        });
-        num+=1;
+$(function(){
+    $(".readmore1").on("click", function() {
+        $(this).toggleClass("on-click");
+        $(".hide-text1").slideToggle(500);
+    });
+    $(".readmore2").on("click", function() {
+        $(this).toggleClass("on-click");
+        $(".hide-text2").slideToggle(500);
+    });
+    $(".readmore3").on("click", function() {
+        $(this).toggleClass("on-click");
+        $(".hide-text3").slideToggle(500);
+    });
 });
 </script>
-
 
 {% endblock content %}
