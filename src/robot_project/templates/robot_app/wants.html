@@ -116,6 +116,10 @@
                   <input type="hidden" name="answer" value="6">
                   <a href="javascript:form1[5].submit()"><p class="tgt">{{ news }}</p></a>
                 </form>
+                <form method="post" name="form1" action="">{% csrf_token %}
+                  <input type="hidden" name="answer" value="7">
+                  <a href="javascript:form1[6].submit()"><p class="tgt">{{ schedule }}</p></a>
+                </form>
             </div>
         </div>
     </div>
@@ -247,20 +251,79 @@
             </div>
         </div>
         {% endif %}
+
+
+
+
+
+
+   <!--Modal: modal4-->
+    <div class="modal fade top" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true" data-backdrop="true">
+      <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row d-flex justify-content-center align-items-center">
+              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">スケジュール表示ロボット</p>
+              <p class="pt-3 pr-2">
+                  <form id="robot4" action="/" name="form2" method="POST">{% csrf_token %}
+                  <div class="evaluation">
+                    <input type="hidden" name="robot_name" value="schedule_robot">
+                    <input id="star16" type="radio" name="star" value="5" />
+                    <label for="star16"><span class="text">最高</span>★</label>
+                    <input id="star17" type="radio" name="star" value="4" />
+                    <label for="star17"><span class="text">良い</span>★</label>
+                    <input id="star18" type="radio" name="star" value="3" />
+                    <label for="star18"><span class="text">普通</span>★</label>
+                    <input id="star19" type="radio" name="star" value="2" />
+                    <label for="star19"><span class="text">悪い</span>★</label>
+                    <input id="star20" type="radio" name="star" value="1" />
+                    <label for="star20"><span class="text">最悪</span>★</label>
+                  </div>
+                  <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>
+                  <input type="submit" class="btn btn-primary" value="評価する">
+                </form>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
     </div>
+    <!--Modal: modal4-->
 
+    <div class="suggest_area">
+        {% if schedule_records %}
+        <div class="robot_route clearfix">
+            <div class="question_robot">
+                <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal4">
+            </div>
+        </div>
+        <div class="question_route">
+            <div class="question_form">
+                <!--  スケジュールを表示 -->
+                <input type="button" id="schedule_button" value="スケジュールを表示" style="width:100%;">
+                <div id='schedule' class="suggestion">
+                        <div class="result">
+                            <div class="todays_schedule">
+                                        <h2>今日の予定</h2>
+                                        <ul>
+                                        {% for schedule in schedule_records %}
+                                            <li>{{ schedule.start_time }}〜{{ schedule.end_time }}</li>
+                                            <li>{{ schedule.summary }}</li>
+                                        {% endfor %}
+                                        </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
-
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
 </div>
 
 
@@ -325,6 +388,20 @@ $(function() {
 	$("#weight_news_button").click(function() {
 		$("#weight_news").toggle("1000",function(){
 			$("#weight_news_button").attr("value","体に変化があります！");
+		});
+	});
+});
+</script>
+
+<!--スケジュール-->
+<script>
+$(function() {
+	// 初期表示は非表示にする
+	$('#schedule').toggle();
+
+	$("#schedule_button").click(function() {
+		$("#schedule").toggle("1000",function(){
+			$("#schedule_button").attr("value","今日のスケジュールを表示");
 		});
 	});
 });

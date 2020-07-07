@@ -12,6 +12,8 @@ python-dotenv = "*"
 requests = "*"
 google-api-python-client = "*"
 apiclient = "*"
+google-auth-httplib2 = "*"
+google-auth-oauthlib = "*"
 
 [requires]
 python_version = "3.8.3"

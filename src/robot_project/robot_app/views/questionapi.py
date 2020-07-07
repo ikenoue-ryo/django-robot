@@ -28,6 +28,8 @@ def selectAnswer(request, answer):
         question.question = 'blog_create'
     elif request.POST['answer'] == '6':
         question.question = 'news'
+    elif request.POST['answer'] == '7':
+        question.question = 'mycalendar'
     else:
         question.question = 'none'
     return question.question

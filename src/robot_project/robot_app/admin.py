@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, Blog, News
+from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, Blog, News, Schedule
 
 
 class User_QuestionAdmin(admin.ModelAdmin):
@@ -45,3 +45,10 @@ class NewsAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'user_name')
 
 admin.site.register(News, NewsAdmin)
+
+
+class ScheduleAdmin(admin.ModelAdmin):
+    list_display = ('id', 'summary', 'description', 'start_time', 'end_time', 'date')
+    list_display_links = ('id', 'summary')
+
+admin.site.register(Schedule, ScheduleAdmin)

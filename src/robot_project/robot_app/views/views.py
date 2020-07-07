@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 from newsapi import NewsApiClient
 from django.shortcuts import render
 from django.contrib import messages
@@ -10,15 +9,18 @@ from users.models import User
 from django.shortcuts import redirect
 from robot_project import settings
 import requests
-import datetime
-import locale
 import json
-import urllib.request
-import time
 from googleapiclient.discovery import build
 from robot_app.views import questionapi
 from urllib.parse import urlencode
-from robot_app.forms import EditForm
+import datetime
+from datetime import date
+from django.views import generic
+from . import mixins
+from ..forms import ScheduleForm
+from ..models import Schedule
+from django.utils import timezone
+
 
 
 DEFAULT_ROBOT_NAME = 'Roboko'
@@ -71,6 +73,9 @@ def indexfunc(request):
             if request.POST.get('answer') == '6':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/news')
+            if request.POST.get('answer') == '7':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/mycalendar')
         else:
             #天気を表示
             tenki_api = questionapi.tenki_api(request)
@@ -193,6 +198,13 @@ def indexfunc(request):
             # gnavi_records2 = result_api['response']
 
 
+            #スケジュール機能
+            today = timezone.now().date()
+            print('今日', today)
+            schedule_records = Schedule.objects.order_by('date').filter(date=today, user_name=request.user)
+            print('あああああああああああ', schedule_records)
+
+
             return render(request, 'robot_app/wants.html', {
                 'nav_menu': '何をしたいですか？',
                 'gurunavi_search': '1. ぐるなびで検索する',
@@ -201,6 +213,7 @@ def indexfunc(request):
                 'morning': '4. 朝のやることリスト',
                 'blog': '5. ブログを書く',
                 'news': '6. ニュースを見る',
+                'schedule': '7. スケジュールを登録',
                 'type': question_type,
                 'mesg': question_mesg,
                 'tenki_api': tenki_api,
@@ -217,6 +230,7 @@ def indexfunc(request):
                 'overweight_text': overweight_text,
                 # 'youtube_records': youtube_records,
                 # 'gnavi_records2': gnavi_records2,
+                'schedule_records': schedule_records,
             })
     # ユーザーのfavorite_foodが存在しない場合、初回の質問をする
     else:
@@ -976,3 +990,47 @@ def news(request):
         'thanks': question_mesg
     })
 
+
+class MyCalendar(mixins.MonthCalendarMixin, generic.CreateView):
+    """月間カレンダー、週間カレンダー、スケジュール登録画面のある欲張りビュー"""
+    template_name = 'robot_app/mycalendar.html'
+    model = Schedule
+    date_field = 'date'
+    form_class = ScheduleForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        month_calendar_context = self.get_month_calendar()
+        context.update(month_calendar_context)
+        return context
+
+    def form_valid(self, form):
+        date = form.cleaned_data['date']
+        schedule = form.save(commit=False)
+        schedule.date = date
+        schedule.user_name = self.request.user
+        schedule.save()
+        return redirect('robot_app:month_with_schedule')
+
+
+class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
+    """月間カレンダーを表示するビュー"""
+    template_name = 'robot_app/week.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        calendar_context = self.get_month_calendar()
+        context.update(calendar_context)
+        return context
+
+
+class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateView):
+    template_name = 'robot_app/month_with_schedule.html'
+    model = Schedule
+    date_field = 'date'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        calendar_context = self.get_month_calendar()
+        context.update(calendar_context)
+        return context

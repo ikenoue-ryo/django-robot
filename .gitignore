@@ -8,3 +8,4 @@ media
 settings_local.py
 .DS_Store
 /src/robot_project/robot_project/.env
+credentials.json

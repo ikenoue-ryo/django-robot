@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+import datetime
+from django.db import models
+from django.utils import timezone
+
 
 class User_Question(models.Model):
     user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
@@ -69,3 +73,16 @@ class News(models.Model):
 
     def __str__(self):
         return self.question
+
+
+class Schedule(models.Model):
+    user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
+    summary = models.CharField('タイトル', max_length=50)
+    description = models.TextField('メモ', blank=True)
+    start_time = models.TimeField('開始時間', default=datetime.time(7,0,0))
+    end_time = models.TimeField('終了時間', default=datetime.time(8,0,0))
+    date = models.DateField('日付')
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+
+    def __str__(self):
+        return self.summary

@@ -1,0 +1,77 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/calender.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+<div class="container mt-5">
+    <a href="{% url 'robot_app:month_with_schedule' month_current.year month_current.month %}">予定を見る</a>
+<div class="row">
+        <div class="col-md-3">
+
+            <hr>
+            <form action="" method="POST">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    <div class="form-group row">
+                        <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label">{{ field.label_tag }}</label>
+                        <div class="col-sm-8">
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-block">送信</button>
+            </form>
+        </div>
+        <div class="col-md-9">
+
+        </div>
+
+        <br><br><br><br><br><br><br><br>
+    </div>
+    </div>
+
+
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+    <script>
+$(function(){
+    // うまくいく
+    var $test1 = $("#id_date");
+    $test1.datepicker();
+    $test1.datepicker("setDate", ""); // YYYY/MM/DD をセット
+    $test1.datepicker("option", {
+        "dateFormat": "yy-mm-dd"
+    });
+});
+</script>
+
+
+
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.js"></script>
+
+    <script>
+        $(function () {
+            // timedropper
+            $("#id_start_time").timeDropper({
+                format: "H:mm",
+                setCurrentTime: false,
+            });
+            $("#id_end_time").timeDropper({
+                format: "H:mm",
+                setCurrentTime: false,
+            });
+        });
+    </script>
+
+
+{% endblock content %}

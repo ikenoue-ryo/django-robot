@@ -203,6 +203,29 @@
     color: #ffcc00;
   }
 
+  /* schedule */
+  .todays_schedule h2{
+    font-size: 16px;
+    margin: 14px 0;
+    font-weight: 600;
+  }
+
+  .todays_schedule ul li{
+  display: inline-block;
+  float: left;
+  }
+
+  .todays_schedule ul li:nth-child(odd){
+    width: 35%;
+  }
+
+  .todays_schedule ul li:nth-child(even){
+    width: 60%;
+    padding-top: 0;
+    margin-left: 5px;
+  }
+  /* schedule */
+
 }
 
   /*-- PC版表示CSS  --*/
