@@ -1,3 +1,5 @@
+import urllib
+
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
@@ -44,6 +46,8 @@ def indexfunc(request):
     carnews_show_eva = ''
     not_show_eva =''
     carnews_not_show_eva = ''
+    health_show_eva = ''
+    health_not_show_eva = ''
     question_type = ''
     question_mesg = ''
 
@@ -204,6 +208,21 @@ def indexfunc(request):
 
                 # youtube_records = search_response['items']
 
+            health_robot = Robot_Evaluation.objects.filter(robot_name='health_robot', user_name=request.user)
+            if health_robot:
+                # ロボットが存在していない時とゼロじゃないなら表示する
+                for health_robot_evaluation in health_robot:
+                    # ロボットの評価が存在していてゼロ(削除)されていないなら
+                    if health_robot_evaluation.score != 0:
+                        health_show_eva = health_robot
+                    else:
+                        health_not_show_eva = health_robot
+            else:
+                # ロボットの評価がない時でも表示する
+                health_show_eva = health_robot
+
+
+
 
             # レストラン検索APIのURL
             Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
@@ -220,6 +239,58 @@ def indexfunc(request):
             # gnavi_records2 = result_api['response']['0']['photo']
 
             # gnavi_records2 = result_api['response']
+
+            # import foursquare
+            #
+            # # 作成したアプリの情報を設定
+            # CLIENT_ID =  '0245STJ2HNT5XGDTT5O0ZUHGFJCQP4IM1MMJ05RWLXCTO0AW'
+            # CLIENT_SECRET =  'RDNU4X5QACRMNMSRSSBL2YESULITR3OONRQ3JRYEYROYNNMB'
+            # REDIRECT_URI =  'http://localhost:8080/redirect'
+            #
+            # # clientオブジェクトを作成
+            # client = foursquare.Foursquare(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI)
+            #
+            # # アプリの認証
+            # auth_uri = client.oauth.auth_url()
+            # print('この値', auth_uri)
+            #
+            # # 表示されたauth_uriにブラウザからアクセスし、URIの「?code=」の後から「#」の前までの文字列を入力
+            # code = "0QWUNNP2B3QEUJJKJAUVMKWD2J2TTTTPLOJGZ23RXB50WILQ"
+            # # アクセストークンを取得
+            # access_token = client.oauth.get_token(code)
+            # print('こちらは、access_token', access_token)
+            #
+            # # アクセストークンを設定
+            # client.set_access_token(access_token)
+            #
+            # # 試しに自分のユーザ情報出力する
+            # # ユーザ情報が表示されたら無事成功
+            # user = client.users()
+            #
+            # venue_id = '4b5bb91cf964a520451229e3';
+            # params = {}
+            # params['oauth_token'] = access_token
+            # params['locale'] = 'ja'
+            # params['m'] = 'swarm'
+            # params['v'] = '20150801'
+            #
+            # Url = 'https://api.foursquare.com/v2/venues/'
+            #
+            # #Jsonデータの取得
+            # result_api = Url + venue_id + '?' + urllib.parse.urlencode(params)
+            #
+            # print('キー', result_api)
+            #
+            # result = requests.get(result_api)
+            # result_api = result.json()
+            # print(result_api)
+            #
+            # foursquare_records = result_api['response']['venue']
+            # prefix = result_api['response']['venue']['photos']['groups'][0]['items'][0]['prefix']
+            # suffix = result_api['response']['venue']['photos']['groups'][0]['items'][0]['suffix']
+            #
+            # photos_records = prefix + '300x300' + suffix
+
 
 
             #スケジュール機能
@@ -276,7 +347,10 @@ def indexfunc(request):
                 'eva': eva,
                 'carnews_show_eva': carnews_show_eva,
                 'carnews_not_show_eva': carnews_not_show_eva,
-
+                'health_show_eva': health_show_eva,
+                'health_not_show_eva': health_not_show_eva,
+                # 'foursquare_records': foursquare_records,
+                # 'photos_records': photos_records,
             })
     # ユーザーのfavorite_foodが存在しない場合、初回の質問をする
     else:
