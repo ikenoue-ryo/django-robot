@@ -40,6 +40,10 @@ def indexfunc(request):
     overweight = ''
     overweight_text = ''
     youtube_records = ''
+    show_eva  = ''
+    carnews_show_eva = ''
+    not_show_eva =''
+    carnews_not_show_eva = ''
     question_type = ''
     question_mesg = ''
 
@@ -52,6 +56,12 @@ def indexfunc(request):
                 robot = Robot_Evaluation()
                 robot.robot_name = request.POST['robot_name']
                 robot.score = request.POST['star']
+                robot.user_name = request.user
+                robot.save()
+            if request.POST.get('ng_robot'):
+                robot = Robot_Evaluation()
+                robot.robot_name = request.POST['robot_name']
+                robot.score = '0'
                 robot.user_name = request.user
                 robot.save()
             #リダイレクトさせる
@@ -148,6 +158,20 @@ def indexfunc(request):
                 add_car_news = 'たしか、' + str(user.profname) + 'さんは家族が' + family.answer + '人でしたね？\n' + \
                                 family.answer + '人乗りの車もご紹介しておきます。'
 
+                carnews_robot = Robot_Evaluation.objects.filter(robot_name='carnews_robot', user_name=request.user)
+                if carnews_robot:
+                    # ロボットが存在していない時とゼロじゃないなら表示する
+                    for carnews_robot_evaluation in carnews_robot:
+                        # ロボットの評価が存在していてゼロ(削除)されていないなら
+                        if carnews_robot_evaluation.score != 0:
+                            carnews_show_eva = carnews_robot
+                        else:
+                            carnews_not_show_eva = carnews_robot
+                else:
+                    # ロボットの評価がない時でも表示する
+                    carnews_show_eva = carnews_robot
+
+
             #体重の検査
             height = User_Question.objects.filter(question='height', user_name=request.user).first()
             if height:
@@ -164,8 +188,8 @@ def indexfunc(request):
                     overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
 
                 #体重から太っている人にYoutubeでダイエット動画を提供
-                # YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
-                # youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+                YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
+                youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
                 # search_response = youtube.search().list(
                 #     part='snippet',
@@ -177,7 +201,7 @@ def indexfunc(request):
                 #     order='viewCount',
                 #     type='video',
                 # ).execute()
-                #
+
                 # youtube_records = search_response['items']
 
 
@@ -200,9 +224,25 @@ def indexfunc(request):
 
             #スケジュール機能
             today = timezone.now().date()
-            print('今日', today)
             schedule_records = Schedule.objects.order_by('date').filter(date=today, user_name=request.user)
-            print('あああああああああああ', schedule_records)
+
+            eva = Robot_Evaluation.objects.filter(robot_name='schedule_robot', user_name=request.user)
+
+            if eva:
+                print('ロボットの評価がされています、1以上か削除のどちらかです')
+                # ロボットが存在していない時とゼロじゃないなら表示する
+                for evaluation in eva:
+                    # ロボットの評価が存在していてゼロ(削除)されていないなら
+                    if evaluation.score != 0:
+                        show_eva = eva
+                        print('表示します')
+                    else:
+                        not_show_eva = eva
+                        print('表示しません')
+            else:
+                print('ロボットの評価がありません。表示します')
+                # ロボットの評価がない時でも表示する
+                show_eva = eva
 
 
             return render(request, 'robot_app/wants.html', {
@@ -228,9 +268,15 @@ def indexfunc(request):
                 'suitable_weight': suitable_weight,
                 'overweight': overweight,
                 'overweight_text': overweight_text,
-                # 'youtube_records': youtube_records,
+                'youtube_records': youtube_records,
                 # 'gnavi_records2': gnavi_records2,
                 'schedule_records': schedule_records,
+                'show_eva': show_eva,
+                'not_show_eva': not_show_eva,
+                'eva': eva,
+                'carnews_show_eva': carnews_show_eva,
+                'carnews_not_show_eva': carnews_not_show_eva,
+
             })
     # ユーザーのfavorite_foodが存在しない場合、初回の質問をする
     else:
@@ -579,7 +625,7 @@ def youtube(request):
         #視聴回数が多い順に取得
         order='viewCount',
         #表示件数
-        maxResults=3,
+        maxResults=1,
         type='video',
         ).execute()
 
