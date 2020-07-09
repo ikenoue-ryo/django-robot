@@ -242,7 +242,9 @@
   }
   /* scheduleここまで */
 
-
+  #gmap{
+    width: 100% !important;
+  }
 
 }
 

@@ -191,6 +191,10 @@
     margin-bottom: 30px;
   }
 
+  #gmap{
+    height: 400px;
+    width: 100% !important;
+  }
 
 }
 

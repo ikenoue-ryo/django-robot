@@ -19,7 +19,7 @@
                     <p class="tgt">{{ user.profname }}さんのモーニング情報</p>
                     <p>平日の起床時間：{{ wake_up.answer }}時</p>
                     <p>家を出る時間：{{ going_work.answer }}時</p>
-                    <p>最寄駅：{{ nearest_station.answer }}</p>
+                    <p>最寄駅：<span id="place">{{ nearest_station.answer }}</span></p>
                     <p>到着駅：{{ arrival_station.answer }}</p>
                     <p><a href="{{ eki_record }}">出発時間を見る</a></p>
                     <p>朝やること</p>
@@ -30,6 +30,7 @@
                     </ul>
                 </div>
             </div>
+            <div id="gmap"></div><!-- 地図を表示する領域 -->
         </div>
     {% else %}
 
@@ -82,6 +83,60 @@
             </div>
         </div>
     {% endif %}
+
+
+
+
+<script>
+function initMap() {
+  // 地図を生成して表示
+  var map = new google.maps.Map(document.getElementById("gmap"), {
+    zoom: 13,
+    mapTypeId: "roadmap"
+  });
+
+  //DirectionsService のオブジェクトを生成
+  var directionsService = new google.maps.DirectionsService();
+
+  //DirectionsRenderer のオブジェクトを生成
+  var directionsRenderer = new google.maps.DirectionsRenderer();
+
+  //directionsRenderer と地図を紐付け
+  directionsRenderer.setMap(map);
+
+  //リクエストの出発点の位置（Empire State Building 出発地点の緯度経度）
+  var start = new google.maps.LatLng({{ near_lat }}, {{ near_lng }});
+  //リクエストの終着点の位置（Grand Central Station 到着地点の緯度経度）
+  var end = new google.maps.LatLng( {{ arri_lat }}, {{ arri_lng }});
+
+  // ルートを取得するリクエスト
+  var request = {
+    origin: start,      // 出発地点の緯度経度
+    destination: end,   // 到着地点の緯度経度
+    travelMode: 'WALKING' //トラベルモード（歩き）
+  };
+
+  //DirectionsService のオブジェクトのメソッド route() にリクエストを渡し、
+  //コールバック関数で結果を setDirections(result) で directionsRenderer にセットして表示
+  directionsService.route(request, function(result, status) {
+    //ステータスがOKの場合、
+    if (status === 'OK') {
+      directionsRenderer.setDirections(result); //取得したルート（結果：result）をセット
+    }else{
+      alert("取得できませんでした：" + status);
+    }
+  });
+
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ Google_api_key }}&callback=initMap" async defer></script><!-- YOUR_API_KEYの部分は取得した APIキーで置き換えます。 -->
+
+
+
+
+
+
+
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 

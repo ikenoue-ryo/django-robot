@@ -243,8 +243,8 @@ def indexfunc(request):
             # import foursquare
             #
             # # 作成したアプリの情報を設定
-            # CLIENT_ID =  '0245STJ2HNT5XGDTT5O0ZUHGFJCQP4IM1MMJ05RWLXCTO0AW'
-            # CLIENT_SECRET =  'RDNU4X5QACRMNMSRSSBL2YESULITR3OONRQ3JRYEYROYNNMB'
+            # CLIENT_ID =  ''
+            # CLIENT_SECRET =  ''
             # REDIRECT_URI =  'http://localhost:8080/redirect'
             #
             # # clientオブジェクトを作成
@@ -255,7 +255,7 @@ def indexfunc(request):
             # print('この値', auth_uri)
             #
             # # 表示されたauth_uriにブラウザからアクセスし、URIの「?code=」の後から「#」の前までの文字列を入力
-            # code = "0QWUNNP2B3QEUJJKJAUVMKWD2J2TTTTPLOJGZ23RXB50WILQ"
+            # code = ""
             # # アクセストークンを取得
             # access_token = client.oauth.get_token(code)
             # print('こちらは、access_token', access_token)
@@ -704,7 +704,6 @@ def youtube(request):
         ).execute()
 
         youtube_records = search_response['items']
-        print('これyoutube', youtube_records)
     else:
         # 初回質問
         question_type = 'keyword'
@@ -898,6 +897,26 @@ def morning(request):
             question_type = 'wake_up'
             question_mesg = '平日は何時に起きますか？'
 
+        Url = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+        nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).last()
+        arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).last()
+        address1 = nearest_station.answer
+        address2 = arrival_station.answer
+
+        #Jsonデータの取得
+        result_api = Url + address1 + 'components=country:JP&key=' + settings.Google_API_KEY
+        result_api2 = Url + address2 + 'components=country:JP&key=' + settings.Google_API_KEY
+        print('キー', result_api)
+        result = requests.get(result_api)
+        result2 = requests.get(result_api2)
+        result_api = result.json()
+        result_api2 = result2.json()
+        near_lat = result_api['results'][0]['geometry']['location']['lat']
+        near_lng = result_api['results'][0]['geometry']['location']['lng']
+        arri_lat = result_api2['results'][0]['geometry']['location']['lat']
+        arri_lng = result_api2['results'][0]['geometry']['location']['lng']
+
+        Google_api_key = settings.Google_API_KEY
 
     return render(request, 'robot_app/morning.html', {
         'wake_up': wake_up,
@@ -906,6 +925,11 @@ def morning(request):
         'arrival_station': arrival_station,
         'todo_morning': todo_morning,
         'eki_record': eki_record,
+        'near_lat': near_lat,
+        'near_lng': near_lng,
+        'arri_lat': arri_lat,
+        'arri_lng': arri_lng,
+        'Google_api_key': Google_api_key,
         'type': question_type,
         'mesg': question_mesg,
         'thanks': question_mesg
@@ -923,24 +947,39 @@ def morning_edit(request, pk):
     question_mesg = ''
 
     if request.method == 'POST':
-        question = User_Question()
-        question.question = request.POST['question']
-        question.answer = request.POST['answer']
-        question.user_name = request.user
-        question.save()
-
         if request.POST['question'] == 'wake_up':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
             question_type = 'going_work'
             question_mesg = '何時に家をでますか？'
         if request.POST['question'] == 'going_work':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
             question_type = 'nearest_station'
             question_mesg = '最寄駅はどこですか？'
         if request.POST['question'] == 'nearest_station':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
             question_type = 'arrival_station'
             question_mesg = '到着駅はどこですか？'
         if request.POST['question'] == 'arrival_station':
+            question = User_Question()
+            question.question = request.POST['question']
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
             question_type = 'todo_morning'
             question_mesg = '朝のやることリストを作成しよう'
+
         if request.POST['question'] == 'todo_morning':
             question = User_Question()
             question.question = request.POST['question']
