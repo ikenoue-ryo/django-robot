@@ -28,23 +28,14 @@
         </form>
     </div>
 
-    <div class="result">
-        {% for youtube_rec in youtube_records %}
-            <div class="result">
-                <a href="https://www.youtube.com/watch?v={{ youtube_rec.id.videoId }}">
-                    <p>{{ youtube_rec.snippet.title }}</p>
-                    <p><img src="{{ youtube_rec.snippet.thumbnails.medium.url }}"></p>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
+    <div id="sample"></div>
 
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 </div>
 
 
-   
+
 
 <script>
     var id = $('form').attr('id');
@@ -68,5 +59,32 @@ $(window).on('load',function(){
     };
 });
 </script>
+
+
+{% for youtube_rec in youtube_records %}
+<script>
+    // IFrame Player API の読み込み
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // YouTubeの埋め込み
+    var ytPlayer;
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player(
+        'sample', // 埋め込む場所の指定
+        {
+          width: 300, // プレーヤーの幅
+          videoId: '{{ youtube_rec.id.videoId }}', // YouTubeのID
+          playerVars: {
+            loop: 1, // ループの設定
+            playlist: 'M7lc1UVf-VE' // 再生する動画のリスト
+          }
+        }
+      );
+    }
+</script>
+{% endfor %}
 
 {% endblock content %}

@@ -2,6 +2,11 @@
 
 /*-- スマホ版表示CSS  --*/
 @media screen and (max-width: 480px) {
+  iframe{
+    width: 100%;
+    height: 194px;
+  }
+
   .question_robot img{
     width: 50px;
   }

@@ -200,7 +200,7 @@ def indexfunc(request):
                 #     # 検索したい文字列を指定
                 #     q='ダイエット',
                 #     # 表示件数
-                #     maxResults=3,
+                #     maxResults=1,
                 #     # 視聴回数が多い順に取得
                 #     order='viewCount',
                 #     type='video',
@@ -699,11 +699,12 @@ def youtube(request):
         #視聴回数が多い順に取得
         order='viewCount',
         #表示件数
-        maxResults=1,
+        maxResults=3,
         type='video',
         ).execute()
 
         youtube_records = search_response['items']
+        print('これyoutube', youtube_records)
     else:
         # 初回質問
         question_type = 'keyword'
