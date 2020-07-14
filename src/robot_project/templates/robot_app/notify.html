@@ -9,14 +9,14 @@
 
 {% block content %}
     <!--吹き出しはじまり-->
-    <div class="balloon5">
+    <div class="balloon1">
         <div class="faceicon">
             <img src="/media/robot2.png">
         </div>
         <div class="chatting">
             <div class="says">
             {% if notify_count > 0 %}
-                <p>{{ user.profname }}さんに提案があります</p>
+                <p>{{ user.profname }}さんに{{ notify_count }}件の提案があります</p>
             {% else %}
                 <p>{{ user.profname }}さんへの提案は<br>まだありません</p>
             {% endif %}
@@ -28,7 +28,7 @@
 
     <!--吹き出しはじまり-->
     {% if carsensor_records %}
-    <div class="balloon5">
+    <div class="balloon2">
         <div class="faceicon">
           <img src="/media/robot2.png" data-toggle="modal" data-target="#modal2">
         </div>
@@ -126,7 +126,7 @@
 
     <!--吹き出しはじまり-->
     {% if overweight %}
-    <div class="balloon5">
+    <div class="balloon3">
         <div class="faceicon">
             <img src="/media/robot2.png" data-toggle="modal" data-target="#modal3">
         </div>
@@ -229,16 +229,9 @@
     <!--Modal: modal3-->
 
 
-
-
-
-
-
-
-
     <!--吹き出しはじまり-->
     {% if schedule_records %}
-        <div class="balloon5">
+        <div class="balloon4">
             <div class="faceicon">
                 <img src="/media/robot2.png" data-toggle="modal" data-target="#modal4">
             </div>
@@ -334,8 +327,69 @@
     <!--Modal: modal4-->
 <!--{%  endif %}-->
 
+
+
+    <!--吹き出しはじまり-->
+    {% if schedule_records %}
+        <div class="balloon5">
+            <div class="faceicon">
+                <img src="/media/robot2.png">
+            </div>
+            <div class="chatting">
+                <div class="says">
+                    <div class="question_form">
+                        <p>ロボットのアイコンをタップして対応を評価できますよ。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <!--吹き出し終わり-->
+
+
+<script>
+    $(function(){
+        $(".balloon1").css({opacity:'0'});
+        setTimeout(function(){
+            $(".balloon1").stop().animate({opacity:'1'},1000);
+        },2000);
+    });
+
+    $(function(){
+        $(".balloon2").css({opacity:'0'});
+        setTimeout(function(){
+            $(".balloon2").stop().animate({opacity:'1'},1000);
+        },5000);
+    });
+
+    $(function(){
+        $(".balloon3").css({opacity:'0'});
+        setTimeout(function(){
+            $(".balloon3").stop().animate({opacity:'1'},1000);
+        },9000);
+    });
+
+    $(function(){
+        $(".balloon4").css({opacity:'0'});
+        setTimeout(function(){
+            $(".balloon4").stop().animate({opacity:'1'},1000);
+        },12000);
+    });
+
+    $(function(){
+        $(".balloon5").css({opacity:'0'});
+        setTimeout(function(){
+            $(".balloon5").stop().animate({opacity:'1'},1000);
+        },13000);
+    });
+</script>
+
+
+
+
     <br><br><br>
 </div>
+
 
 
 

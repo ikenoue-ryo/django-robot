@@ -465,13 +465,13 @@
   }
 
     /* ロボットの吹き出しcssここから */
-  .balloon5 {
+  .balloon1, .balloon2, .balloon3, .balloon4, .balloon5 {
   width: 100%;
   margin: 1.5em 0;
   overflow: hidden;
   }
 
-  .balloon5 .faceicon {
+  .balloon1 .faceicon, .balloon2 .faceicon, .balloon3 .faceicon, .balloon4 .faceicon, .balloon5 .faceicon {
     float: left;
     margin-right: -90px;
     width: 40px;
@@ -480,14 +480,14 @@
     left: 3px;
   }
 
-  .balloon5 .faceicon img{
+  .balloon1 .faceicon img, .balloon2 .faceicon img, .balloon3 .faceicon img, .balloon4 .faceicon img, .balloon5 .faceicon img{
     width: 100%;
     height: auto;
     border: solid 3px #d7ebfe;
     border-radius: 50%;
   }
 
-  .balloon5 .chatting {
+  .balloon1 .chatting, .balloon2 .chatting, .balloon3 .chatting, .balloon4 .chatting, .balloon5 .chatting{
     width: 90%;
   }
 
