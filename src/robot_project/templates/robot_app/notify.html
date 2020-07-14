@@ -25,6 +25,7 @@
     </div>
     <!--吹き出し終わり-->
 
+
     <!--吹き出しはじまり-->
     {% if carsensor_records %}
     <div class="balloon5">
@@ -60,9 +61,6 @@
 <!--    </div>-->
 <!--    {% else %}-->
 
-
-
-
     <!--Modal: modal2-->
     <div class="modal fade top" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
         <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
@@ -75,16 +73,41 @@
                     <form id="robot2" action="/" name="form2" method="POST">{% csrf_token %}
                         <div class="evaluation">
                             <input type="hidden" name="robot_name" value="carnews_robot">
-                            <input id="star6" type="radio" name="star" value="5" />
-                            <label for="star6"><span class="text">最高</span>★</label>
-                            <input id="star7" type="radio" name="star" value="4" />
-                            <label for="star7"><span class="text">良い</span>★</label>
-                            <input id="star8" type="radio" name="star" value="3" />
-                            <label for="star8"><span class="text">普通</span>★</label>
-                            <input id="star9" type="radio" name="star" value="2" />
-                            <label for="star9"><span class="text">悪い</span>★</label>
-                            <input id="star10" type="radio" name="star" value="1" />
-                            <label for="star10"><span class="text">最悪</span>★</label>
+                            {% if carnews_robot.score == 5 %}
+                                <input id="star6" type="radio" name="star" value="5" checked="checked"/>
+                                <label for="star6"><span class="text">最高</span>★</label>
+                            {% else %}
+                                <input id="star6" type="radio" name="star" value="5" />
+                                <label for="star6"><span class="text">最高</span>★</label>
+                            {% endif %}
+                            {% if carnews_robot.score == 4 %}
+                                <input id="star7" type="radio" name="star" value="4" checked="checked"/>
+                                <label for="star7"><span class="text">良い</span>★</label>
+                            {% else %}
+                                <input id="star7" type="radio" name="star" value="4" />
+                                <label for="star7"><span class="text">良い</span>★</label>
+                            {% endif %}
+                            {% if carnews_robot.score == 3 %}
+                                <input id="star8" type="radio" name="star" value="3" checked="checked" />
+                                <label for="star8"><span class="text">普通</span>★</label>
+                            {% else %}
+                                <input id="star8" type="radio" name="star" value="3" />
+                                <label for="star8"><span class="text">普通</span>★</label>
+                            {% endif %}
+                            {% if carnews_robot.score == 2 %}
+                                <input id="star9" type="radio" name="star" value="2" checked="checked" />
+                                <label for="star9"><span class="text">悪い</span>★</label>
+                            {% else %}
+                                <input id="star9" type="radio" name="star" value="2" />
+                                <label for="star9"><span class="text">悪い</span>★</label>
+                            {% endif %}
+                            {% if carnews_robot.score == 1 %}
+                                <input id="star10" type="radio" name="star" value="1" checked="checked" />
+                                <label for="star10"><span class="text">最悪</span>★</label>
+                            {% else %}
+                                <input id="star10" type="radio" name="star" value="1" />
+                                <label for="star10"><span class="text">最悪</span>★</label>
+                            {% endif %}
                         </div>
                         <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">
                         <input type="submit" class="btn btn-primary" value="評価する">
@@ -146,6 +169,72 @@
     {% endif %}
     <!--吹き出し終わり-->
 
+<!--Modal: modal3-->
+    <div class="modal fade top" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
+        <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <img src="/media/robot2.png" width="50"><p style="margin: 10px;">健康表示ロボット</p>
+                    <form id="robot3" action="/" name="form2" method="POST">{% csrf_token %}
+                        <div class="evaluation">
+                            <input type="hidden" name="robot_name" value="healthy_robot">
+                            {% if healthy_robot.score == 5 %}
+                                <input id="star11" type="radio" name="star" value="5" checked="checked"/>
+                                <label for="star11"><span class="text">最高</span>★</label>
+                            {% else %}
+                                <input id="star11" type="radio" name="star" value="5" />
+                                <label for="star11"><span class="text">最高</span>★</label>
+                            {% endif %}
+                            {% if healthy_robot.score == 4 %}
+                                <input id="star12" type="radio" name="star" value="4" checked="checked"/>
+                                <label for="star12"><span class="text">良い</span>★</label>
+                            {% else %}
+                                <input id="star12" type="radio" name="star" value="4" />
+                                <label for="star12"><span class="text">良い</span>★</label>
+                            {% endif %}
+                            {% if healthy_robot.score == 3 %}
+                                <input id="star13" type="radio" name="star" value="3" checked="checked" />
+                                <label for="star13"><span class="text">普通</span>★</label>
+                            {% else %}
+                                <input id="star13" type="radio" name="star" value="3" />
+                                <label for="star13"><span class="text">普通</span>★</label>
+                            {% endif %}
+                            {% if healthy_robot.score == 2 %}
+                                <input id="star14" type="radio" name="star" value="2" checked="checked" />
+                                <label for="star14"><span class="text">悪い</span>★</label>
+                            {% else %}
+                                <input id="star14" type="radio" name="star" value="2" />
+                                <label for="star14"><span class="text">悪い</span>★</label>
+                            {% endif %}
+                            {% if healthy_robot.score == 1 %}
+                                <input id="star15" type="radio" name="star" value="1" checked="checked" />
+                                <label for="star15"><span class="text">最悪</span>★</label>
+                            {% else %}
+                                <input id="star15" type="radio" name="star" value="1" />
+                                <label for="star15"><span class="text">最悪</span>★</label>
+                            {% endif %}
+                        </div>
+                        <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">
+                        <input type="submit" class="btn btn-primary" value="評価する">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/.Content-->
+        </div>
+    </div>
+    <!--Modal: modal3-->
+
+
+
+
+
+
+
+
 
     <!--吹き出しはじまり-->
     {% if schedule_records %}
@@ -176,11 +265,6 @@
         </div>
     {% endif %}
     <!--吹き出し終わり-->
-</div>
-
-
-
-
 
 
 <!--    {% if not_show_eva %}-->
@@ -200,19 +284,44 @@
                     <div class="row d-flex justify-content-center align-items-center">
                         <img src="/media/robot2.png" width="50"><p style="margin: 10px;">スケジュール表示ロボット</p>
                         <form id="robot4" action="/" name="form2" method="POST">{% csrf_token %}
-                            <div class="evaluation">
-                                <input type="hidden" name="robot_name" value="schedule_robot">
+                        <div class="evaluation">
+                            <input type="hidden" name="robot_name" value="schedule_robot">
+                            {% if schedule_robot.score == 5 %}
+                                <input id="star16" type="radio" name="star" value="5" checked="checked"/>
+                                <label for="star16"><span class="text">最高</span>★</label>
+                            {% else %}
                                 <input id="star16" type="radio" name="star" value="5" />
                                 <label for="star16"><span class="text">最高</span>★</label>
+                            {% endif %}
+                            {% if schedule_robot.score == 4 %}
+                                <input id="star17" type="radio" name="star" value="4" checked="checked"/>
+                                <label for="star17"><span class="text">良い</span>★</label>
+                            {% else %}
                                 <input id="star17" type="radio" name="star" value="4" />
                                 <label for="star17"><span class="text">良い</span>★</label>
+                            {% endif %}
+                            {% if schedule_robot.score == 3 %}
+                                <input id="star18" type="radio" name="star" value="3" checked="checked" />
+                                <label for="star18"><span class="text">普通</span>★</label>
+                            {% else %}
                                 <input id="star18" type="radio" name="star" value="3" />
                                 <label for="star18"><span class="text">普通</span>★</label>
+                            {% endif %}
+                            {% if schedule_robot.score == 2 %}
+                                <input id="star19" type="radio" name="star" value="2" checked="checked" />
+                                <label for="star19"><span class="text">悪い</span>★</label>
+                            {% else %}
                                 <input id="star19" type="radio" name="star" value="2" />
                                 <label for="star19"><span class="text">悪い</span>★</label>
+                            {% endif %}
+                            {% if schedule_robot.score == 1 %}
+                                <input id="star20" type="radio" name="star" value="1" checked="checked" />
+                                <label for="star20"><span class="text">最悪</span>★</label>
+                            {% else %}
                                 <input id="star20" type="radio" name="star" value="1" />
                                 <label for="star20"><span class="text">最悪</span>★</label>
-                            </div>
+                            {% endif %}
+                        </div>
                             <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">
                             <input type="submit" class="btn btn-primary" value="評価する">
                         </form>
@@ -225,9 +334,7 @@
     <!--Modal: modal4-->
 <!--{%  endif %}-->
 
-
-
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br>
 </div>
 
 

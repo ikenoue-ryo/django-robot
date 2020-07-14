@@ -1226,6 +1226,11 @@ def notify(request):
             # ロボットの評価がない時でも表示する
             carnews_show_eva = carnews_robot
 
+    # ロボットの種類
+    annai_robot = Robot_Evaluation.objects.filter(robot_name='annai_robot', user_name=request.user).last()
+    carnews_robot = Robot_Evaluation.objects.filter(robot_name='carnews_robot', user_name=request.user).last()
+    healthy_robot = Robot_Evaluation.objects.filter(robot_name='healthy_robot', user_name=request.user).last()
+    schedule_robot = Robot_Evaluation.objects.filter(robot_name='schedule_robot', user_name=request.user).last()
 
     #体重の検査
     height = User_Question.objects.filter(question='height', user_name=request.user).first()
@@ -1259,7 +1264,7 @@ def notify(request):
 
         # youtube_records = search_response['items']
 
-    health_robot = Robot_Evaluation.objects.filter(robot_name='health_robot', user_name=request.user)
+    health_robot = Robot_Evaluation.objects.filter(robot_name='healthy_robot', user_name=request.user)
     if health_robot:
         # ロボットが存在していない時とゼロじゃないなら表示する
         for health_robot_evaluation in health_robot:
@@ -1323,6 +1328,10 @@ def notify(request):
         'notify_count': notify_count,
         'health_not_show_eva': health_not_show_eva,
         'schedule_records': schedule_records,
+        'carnews_robot': carnews_robot,
+        'annai_robot': annai_robot,
+        'healthy_robot': healthy_robot,
+        'schedule_robot': schedule_robot,
 
         # 'type': question_type,
         # 'mesg': question_mesg,
