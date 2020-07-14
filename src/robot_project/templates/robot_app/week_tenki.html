@@ -1,0 +1,84 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load division_tag %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/wants.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+<style>
+    body {
+      background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    }
+</style>
+
+    <div class="main_tenki">
+        <p>{{ week_tenki.city_name }}</p>
+        <p><img src="http://openweathermap.org/img/wn/{{ week_tenki.weather }}@2x.png"></p>
+        <p>{{ week_tenki.max_temperature | floatformat }}℃</p>
+    </div>
+
+    <div class="container mt-4">
+        <div class="week_tenki">
+            <h2>3時間ごとの天気</h2>
+            <ul class="horizontal_scroll rank">
+                {% for tenki in result %}
+                <li>
+                    <p>{{ tenki.dt_txt }}</p>
+                    <a href="">
+                        {% for photo in tenki.weather %}
+                        <img src="http://openweathermap.org/img/wn/{{ photo.icon }}@2x.png">
+                        {% endfor %}
+                    </a>
+                    <p>{{ tenki.main.temp |floatformat:0 }}°</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    <div class="week_info">
+        <!-- day1 -->
+        <ul class="clearfix">
+            <li>{{ result_day1.dt_txt }}</li>
+            {% for weather in result_day1.weather %}
+            <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
+            {% endfor %}
+            <li style="padding: 15px;">{{ result_day1.main.temp |floatformat:0 }}°</li>
+        </ul>
+
+        <!-- day2 -->
+        <ul class="clearfix">
+            <li>{{ result_day2.dt_txt }}<li>
+            {% for weather in result_day2.weather %}
+                <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
+            {% endfor %}
+            <li style="padding: 15px;">{{ result_day2.main.temp |floatformat:0 }}°</li>
+        </ul>
+
+        <!-- day3 -->
+        <ul class="clearfix">
+            <li>{{ result_day3.dt_txt }}<li>
+            {% for weather in result_day3.weather %}
+                <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
+            {% endfor %}
+            <li style="padding: 15px;">{{ result_day3.main.temp |floatformat:0 }}°</li>
+        </ul>
+
+        <!-- day4 -->
+        <ul class="clearfix">
+            <li>{{ result_day4.dt_txt }}<li>
+            {% for weather in result_day4.weather %}
+                <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
+            {% endfor %}
+            <li style="padding: 15px;">{{ result_day4.main.temp |floatformat:0 }}°</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}

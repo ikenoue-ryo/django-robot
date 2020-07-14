@@ -64,6 +64,11 @@
       margin: 0;
   }
 
+  .form-control {
+    padding: 25px !important;
+    font-size: 20px;
+  }
+
   .question_robot {
     width: 20%;
     display: inline-block;
@@ -72,6 +77,11 @@
 
   .question_form p.tgt{
     margin: 0 0 15px 10px;
+    opacity: 0;
+  }
+
+  .question_form p.tgt span{
+    opacity: 0;
   }
 
   p.tgt{
@@ -102,6 +112,10 @@
 
   .morning_info ul{
     padding-left: 25px;
+  }
+
+  .morning_info p{
+    font-size: 18px;
   }
 
   p.morning_edit{
@@ -168,6 +182,7 @@
     display: none;
   }
 
+
   .hide-text .result {
     margin: 20px 0;
   }
@@ -194,6 +209,13 @@
   #gmap{
     height: 400px;
     width: 100% !important;
+  }
+
+  .loginpage .heading a{
+    color: #fff;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: 600;
   }
 
 }

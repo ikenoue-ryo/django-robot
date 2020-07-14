@@ -46,8 +46,8 @@ class Robot_Evaluation(models.Model):
     score = models.PositiveSmallIntegerField(verbose_name='ロボットスコア', choices=SCORE_CHOICES, default='3')
 
     #ユーザーが同じロボットに2つ以上レビューを書けない設定
-    class Meta:
-        unique_together = ('robot_name', 'user_name')
+    # class Meta:
+    #     unique_together = ('robot_name', 'user_name')
 
     def __str__(self):
         return str(self.robot_name)

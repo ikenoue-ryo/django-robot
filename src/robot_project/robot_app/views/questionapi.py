@@ -16,20 +16,22 @@ from . import views
 #indexfunc
 def selectAnswer(request, answer):
     question = User_Question()
-    if answer == '1':
+    if answer == '1' or answer == 'ぐるなび':
         question.question = 'gurunavi_search'
-    elif request.POST['answer'] == '2':
+    elif request.POST['answer'] == '2' or request.POST['answer'] == 'Youtube':
         question.question = 'youtube_search'
-    elif request.POST['answer'] == '3':
+    elif request.POST['answer'] == '3' or request.POST['answer'] == '質問':
         question.question = 'friends_search'
-    elif request.POST['answer'] == '4':
+    elif request.POST['answer'] == '4' or request.POST['answer'] == '朝のtoDo':
         question.question = 'morning'
-    elif request.POST['answer'] == '5':
+    elif request.POST['answer'] == '5' or request.POST['answer'] == 'ブログ':
         question.question = 'blog_create'
-    elif request.POST['answer'] == '6':
+    elif request.POST['answer'] == '6' or request.POST['answer'] == 'ニュース':
         question.question = 'news'
-    elif request.POST['answer'] == '7':
+    elif request.POST['answer'] == '7' or request.POST['answer'] == '予定':
         question.question = 'mycalendar'
+    elif request.POST['answer'] == '8' or request.POST['answer'] == 'お出かけ':
+        question.question = 'map'
     else:
         question.question = 'none'
     return question.question
@@ -108,37 +110,159 @@ def selectQuestion(request, previous_question):
 
 # 天気API表示
 def tenki_api(request):
-    user_info = User_Question.objects.filter(user_name=request.user)
+    city_name = ''
+    weather = ''
+    current_temperature = ''
+    max_temperature = ''
+    min_temperature = ''
+    humidity = ''
+    pressure = ''
+    wind = ''
+
+    # user_info = User_Question.objects.filter(user_name=request.user)
+    # address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
+    # # prefecture = address.answer
+    # # city_name = search(prefecture)
+    # city_name = 'Tokyo'
+    # app_id = settings.API_KEY
+    # URL = "https://api.openweathermap.org/data/2.5/weather?q={0},jp&units=metric&lang=ja&appid={1}".format(
+    #     city_name, app_id)
+    #
+    # response = requests.get(URL)
+    # data = response.json()
+    #
+    # weather = data["weather"][0]["description"]  # 最高気温
+    # icon = data["weather"][0]["icon"]
+    # temp_max = data["main"]["temp_max"]  # 最低気温
+    # temp_min = data["main"]["temp_min"]  # 寒暖差
+    # diff_temp = temp_max - temp_min  # 湿度
+    # humidity = data["main"]["humidity"]
+    # # 日付と曜日の取得
+    # today = datetime.datetime.now()
+    # date_time = today.strftime("%Y年%m月%d日 ")
+    # # locale.setlocale(locale.LC_TIME, 'ja_JP.UTF-8')
+    # locale.setlocale(locale.LC_ALL, '')
+    # now_w = "{0:%A}".format(today)
+    # day = date_time + now_w
+    #
+    # context = {"場所": city_name, "日付": day, "": icon, "最高気温": str(temp_max) + "度",
+    #            "最低気温": str(temp_min) + "度", "湿度": str(humidity) + "%"}
+    # return context
+    # 取得したAPIキーを入力
+    apiKey = settings.API_KEY
+    # ベースURL
+    baseUrl = "http://api.openweathermap.org/data/2.5/weather?"
+
+    #都市コード取得
     address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
-    # prefecture = address.answer
-    # city_name = search(prefecture)
-    city_name = 'Tokyo'
-    app_id = settings.API_KEY
-    URL = "https://api.openweathermap.org/data/2.5/weather?q={0},jp&units=metric&lang=ja&appid={1}".format(
-        city_name, app_id)
+    if address:
+        en_address = search_map_code(address.answer)
+        # アルファベットで都市名の名前を入力
+        cityName = en_address
+        # URL作成
+        completeUrl = baseUrl + "appid=" + apiKey + "&q=" + cityName
+        # レスポンス
+        response = requests.get(completeUrl)
+        # レスポンスの内容をJSONフォーマットからPythonフォーマットに変換
+        cityData = response.json()
 
-    response = requests.get(URL)
-    data = response.json()
+        # Codが404だと都市名が見つかりませんの意味
+        if cityData["cod"] != "404":
+            city_name = cityData["name"]
+            weather =  cityData["weather"][0]["icon"]
+            current_temperature = cityData["main"]["temp"] - 273.15
+            max_temperature = cityData["main"]["temp_max"] - 273.15
+            min_temperature =  cityData["main"]["temp_min"] - 273.15
+            #湿度
+            humidity = cityData["main"]["humidity"]
+            #気圧
+            pressure = cityData["main"]["pressure"]
+            #風速
+            wind = cityData["wind"]["speed"]
+        else:
+            print("都市名がみつかりませんでした。")
 
-    weather = data["weather"][0]["description"]  # 最高気温
-    icon = data["weather"][0]["icon"]
-    temp_max = data["main"]["temp_max"]  # 最低気温
-    temp_min = data["main"]["temp_min"]  # 寒暖差
-    diff_temp = temp_max - temp_min  # 湿度
-    humidity = data["main"]["humidity"]
-    # 日付と曜日の取得
-    today = datetime.datetime.now()
-    date_time = today.strftime("%Y年%m月%d日 ")
-    # locale.setlocale(locale.LC_TIME, 'ja_JP.UTF-8')
-    locale.setlocale(locale.LC_ALL, '')
-    now_w = "{0:%A}".format(today)
-    day = date_time + now_w
 
-    context = {"場所": city_name, "日付": day, "": icon, "最高気温": str(temp_max) + "度",
-               "最低気温": str(temp_min) + "度", "湿度": str(humidity) + "%"}
+        # 3時間ごとの天気
+        API_KEY = settings.API_KEY
+        city = 'Fukuoka'
+        API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&APPID='
+
+        url = API_URL + API_KEY
+        response = requests.get(url)
+        forecastData = json.loads(response.text)
+
+        print('これなんだ', forecastData['list'][0]['dt_txt'])
+        print('天気', forecastData['list'][0]['weather'][0]['main'])
+
+
+    context = {
+        'city_name': city_name,
+        'weather': weather,
+        'current_temperature': current_temperature,
+        'max_temperature': max_temperature,
+        'min_temperature': min_temperature,
+        'humidity': humidity,
+        'pressure': pressure,
+        'wind': wind,
+        'forecastData': forecastData,
+        }
     return context
 
 
+#天気API都道府県コード
+def search_map_code(city):
+    tenki_dict = {
+        '北海道': 'Hokkaido',
+        '青森県': 'PREF02',
+        '岩手県': 'PREF03',
+        '宮城県': 'PREF04',
+        '秋田県': 'PREF05',
+        '山形県': 'PREF06',
+        '福島県': 'PREF07',
+        '茨城県': 'PREF08',
+        '栃木県': 'PREF09',
+        '群馬県': 'PREF10',
+        '埼玉県': 'Saitama',
+        '千葉県': 'Chiba',
+        '東京都': 'Tokyo',
+        '神奈川県': 'Kanagawa',
+        '新潟県': 'PREF15',
+        '富山県': 'PREF16',
+        '石川県': 'PREF17',
+        '福井県': 'PREF18',
+        '山梨県': 'PREF19',
+        '長野県': 'PREF20',
+        '岐阜県': 'PREF21',
+        '静岡県': 'PREF22',
+        '愛知県': 'PREF23',
+        '三重県': 'PREF24',
+        '滋賀県': 'PREF25',
+        '京都府': 'Kyoto',
+        '大阪府': 'Osaka',
+        '兵庫県': 'PREF28',
+        '奈良県': 'Nara',
+        '和歌山県': 'PREF30',
+        '鳥取県': 'PREF31',
+        '島根県': 'PREF32',
+        '岡山県': 'PREF33',
+        '広島県': 'Hiroshima',
+        '山口県': 'PREF35',
+        '徳島県': 'PREF36',
+        '香川県': 'PREF37',
+        '愛媛県': 'PREF38',
+        '高知県': 'PREF39',
+        '福岡県': 'Fukuoka',
+        '佐賀県': 'Saga',
+        '長崎県': 'Nagasaki',
+        '熊本県': 'Kumamoto',
+        '大分県': 'Oita',
+        '宮崎県': 'Miyazaki',
+        '鹿児島県': 'Kagoshima',
+        '沖縄県': 'Okinawa',
+    }
+    pre_city_code = tenki_dict[city]
+    return pre_city_code
 
 
 #都道府県コード検索

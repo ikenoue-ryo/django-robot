@@ -18,6 +18,7 @@
             <form method="POST" action="" name="form1">{% csrf_token %}
                 <p class="tgt">{{ mesg }}</p>
                 {% if type == "thanks" %}
+                    {{ thanks }}
                     <script>
                         window.location.href = 'http://localhost:8080/';
                     </script>
@@ -43,17 +44,15 @@
         </ul>
         </div>
 
-
     </div>
 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-
+<!--入力欄へのフォーカス処理-->
 <script>
     var id = $('form').attr('id');
-    // 上記の入力欄にフォーカスを与える
     document.getElementById(id).focus();
 </script>
 
@@ -76,10 +75,11 @@ $(window).on('load',function(){
 
 <!-- readmoreとhide-textがブログとともに増える度に末番に数字を追加する処理 -->
 <script>
-    var i = 1;
-    $('.readmore').each(function(){
-        $(this).addClass('readmore'+i);
-        i++;
+    $(function () {
+        var i = 1;
+        $('a.readmore').each(function(i){
+         $(this).attr('id','id' + (i+1));
+        });
     });
 </script>
 
@@ -93,35 +93,15 @@ $(window).on('load',function(){
 
 
 
-<!--以下は動かないコード-->
+<!--本文のトグル-->
 <script>
     $(function() {
-    for (var num = 1; num < 4; num++) {
-    $(".readmore" + num).on("click", function() {
-      $(this).toggleClass("on-click");
-      $(".hide-text" + num).slideToggle(500);
+        $(".readmore").on("click", function () {
+            var num = $(this).attr("id").slice(-1);
+            $(this).toggleClass("on-click");
+            $(".hide-text" + num).slideToggle(500);
+        });
     });
-  }
-});
 </script>
-
-
-<!--以下は動くコード-->
-<!--<script>-->
-<!--$(function(){-->
-<!--    $(".readmore1").on("click", function() {-->
-<!--        $(this).toggleClass("on-click");-->
-<!--        $(".hide-text1").slideToggle(500);-->
-<!--    });-->
-<!--    $(".readmore2").on("click", function() {-->
-<!--        $(this).toggleClass("on-click");-->
-<!--        $(".hide-text2").slideToggle(500);-->
-<!--    });-->
-<!--    $(".readmore3").on("click", function() {-->
-<!--        $(this).toggleClass("on-click");-->
-<!--        $(".hide-text3").slideToggle(500);-->
-<!--    });-->
-<!--});-->
-<!--</script>-->
 
 {% endblock content %}

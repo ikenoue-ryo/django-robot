@@ -1,0 +1,130 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/map.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+<div class="container">
+  <!--吹き出しはじまり-->
+    <div class="balloon5">
+      <div class="faceicon">
+        <img src="/media/robot2.png">
+      </div>
+      <div class="chatting">
+        <div class="says">
+            <p>{{ user.profname }}さんの現在地です</p>
+        </div>
+      </div>
+    </div>
+    <!--吹き出し終わり-->
+
+
+
+
+<div id="result"></div> <!-- 地図を表示する領域 -->
+<div id="gmap"></div> <!-- 地図を表示する領域 -->
+
+
+
+<style>
+.ripple {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    background: #FF0000;
+    border-radius: 50%;
+}
+
+.ripple::before {
+    position: absolute;
+    content: "";
+    display: block;
+    top: -1px;
+    left: -1px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #FF0000;
+    border-radius: 50%;
+    animation: ripple 2.5s ease-out infinite;
+}
+
+@keyframes ripple {
+    0% {
+        opacity: 0;
+        transform: scale(1,1);
+    }
+    25% {
+        opacity: 0.25;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.75;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2,1.2);
+    }
+}
+</style>
+
+
+<script>
+    var map;
+    function initMap() {
+      var target = document.getElementById('gmap');
+      var hakata = {lat: 33.586299, lng: 130.421892};
+      map = new google.maps.Map(target, {
+        center: hakata,
+        zoom: 16
+      });
+
+      var marker = new google.maps.Marker({
+        position: hakata,
+        map: map,
+        title: "Empire !",
+        animation: google.maps.Animation.DROP,
+        icon: "https://maps.google.com/mapfiles/ms/micons/green-dot.png"
+      });
+    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIYzmLQ5O1msd4Flc2FPWPieliM1fxGp8&callback=initMap" async defer></script><!-- YOUR_API_KEYの部分は取得した APIキーで置き換えます -->
+
+
+
+
+</div>
+
+
+<script>
+    var id = $('form').attr('id');
+    // 上記の入力欄にフォーカスを与える
+    document.getElementById(id).focus();
+</script>
+
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+{% endblock content %}

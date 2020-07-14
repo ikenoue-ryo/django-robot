@@ -1,5 +1,4 @@
 import urllib
-
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
@@ -31,23 +30,7 @@ DEFAULT_ROBOT_NAME = 'Roboko'
 def indexfunc(request):
     thanks = ''
     answer = ''
-    tenki_api = ''
-    carsensor_records = ''
-    car_news = ''
-    add_car_news = ''
-    carsensor_records_ver2 = ''
-    weight_result = ''
-    weight = ''
-    suitable_weight = ''
-    overweight = ''
-    overweight_text = ''
     youtube_records = ''
-    show_eva  = ''
-    carnews_show_eva = ''
-    not_show_eva =''
-    carnews_not_show_eva = ''
-    health_show_eva = ''
-    health_not_show_eva = ''
     question_type = ''
     question_mesg = ''
 
@@ -69,27 +52,30 @@ def indexfunc(request):
                 robot.user_name = request.user
                 robot.save()
             #リダイレクトさせる
-            if request.POST.get('answer') == '1':
+            if request.POST.get('answer') == '1' or request.POST.get('answer') == 'ぐるなび':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/g_navi/')
-            if request.POST.get('answer') == '2':
+            if request.POST.get('answer') == '2' or request.POST.get('answer') == 'Youtube':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/youtube/')
-            if request.POST.get('answer') == '3':
+            if request.POST.get('answer') == '3' or request.POST.get('answer') == '質問':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/add_questions')
-            if request.POST.get('answer') == '4':
+            if request.POST.get('answer') == '4' or request.POST.get('answer') == '朝のtoDo':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/morning')
-            if request.POST.get('answer') == '5':
+            if request.POST.get('answer') == '5' or request.POST.get('answer') == 'ブログ':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/blog_create')
-            if request.POST.get('answer') == '6':
+            if request.POST.get('answer') == '6' or request.POST.get('answer') == 'ニュース':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/news')
-            if request.POST.get('answer') == '7':
+            if request.POST.get('answer') == '7' or request.POST.get('answer') == '予定':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/mycalendar')
+            if request.POST.get('answer') == '8' or request.POST.get('answer') == 'お出かけ':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/map')
         else:
             #天気を表示
             tenki_api = questionapi.tenki_api(request)
@@ -111,116 +97,6 @@ def indexfunc(request):
             result_api = requests.get(Url, params)
             result_api = result_api.json()
             gnavi_records = result_api['rest']
-
-            # カーセンサーを表示
-            car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
-            if car_brand:
-                if car_brand.answer == '1':
-                    car_brand.answer = 'トヨタ'
-                elif car_brand.answer == '2':
-                    car_brand.answer = 'ホンダ'
-                elif car_brand.answer == '3':
-                    car_brand.answer = 'スズキ'
-                elif car_brand.answer == '4':
-                    car_brand.answer = 'マツダ'
-                else:
-                    car_brand.answer = car_brand.answer
-
-                #ユーザーの好きなメーカーの車を表示する処理
-                url = "http://webservice.recruit.co.jp/carsensor/usedcar/v1/?{}".format(
-                    urlencode({
-                        'key': settings.CARSENSOR_API_KEY,
-                        # "keyword": "HONDA S660",
-                        'keyword': car_brand.answer,
-                        #表示件数
-                        'count': 3,
-                        'format': 'json'
-                    }))
-
-                fu = requests.get(url).content
-                json_result = json.loads(fu)
-
-                carsensor_records = json_result['results']['usedcar']
-                car_news = str(user.profname) + 'さんにおすすめ情報があります！'
-
-                #家族の人数から乗員を満たした車を案内する処理
-                family = User_Question.objects.filter(question='family', user_name=request.user).first()
-                url = "http://webservice.recruit.co.jp/carsensor/usedcar/v1/?{}".format(
-                    urlencode({
-                        'key': settings.CARSENSOR_API_KEY,
-                        # "keyword": "例：HONDA S660",
-                        'keyword': car_brand.answer,
-                        # 表示件数
-                        'count': 3,
-                        'person': family.answer,
-                        'format': 'json'
-                    }))
-                ho = requests.get(url).content
-                json_result = json.loads(ho)
-
-                carsensor_records_ver2 = json_result['results']['usedcar']
-                add_car_news = 'たしか、' + str(user.profname) + 'さんは家族が' + family.answer + '人でしたね？\n' + \
-                                family.answer + '人乗りの車もご紹介しておきます。'
-
-                carnews_robot = Robot_Evaluation.objects.filter(robot_name='carnews_robot', user_name=request.user)
-                if carnews_robot:
-                    # ロボットが存在していない時とゼロじゃないなら表示する
-                    for carnews_robot_evaluation in carnews_robot:
-                        # ロボットの評価が存在していてゼロ(削除)されていないなら
-                        if carnews_robot_evaluation.score != 0:
-                            carnews_show_eva = carnews_robot
-                        else:
-                            carnews_not_show_eva = carnews_robot
-                else:
-                    # ロボットの評価がない時でも表示する
-                    carnews_show_eva = carnews_robot
-
-
-            #体重の検査
-            height = User_Question.objects.filter(question='height', user_name=request.user).first()
-            if height:
-                height = int(height.answer) / 100
-                #適性体重
-                suitable_weight = height * height * 22
-                #現在の体重 weight.answer
-                weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
-                #超過分
-                overweight = int(weight.answer) - round(suitable_weight)
-
-                if int(weight.answer) >= round(suitable_weight):
-                    weight_result = '少し運動をした方が良いかも。'
-                    overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
-
-                #体重から太っている人にYoutubeでダイエット動画を提供
-                YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
-                youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
-
-                # search_response = youtube.search().list(
-                #     part='snippet',
-                #     # 検索したい文字列を指定
-                #     q='ダイエット',
-                #     # 表示件数
-                #     maxResults=1,
-                #     # 視聴回数が多い順に取得
-                #     order='viewCount',
-                #     type='video',
-                # ).execute()
-
-                # youtube_records = search_response['items']
-
-            health_robot = Robot_Evaluation.objects.filter(robot_name='health_robot', user_name=request.user)
-            if health_robot:
-                # ロボットが存在していない時とゼロじゃないなら表示する
-                for health_robot_evaluation in health_robot:
-                    # ロボットの評価が存在していてゼロ(削除)されていないなら
-                    if health_robot_evaluation.score != 0:
-                        health_show_eva = health_robot
-                    else:
-                        health_not_show_eva = health_robot
-            else:
-                # ロボットの評価がない時でも表示する
-                health_show_eva = health_robot
-
 
 
 
@@ -293,62 +169,50 @@ def indexfunc(request):
 
 
 
-            #スケジュール機能
-            today = timezone.now().date()
-            schedule_records = Schedule.objects.order_by('date').filter(date=today, user_name=request.user)
+            # #スケジュール機能
+            # today = timezone.now().date()
+            # schedule_records = Schedule.objects.order_by('date').filter(date=today, user_name=request.user)
+            #
+            # eva = Robot_Evaluation.objects.filter(robot_name='schedule_robot', user_name=request.user)
+            #
+            # if eva:
+            #     print('ロボットの評価がされています、1以上か削除のどちらかです')
+            #     # ロボットが存在していない時とゼロじゃないなら表示する
+            #     for evaluation in eva:
+            #         # ロボットの評価が存在していてゼロ(削除)されていないなら
+            #         if evaluation.score != 0:
+            #             show_eva = eva
+            #             print('表示します')
+            #         else:
+            #             not_show_eva = eva
+            #             print('表示しません')
+            # else:
+            #     print('ロボットの評価がありません。表示します')
+            #     # ロボットの評価がない時でも表示する
+            #     show_eva = eva
 
-            eva = Robot_Evaluation.objects.filter(robot_name='schedule_robot', user_name=request.user)
-
-            if eva:
-                print('ロボットの評価がされています、1以上か削除のどちらかです')
-                # ロボットが存在していない時とゼロじゃないなら表示する
-                for evaluation in eva:
-                    # ロボットの評価が存在していてゼロ(削除)されていないなら
-                    if evaluation.score != 0:
-                        show_eva = eva
-                        print('表示します')
-                    else:
-                        not_show_eva = eva
-                        print('表示しません')
-            else:
-                print('ロボットの評価がありません。表示します')
-                # ロボットの評価がない時でも表示する
-                show_eva = eva
-
+            annai_robot = Robot_Evaluation.objects.filter(robot_name='annai_robot', user_name=request.user).last()
+            address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
 
             return render(request, 'robot_app/wants.html', {
+                'address': address,
                 'nav_menu': '何をしたいですか？',
-                'gurunavi_search': '1. ぐるなびで検索する',
-                'youtube_search': '2. Youtubeで検索する',
-                'add_questions': '3. 質問に答える',
-                'morning': '4. 朝のやることリスト',
-                'blog': '5. ブログを書く',
-                'news': '6. ニュースを見る',
-                'schedule': '7. スケジュールを登録',
+                'gurunavi_search': 'ぐるなび',
+                'youtube_search': 'Youtube',
+                'add_questions': '質問',
+                'morning': '朝のtoDo',
+                'blog': 'ブログ',
+                'news': 'ニュース',
+                'schedule': '予定',
+                'map': 'お出かけ',
                 'type': question_type,
                 'mesg': question_mesg,
                 'tenki_api': tenki_api,
                 'gnavi_records': gnavi_records,
-                'carsensor_records': carsensor_records,
-                'car_news': car_news,
-                'add_car_news': add_car_news,
-                'carsensor_records_ver2': carsensor_records_ver2,
                 'user': user,
-                'weight_result': weight_result,
-                'weight': weight,
-                'suitable_weight': suitable_weight,
-                'overweight': overweight,
-                'overweight_text': overweight_text,
                 'youtube_records': youtube_records,
                 # 'gnavi_records2': gnavi_records2,
-                'schedule_records': schedule_records,
-                'show_eva': show_eva,
-                'not_show_eva': not_show_eva,
-                'eva': eva,
-                'carnews_show_eva': carnews_show_eva,
-                'carnews_not_show_eva': carnews_not_show_eva,
-                'health_show_eva': health_show_eva,
-                'health_not_show_eva': health_not_show_eva,
+                'annai_robot': annai_robot,
                 # 'foursquare_records': foursquare_records,
                 # 'photos_records': photos_records,
             })
@@ -368,6 +232,7 @@ def indexfunc(request):
             ### 初回質問
             question_type = 'favorite_food'
             question_mesg = '好きな食べ物はなんですか？'
+
 
     return render(request, 'robot_app/index.html', {
         'type': question_type,
@@ -629,7 +494,7 @@ def g_navi(request):
         if request.POST['question'] == 'address':
             city = request.POST['answer']
             question_type = 'keyword'
-            question_mesg = '検索キーワードを入力してください'
+            question_mesg = 'キーワードを入力してください'
             info.append(city)
         if request.POST['question'] == 'keyword':
             freeword = request.POST['answer']
@@ -661,6 +526,7 @@ def g_navi(request):
             #検索データをリセット
             info.clear()
     else:
+        info.clear()
         question_type = 'address'
         question_mesg = '都道府県を入力してください'
 
@@ -782,6 +648,7 @@ def add_questions(request):
     })
 
 
+
 def morning(request):
     wake_up = ''
     going_work = ''
@@ -789,6 +656,11 @@ def morning(request):
     arrival_station = ''
     todo_morning = ''
     eki_record = ''
+    near_lat = ''
+    near_lng = ''
+    arri_lat = ''
+    arri_lng = ''
+    Google_api_key = ''
     question_type = ''
     question_mesg = ''
 
@@ -897,26 +769,26 @@ def morning(request):
             question_type = 'wake_up'
             question_mesg = '平日は何時に起きますか？'
 
-        Url = 'https://maps.googleapis.com/maps/api/geocode/json?address='
         nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).last()
         arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).last()
-        address1 = nearest_station.answer
-        address2 = arrival_station.answer
+        if arrival_station:
+            address1 = nearest_station.answer
+            address2 = arrival_station.answer
 
-        #Jsonデータの取得
-        result_api = Url + address1 + 'components=country:JP&key=' + settings.Google_API_KEY
-        result_api2 = Url + address2 + 'components=country:JP&key=' + settings.Google_API_KEY
-        print('キー', result_api)
-        result = requests.get(result_api)
-        result2 = requests.get(result_api2)
-        result_api = result.json()
-        result_api2 = result2.json()
-        near_lat = result_api['results'][0]['geometry']['location']['lat']
-        near_lng = result_api['results'][0]['geometry']['location']['lng']
-        arri_lat = result_api2['results'][0]['geometry']['location']['lat']
-        arri_lng = result_api2['results'][0]['geometry']['location']['lng']
+            Url = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+            #Jsonデータの取得
+            result_api = Url + address1 + 'components=country:JP&key=' + settings.Google_API_KEY
+            result_api2 = Url + address2 + 'components=country:JP&key=' + settings.Google_API_KEY
+            result = requests.get(result_api)
+            result2 = requests.get(result_api2)
+            result_api = result.json()
+            result_api2 = result2.json()
+            near_lat = result_api['results'][0]['geometry']['location']['lat']
+            near_lng = result_api['results'][0]['geometry']['location']['lng']
+            arri_lat = result_api2['results'][0]['geometry']['location']['lat']
+            arri_lng = result_api2['results'][0]['geometry']['location']['lng']
 
-        Google_api_key = settings.Google_API_KEY
+            Google_api_key = settings.Google_API_KEY
 
     return render(request, 'robot_app/morning.html', {
         'wake_up': wake_up,
@@ -1023,14 +895,14 @@ def blog_create(request):
     blogs = Blog.objects.filter(user_name=request.user).order_by('-created_at')
 
     if request.method == 'POST':
-            blog = Blog()
-            blog.title  = request.POST['title']
-            blog.text  = request.POST['text']
-            blog.user_name = request.user
-            blog.save()
-            question_type = 'thanks'
-            question_mesg = 'ブログを作成しました。'
-            redirect('/')
+        blog = Blog()
+        blog.title  = request.POST['title']
+        blog.text  = request.POST['text']
+        blog.user_name = request.user
+        blog.save()
+        question_type = 'thanks'
+        question_mesg = 'ブログを作成しました。'
+        redirect('/')
     else:
         # 初回質問
         question_type = 'blog'
@@ -1050,6 +922,7 @@ def news(request):
     categories = ''
     sports = ''
     originals = ''
+    technologys = ''
 
     if request.method == 'POST':
 
@@ -1117,23 +990,30 @@ def news(request):
 
         categories = newsapi.get_top_headlines(category='entertainment',
                                               country='jp',
-                                              page_size=7,
+                                              page_size=20,
                                               )
         sports = newsapi.get_top_headlines(category='sports',
                                               country='jp',
                                               page_size=7,
                                               )
-        originals = newsapi.get_top_headlines(category='entertainment',
-                                              country='jp',
-                                              page_size=7,
-                                              q=celebrity_name,
-                                              )
+        if originals:
+            originals = newsapi.get_top_headlines(q=celebrity_name,
+                                                  country='jp',
+                                                  page_size=7,
+                                                  )
+        else:
+            technologys = newsapi.get_top_headlines(category='technology',
+                                                  country='jp',
+                                                  page_size=7,
+                                                  )
+
 
         #API表示
         categories = categories['articles']
         sports = sports['articles']
-        originals = originals['articles']
-
+        technologys = technologys['articles']
+        if originals:
+            originals = originals['articles']
 
     return render(request, 'robot_app/news.html', {
         'general': '一般',
@@ -1145,6 +1025,7 @@ def news(request):
         'categories': categories,
         'sports': sports,
         'originals': originals,
+        'technologys': technologys,
         'type': question_type,
         'mesg': question_mesg,
         'thanks': question_mesg
@@ -1194,3 +1075,289 @@ class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateV
         calendar_context = self.get_month_calendar()
         context.update(calendar_context)
         return context
+
+
+def map(request):
+
+    if request.method == 'POST':
+        question = GNAVI_Question()
+        question.question = request.POST['question']
+        question.answer = request.POST['answer']
+        question.user_name = request.user
+        question.save()
+        if request.POST['question'] == 'address':
+            city = request.POST['answer']
+            question_type = 'keyword'
+            question_mesg = 'キーワードを入力してください'
+            info.append(city)
+        if request.POST['question'] == 'keyword':
+            freeword = request.POST['answer']
+            info.append(freeword)
+            question_type = 'thanks'
+            question_mesg = '検索結果を表示します。'
+
+        #レストラン検索APIのURL
+        Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
+        # パラメータの設定
+        params = {}
+        params['keyid'] = settings.GNAVI_API_KEY
+        params['hit_per_page'] = 3
+        #都道府県コードを取ってきて変換
+        # params['pref'] = search(city)
+        #キーワード検索
+        params['freeword'] = freeword
+
+
+        if freeword:
+            city = info[0]
+            params['pref'] = questionapi.search(city)
+            print(params['pref'])
+            params['freeword'] = info[1]
+            Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
+            result_api = requests.get(Url, params)
+            result_api = result_api.json()
+            gnavi_records = result_api['rest']
+            #検索データをリセット
+            info.clear()
+    else:
+        question_type = 'address'
+        question_mesg = '都道府県を入力してください'
+
+
+
+    context = {
+        'type': question_type,
+        'mesg': question_mesg,
+        # 'gnavi_records': gnavi_records
+    }
+    return render(request, 'robot_app/map.html', context)
+
+
+def robot_review(request):
+    robot_query = Robot_Evaluation.objects.filter(user_name=request.user)
+
+    context = {
+        'robot_query': robot_query
+        # 'type': question_type,
+        # 'mesg': question_mesg,
+    }
+    return render(request, 'robot_app/robot_review.html', context)
+
+
+
+def notify(request):
+
+    carnews_show_eva = ''
+    not_show_eva = ''
+    carnews_not_show_eva = ''
+    health_show_eva = ''
+    health_not_show_eva = ''
+    weight_result = ''
+    weight = ''
+    suitable_weight = ''
+    overweight = ''
+    overweight_text = ''
+    carsensor_records = ''
+    carsensor_records_ver2 = ''
+    car_news = ''
+    add_car_news = ''
+
+    # カーセンサーを表示
+    car_brand = User_Question.objects.filter(question='car_brand', user_name=request.user).first()
+    if car_brand:
+        if car_brand.answer == '1':
+            car_brand.answer = 'トヨタ'
+        elif car_brand.answer == '2':
+            car_brand.answer = 'ホンダ'
+        elif car_brand.answer == '3':
+            car_brand.answer = 'スズキ'
+        elif car_brand.answer == '4':
+            car_brand.answer = 'マツダ'
+        else:
+            car_brand.answer = car_brand.answer
+
+        # ユーザーの好きなメーカーの車を表示する処理
+        url = "http://webservice.recruit.co.jp/carsensor/usedcar/v1/?{}".format(
+            urlencode({
+                'key': settings.CARSENSOR_API_KEY,
+                # "keyword": "HONDA S660",
+                'keyword': car_brand.answer,
+                # 表示件数
+                'count': 3,
+                'format': 'json'
+            }))
+
+        fu = requests.get(url).content
+        json_result = json.loads(fu)
+
+        carsensor_records = json_result['results']['usedcar']
+        user = User.objects.get(id=request.user.id)
+        car_news = str(user.profname) + 'さんにおすすめ情報があります！'
+
+        # 家族の人数から乗員を満たした車を案内する処理
+        family = User_Question.objects.filter(question='family', user_name=request.user).first()
+        url = "http://webservice.recruit.co.jp/carsensor/usedcar/v1/?{}".format(
+            urlencode({
+                'key': settings.CARSENSOR_API_KEY,
+                # "keyword": "例：HONDA S660",
+                'keyword': car_brand.answer,
+                # 表示件数
+                'count': 3,
+                'person': family.answer,
+                'format': 'json'
+            }))
+        ho = requests.get(url).content
+        json_result = json.loads(ho)
+
+        carsensor_records_ver2 = json_result['results']['usedcar']
+        add_car_news = 'たしか、' + str(user.profname) + 'さんは家族が' + family.answer + '人でしたね？\n' + \
+                       family.answer + '人乗りの車もご紹介しておきます。'
+
+        carnews_robot = Robot_Evaluation.objects.filter(robot_name='carnews_robot', user_name=request.user)
+        if carnews_robot:
+            # ロボットが存在していない時とゼロじゃないなら表示する
+            for carnews_robot_evaluation in carnews_robot:
+                # ロボットの評価が存在していてゼロ(削除)されていないなら
+                if carnews_robot_evaluation.score != 0:
+                    carnews_show_eva = carnews_robot
+                else:
+                    carnews_not_show_eva = carnews_robot
+        else:
+            # ロボットの評価がない時でも表示する
+            carnews_show_eva = carnews_robot
+
+
+    #体重の検査
+    height = User_Question.objects.filter(question='height', user_name=request.user).first()
+    if height:
+        height = int(height.answer) / 100
+        #適性体重
+        suitable_weight = height * height * 22
+        #現在の体重 weight.answer
+        weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
+        #超過分
+        overweight = int(weight.answer) - round(suitable_weight)
+
+        if int(weight.answer) >= round(suitable_weight):
+            weight_result = '少し運動をした方が良いかも。'
+            overweight_text = '標準体重より' + str(overweight) + 'キロ太っています。'
+
+        #体重から太っている人にYoutubeでダイエット動画を提供
+        # YOUTUBE_API_KEY = settings.YOUTUBE_API_KEY
+        # youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+        #
+        # search_response = youtube.search().list(
+        #     part='snippet',
+        #     # 検索したい文字列を指定
+        #     q='ダイエット',
+        #     # 表示件数
+        #     maxResults=1,
+        #     # 視聴回数が多い順に取得
+        #     order='viewCount',
+        #     type='video',
+        # ).execute()
+
+        # youtube_records = search_response['items']
+
+    health_robot = Robot_Evaluation.objects.filter(robot_name='health_robot', user_name=request.user)
+    if health_robot:
+        # ロボットが存在していない時とゼロじゃないなら表示する
+        for health_robot_evaluation in health_robot:
+            # ロボットの評価が存在していてゼロ(削除)されていないなら
+            if health_robot_evaluation.score != 0:
+                health_show_eva = health_robot
+            else:
+                health_not_show_eva = health_robot
+    else:
+        # ロボットの評価がない時でも表示する
+        health_show_eva = health_robot
+
+
+    # スケジュール機能
+    today = timezone.now().date()
+    schedule_records = Schedule.objects.order_by('date').filter(date=today, user_name=request.user)
+
+    eva = Robot_Evaluation.objects.filter(robot_name='schedule_robot', user_name=request.user)
+
+    if eva:
+        print('ロボットの評価がされています、1以上か削除のどちらかです')
+        # ロボットが存在していない時とゼロじゃないなら表示する
+        for evaluation in eva:
+            # ロボットの評価が存在していてゼロ(削除)されていないなら
+            if evaluation.score != 0:
+                show_eva = eva
+                print('表示します')
+            else:
+                not_show_eva = eva
+                print('表示しません')
+    else:
+        print('ロボットの評価がありません。表示します')
+        # ロボットの評価がない時でも表示する
+        show_eva = eva
+
+    # 件数カウント
+    notify_count = 0
+    if carsensor_records:
+        notify_count += 1
+    if overweight:
+        notify_count += 1
+    if schedule_records:
+        notify_count += 1
+
+    context = {
+        'show_eva': show_eva,
+        'not_show_eva': not_show_eva,
+        'eva': eva,
+        'weight_result': weight_result,
+        'weight': weight,
+        'suitable_weight': suitable_weight,
+        'overweight': overweight,
+        'overweight_text': overweight_text,
+        'carsensor_records': carsensor_records,
+        'car_news': car_news,
+        'add_car_news': add_car_news,
+        'carsensor_records_ver2': carsensor_records_ver2,
+        'carnews_show_eva': carnews_show_eva,
+        'carnews_not_show_eva': carnews_not_show_eva,
+        'health_show_eva': health_show_eva,
+        'notify_count': notify_count,
+        'health_not_show_eva': health_not_show_eva,
+        'schedule_records': schedule_records,
+
+        # 'type': question_type,
+        # 'mesg': question_mesg,
+    }
+    return render(request, 'robot_app/notify.html', context)
+
+
+def week_tenki(request):
+    # 天気を表示
+    week_tenki = questionapi.tenki_api(request)
+
+    API_Key = 'cdce5b2a82001e6a31a772b6a472bd67'
+    city = 'Tokyo,jp'
+    url = 'http://api.openweathermap.org/data/2.5/forecast'
+
+    query = {
+        'units': 'metric',
+        'q': city,
+        'cnt': '30',
+        'appid': API_Key
+    }
+    #
+    r = requests.get(url, params=query)
+    #week
+    result = (r.json()['list'])
+
+
+
+    context = {
+        'week_tenki': week_tenki,
+        'result': result,
+        'result_day1': result[0],
+        'result_day2': result[8],
+        'result_day3': result[16],
+        'result_day4': result[24],
+    }
+
+    return render(request, 'robot_app/week_tenki.html', context)

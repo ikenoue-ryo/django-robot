@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block customcss %}
-<link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
+<link href="{% static 'robot_app/youtube.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
 {% block content %}
@@ -10,10 +10,8 @@
     <div class="question_robot">
         <img src="/media/robot2.png" width="230">
     </div>
-    <p>かしこまりました。</p>
 
-    <p>Youtubeを紹介していきます。</p>
-
+    <p>Youtube動画を紹介します。</p>
 
     <div class="question_form">
         <form method="POST" action="" name="form1">{% csrf_token %}

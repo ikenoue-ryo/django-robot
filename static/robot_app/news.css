@@ -20,6 +20,14 @@
     margin: 30px 0;
   }
 
+  .news_area ul li{
+    border: none;
+  }
+
+  .news_area .nav-item{
+    padding: 0!important;
+  }
+
   .news_articles{
     margin: 10px 0;
   }
@@ -79,6 +87,12 @@
   a.nav-link{
     padding: 10px;
     margin: 0 10px;
+    color: #007bff!important;
+  }
+
+  a.nav-link.active {
+    background-color: #dee2e6!important;
+    color: #007bff!important;
   }
 
   #input_plural {
@@ -106,6 +120,11 @@
       margin: 0;
   }
 
+  .form-control {
+    padding: 25px !important;
+    font-size: 20px;
+  }
+
   .question_robot {
     width: 20%;
     display: inline-block;
@@ -113,7 +132,13 @@
   }
 
   .question_form p.tgt{
+    padding: 15px 0;
     margin: 0 0 15px 10px;
+    opacity: 0;
+  }
+
+  .question_form p.tgt span{
+    opacity: 0;
   }
 
   p.tgt{
@@ -233,6 +258,20 @@
     margin-bottom: 30px;
   }
 
+  .loginpage .heading a{
+    color: #fff;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .custom-control ul{
+    font-size: 18px;
+  }
+
+  .question_form input{
+    margin: 0 10px;
+  }
 
 }
 

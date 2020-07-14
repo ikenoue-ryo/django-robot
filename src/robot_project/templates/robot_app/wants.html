@@ -8,77 +8,69 @@
 {% endblock customcss %}
 
 {% block content %}
-<!--    {% for key, gnavi_rec2 in gnavi_records2.items　 %}-->
-<!--       <ul>-->
-<!--           <li>{{ gnavi_rec2.photo.shop_name }}</li>-->
-<!--           <li>{{ gnavi_rec2.photo.photo_scene_name }}</li>-->
-<!--           <li>{{ gnavi_rec2.photo.prefname }}</li>-->
-<!--           <li>{{ gnavi_rec2.photo.menu_name }}</li>-->
-<!--           <li>{{ gnavi_rec2.photo.comment }}</li>-->
-<!--           <li>{{ gnavi_rec2.photo.total_score }}</li>-->
-<!--           <li><img src="{{ gnavi_rec2.photo.image_url.url_320 }}"></li>-->
-<!--       </ul>-->
-<!--    {% endfor %}-->
-
-<!--    <div class="dtime">-->
-<!--        <div id="datetime"></div>-->
-<!--    </div>-->
-
-    <input type="button" id="tenki_button" value="天気を表示" style="margin-left: 20px;">
-    <ul id="tenki">
-        {% for tenki, data in tenki_api.items %}
-         <li>{{ tenki }}：{{ data }}</li>
-        {% endfor %}
-        <!-- ぐるなび  -->
-        <div class="result" style="
-            width: 90%;
-            display: inline-block;
-            float: left;
-        "><br>
-        今日は暑いので冷たい蕎麦やうどんはいかがでしょうか？
-            {% for gnavi_rec in gnavi_records %}
-                <p><a href="{{ gnavi_rec.url }}"><img src="{{ gnavi_rec.image_url.shop_image1 }}" width="100">
-                店名：{{ gnavi_rec.name }}</a></p>
-            {% endfor %}
+<div class="container mt-4">
+    {% if address %}
+    <!-- 天気 -->
+    <a href="{% url 'robot_app:week_tenki' %}">
+        <div class="weather_class">
+            <div class="card grey lighten-2">
+                <div class="card-body text-left">
+                    <p><img src="http://openweathermap.org/img/wn/{{ tenki_api.weather }}@2x.png"></p>
+                    <div class="city_name">
+                        <p class="font-weight-bold">{{ tenki_api.city_name }}</p>
+                    </div>
+                    <div class="d-flex">
+                        <ul>
+                            <li class="templature">最高気温:{{ tenki_api.max_temperature | floatformat }}℃</li>
+                            <li class="templature">最低気温:{{ tenki_api.min_temperature | floatformat }}℃</li>
+                            <li class="templature">風向:{{ tenki_api.wind }}m</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- ぐるなび  -->
-    </ul>
+    </a>
+    {% endif %}
 
-<div class="container mt-5">
+
+    <!--    <ul id="tenki">-->
+    <!--         <li>{{ tenki_api.current_temperature | floatformat }}℃</li>-->
+    <!--         <li>{{ tenki_api.wind }}m</li>-->
+    <!--    </ul>-->
+
+
     <!--Modal: modal1-->
     <div class="modal fade top" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true" data-backdrop="true">
-      <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
-        <!--Content-->
-        <div class="modal-content">
-          <!--Body-->
-          <div class="modal-body">
-            <div class="row d-flex justify-content-center align-items-center">
-              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">案内ロボット</p>
-              <p class="pt-3 pr-2">
-                  <form id="robot1" action="" name="form2" method="POST">{% csrf_token %}
-                  <div class="evaluation">
-                    <input type="hidden" name="robot_name" value="annai_robot">
-                    <input id="star5" type="radio" name="star" value="5" />
-                    <label for="star5"><span class="text">最高</span>★</label>
-                    <input id="star4" type="radio" name="star" value="4" />
-                    <label for="star4"><span class="text">良い</span>★</label>
-                    <input id="star3" type="radio" name="star" value="3" />
-                    <label for="star3"><span class="text">普通</span>★</label>
-                    <input id="star2" type="radio" name="star" value="2" />
-                    <label for="star2"><span class="text">悪い</span>★</label>
-                    <input id="star1" type="radio" name="star" value="1" />
-                    <label for="star1"><span class="text">最悪</span>★</label>
-                  </div>
-                  <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>
-                  <input type="submit" class="btn btn-primary" value="評価する">
-                </form>
-              </p>
+         aria-hidden="true" data-backdrop="true">
+        <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Body-->
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center" style="width: 108%;">
+                        <img src="/media/robot2.png" width="50"><p style="margin: 10px;">案内ロボット</p>
+                        <form id="robot1" action="" name="form2" method="POST">{% csrf_token %}
+                            <div class="evaluation">
+                                <input type="hidden" name="robot_name" value="annai_robot">
+                                <input id="star5" type="radio" name="star" value="5" />
+                                <label for="star5"><span class="text">最高</span>★</label>
+                                <input id="star4" type="radio" name="star" value="4" />
+                                <label for="star4"><span class="text">良い</span>★</label>
+                                <input id="star3" type="radio" name="star" value="3" />
+                                <label for="star3"><span class="text">普通</span>★</label>
+                                <input id="star2" type="radio" name="star" value="2" />
+                                <label for="star2"><span class="text">悪い</span>★</label>
+                                <input id="star1" type="radio" name="star" value="1" />
+                                <label for="star1"><span class="text">最悪</span>★</label>
+                            </div>
+                            <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>
+                            <input type="submit" class="btn btn-primary" value="評価する">
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
+            <!--/.Content-->
         </div>
-        <!--/.Content-->
-      </div>
     </div>
     <!--Modal: modal1-->
 
@@ -91,411 +83,508 @@
         </div>
         <div class="question_route">
             <div class="question_form">
-                <p>{{ nav_menu }}</p>
-                <form id="qanda" method="post" name="form1" action="">{% csrf_token %}
-                  <input type="hidden" name="answer" value="1">
-                  <a href="javascript:form1[0].submit()"><p class="tgt">{{ gurunavi_search }}</p></a>
-                </form>
-                <form method="post" name="form1" action="">{% csrf_token %}
-                  <input type="hidden" name="answer" value="2">
-                  <a href="javascript:form1[1].submit()"><p class="tgt">{{ youtube_search }}</p></a>
-                </form>
-                <form method="post" name="form1" action="">{% csrf_token %}
-                  <input type="hidden" name="answer" value="3">
-                  <a href="javascript:form1[2].submit()"><p class="tgt">{{ add_questions }}</p></a>
-                </form>
-                <form method="post" name="form1" action="">{% csrf_token %}
-                  <input type="hidden" name="answer" value="4">
-                  <a href="javascript:form1[3].submit()"><p class="tgt">{{ morning }}</p></a>
-                </form>
-                <form method="post" name="form1" action="">{% csrf_token %}
-                  <input type="hidden" name="answer" value="5">
-                  <a href="javascript:form1[4].submit()"><p class="tgt">{{ blog }}</p></a>
-                </form>
-                <form method="post" name="form1" action="">{% csrf_token %}
-                  <input type="hidden" name="answer" value="6">
-                  <a href="javascript:form1[5].submit()"><p class="tgt">{{ news }}</p></a>
-                </form>
-                <form method="post" name="form1" action="">{% csrf_token %}
-                  <input type="hidden" name="answer" value="7">
-                  <a href="javascript:form1[6].submit()"><p class="tgt">{{ schedule }}</p></a>
-                </form>
+                <p class="tgt">{{ nav_menu }}</p>
             </div>
         </div>
-    </div>
-
-
-    {% if carnews_not_show_eva %}
-    <div class="delete_robot">
-        <img src="/media/robot2.png" width="50">
-        <p>おすすめロボット削除済</p>
-    </div>
-    {% else %}
-
-    <!--Modal: modal2-->
-    <div class="modal fade top" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true" data-backdrop="true">
-      <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
-        <!--Content-->
-        <div class="modal-content">
-          <!--Body-->
-          <div class="modal-body">
-            <div class="row d-flex justify-content-center align-items-center">
-              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">おすすめ表示ロボット</p>
-              <p class="pt-3 pr-2">
-                  <form id="robot2" action="/" name="form2" method="POST">{% csrf_token %}
-                  <div class="evaluation">
-                    <input type="hidden" name="robot_name" value="carnews_robot">
-                    <input id="star6" type="radio" name="star" value="5" />
-                    <label for="star6"><span class="text">最高</span>★</label>
-                    <input id="star7" type="radio" name="star" value="4" />
-                    <label for="star7"><span class="text">良い</span>★</label>
-                    <input id="star8" type="radio" name="star" value="3" />
-                    <label for="star8"><span class="text">普通</span>★</label>
-                    <input id="star9" type="radio" name="star" value="2" />
-                    <label for="star9"><span class="text">悪い</span>★</label>
-                    <input id="star10" type="radio" name="star" value="1" />
-                    <label for="star10"><span class="text">最悪</span>★</label>
-                  </div>
-                  <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">
-                  <input type="submit" class="btn btn-primary" value="評価する">
-                </form>
-              </p>
-            </div>
-          </div>
+        <div class="search_form">
+            <!--検索フォーム-->
+            <!-- Search form -->
+            <form method="post" name="search_form" action="">{% csrf_token %}
+                <input type="hidden" name="question" value="{{ type }}">
+                <input id="autocomplete_search" type="text" name="answer" class="form-control" autocomplete="off">
+                <!--         <input id="autocomplete_search" class="form-control" type="text" placeholder="Search" aria-label="Search">-->
+            </form>
         </div>
-        <!--/.Content-->
-      </div>
-    </div>
-    <!--Modal: modal2-->
 
-    <div class="suggest_area">
-        {% if carsensor_records %}
-        <div class="robot_route clearfix">
-            <div class="question_robot">
-                <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal2">
-            </div>
-        </div>
-        <div class="question_route">
-            <div class="question_form">
-                <!--  おすすめの車情報を表示 -->
-                <input type="button" id="car_news_button" value="おすすめ情報を表示" style="width:100%;">
-                <div id='car_news' class="suggestion">
-                    {{car_news}}
-                        <div class="result">
-                            <div class="recommend_car clearfix">
-                                {% for carsensor_rec in carsensor_records %}
-                                    <div class="result">
-                                        <p>{{ carsensor_rec.brand.name }}</p>
-                                            <p><a href="{{ carsensor_rec.urls.pc }}"><img src="{{ carsensor_rec.photo.main.l }}"></a></p>
-                                        <p>価格：{{ carsensor_rec.price | division:10000 | floatformat:0 }}万円</p>
-                                        <p>年式：{{ carsensor_rec.year}}年</p>
-                                        <p>走行：{{ carsensor_rec.odd }}</p>
-                                    </div>
-                                {% endfor %}
-                            </div>
-
-                            <hr>
-                            <div class="recommend_car">
-                                <!-- ちなみに・・・ -->
-                                <p>{{ add_car_news | linebreaksbr }}</p>
-                                {% for carsensor_rec_ver2 in carsensor_records_ver2 %}
-                                    <div class="result">
-                                        <p>{{ carsensor_rec_ver2.brand.name }}</p>
-                                            <p><a href="{{ carsensor_rec_ver2.urls.pc }}"><img src="{{ carsensor_rec_ver2.photo.main.l }}"></a></p>
-                                        <p>年式：{{ carsensor_rec_ver2.year}}年</p>
-                                        <p>走行：{{ carsensor_rec_ver2.odd }}</p>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    {% endif %}
-
-
-    {% if health_not_show_eva %}
-        <div class="delete_robot">
-            <img src="/media/robot2.png" width="50">
-            <p>健康表示ロボット削除済</p>
-        </div>
-    {% else %}
-        <!--Modal: modal3-->
-        <div class="modal fade top" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-          aria-hidden="true" data-backdrop="true">
-          <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
-            <!--Content-->
-            <div class="modal-content">
-              <!--Body-->
-              <div class="modal-body">
-                <div class="row d-flex justify-content-center align-items-center">
-                  <img src="/media/robot2.png" width="50"><p style="margin: 10px;">健康表示ロボット</p>
-                  <p class="pt-3 pr-2">
-                      <form id="robot3" action="/" name="form2" method="POST">{% csrf_token %}
-                      <div class="evaluation">
-                        <input type="hidden" name="robot_name" value="health_robot">
-                        <input id="star11" type="radio" name="star" value="5" />
-                        <label for="star11"><span class="text">最高</span>★</label>
-                        <input id="star12" type="radio" name="star" value="4" />
-                        <label for="star12"><span class="text">良い</span>★</label>
-                        <input id="star13" type="radio" name="star" value="3" />
-                        <label for="star13"><span class="text">普通</span>★</label>
-                        <input id="star14" type="radio" name="star" value="2" />
-                        <label for="star14"><span class="text">悪い</span>★</label>
-                        <input id="star15" type="radio" name="star" value="1" />
-                        <label for="star15"><span class="text">最悪</span>★</label>
-                      </div>
-                      <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">
-                      <input type="submit" class="btn btn-primary" value="評価する">
+        <table>
+            <tr>
+                <td><i class="icon-food"></i>
+                    <form id="qanda" method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="1">
+                        <a href="javascript:form1[0].submit()"><p class="tgt">{{ gurunavi_search }}</p></a>
                     </form>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <!--/.Content-->
-          </div>
-        </div>
-        <!--Modal: modal3-->
-        <div class="suggest_area">
-            <div class="robot_route clearfix">
-                <div class="question_robot">
-                    <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal3">
-                    <i class="fa fa-heart" aria-hidden="true"></i>
-                </div>
-            </div>
-            <div class="question_route">
-                <div class="question_form">
-                    <input type="button" id="weight_news_button" value="体に変化があります" style="width:100%;">
-                    <!--  健康情報を表示 -->
-                    <div id='weight_news' class="suggestion">
-                        <div class="health">
-                            <p>{{ weight_result }}</p>
-                            <p>{{ overweight_text }}</p>
-
-                            <table>
-                                <tr><td style="width: 30%;">現在の体重</td><td style="width: 26%;">{{ weight.answer }}kg</td></tr>
-                                <tr><td>標準の体重</td><td>{{ suitable_weight | floatformat:0 }}kg</td></tr>
-                                <tr><td>体重差</td><td>{{ overweight }}kg</td></tr>
-                            </table>
-                            {% if youtube_records %}
-                            <div id="text-wrap">
-                                <div class="show-text">
-                                    <p>ダイエット方法を動画で見ませんか？</p>
-                                </div>
-                                <div class="hide-text">
-                                    {% for youtube_rec in youtube_records %}
-                                        <div class="result">
-                                            <a href="https://www.youtube.com/watch?v={{ youtube_rec.id.videoId }}">
-                                                <p>{{ youtube_rec.snippet.title | truncatechars:17 }}</p>
-                                                <p><img src="{{ youtube_rec.snippet.thumbnails.medium.url }}"></p>
-                                            </a>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <button class="readmore">動画をみる</button>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-
-
-
-
-    {% if not_show_eva %}
-    <div class="delete_robot">
-        <img src="/media/robot2.png" width="50">
-        <p>スケジュールロボット削除済</p>
-    </div>
-    {% else %}
-   <!--Modal: modal4-->
-    <div class="modal fade top" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true" data-backdrop="true">
-          <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
-            <!--Content-->
-            <div class="modal-content">
-              <!--Body-->
-              <div class="modal-body">
-                <div class="row d-flex justify-content-center align-items-center">
-                    <img src="/media/robot2.png" width="50"><p style="margin: 10px;">スケジュール表示ロボット</p>
-                    <p class="pt-3 pr-2">
-                      <form id="robot4" action="/" name="form2" method="POST">{% csrf_token %}
-                      <div class="evaluation">
-                        <input type="hidden" name="robot_name" value="schedule_robot">
-                        <input id="star16" type="radio" name="star" value="5" />
-                        <label for="star16"><span class="text">最高</span>★</label>
-                        <input id="star17" type="radio" name="star" value="4" />
-                        <label for="star17"><span class="text">良い</span>★</label>
-                        <input id="star18" type="radio" name="star" value="3" />
-                        <label for="star18"><span class="text">普通</span>★</label>
-                        <input id="star19" type="radio" name="star" value="2" />
-                        <label for="star19"><span class="text">悪い</span>★</label>
-                        <input id="star20" type="radio" name="star" value="1" />
-                        <label for="star20"><span class="text">最悪</span>★</label>
-                      </div>
-    <!--                  <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>-->
-                        <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">
-                        <input type="submit" class="btn btn-primary" value="評価する">
+                </td>
+                <td><i class="icon-food"></i>
+                    <form method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="2">
+                        <a href="javascript:form1[1].submit()"><p class="tgt">{{ youtube_search }}</p></a>
                     </form>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <!--/.Content-->
-          </div>
-        </div>
-        <!--Modal: modal4-->
+                </td>
+                <td><i class="icon-food"></i>
+                    <form method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="3">
+                        <a href="javascript:form1[2].submit()"><p class="tgt">{{ add_questions }}</p></a>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td><i class="icon-food"></i>
+                    <form method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="4">
+                        <a href="javascript:form1[3].submit()"><p class="tgt">{{ morning }}</p></a>
+                    </form>
+                </td>
+                <td><i class="icon-food"></i>
+                    <form method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="5">
+                        <a href="javascript:form1[4].submit()"><p class="tgt">{{ blog }}</p></a>
+                    </form>
+                </td>
+                <td><i class="icon-food"></i>
+                    <form method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="6">
+                        <a href="javascript:form1[5].submit()"><p class="tgt">{{ news }}</p></a>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td><i class="icon-food"></i>
+                    <form method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="7">
+                        <a href="javascript:form1[6].submit()"><p class="tgt">{{ schedule }}</p></a>
+                    </form>
+                </td>
+                <td><i class="icon-food"></i>
+                    <form method="post" name="form1" action="">{% csrf_token %}
+                        <input type="hidden" name="answer" value="8">
+                        <a href="javascript:form1[7].submit()"><p class="tgt">{{ map }}</p></a>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+
+    </div>
 
 
 
-        <div class="suggest_area">
-            {% if schedule_records %}
-                <div class="robot_route clearfix">
-                    <div class="question_robot">
-                        <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal4">
-                    </div>
-                </div>
-                <div class="question_route">
-                    <div class="question_form">
-                        <!--  スケジュールを表示 -->
-                        <input type="button" id="schedule_button" value="スケジュールを表示" style="width:100%;">
-                        <div id='schedule' class="suggestion">
-                            <div class="result">
-                                <div class="todays_schedule">
-                                    <h2>今日の予定</h2>
-                                    <ul>
-                                    {% for schedule in schedule_records %}
-                                        <li>{{ schedule.start_time }}〜{{ schedule.end_time }}</li>
-                                        <li>{{ schedule.summary }}</li>
-                                    {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-        {% endif %}
-
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-</div>
 
 
+    <!--    {% if carnews_not_show_eva %}-->
+    <!--    <div class="delete_robot">-->
+    <!--        <img src="/media/robot2.png" width="50">-->
+    <!--        <p>おすすめロボット削除済</p>-->
+    <!--    </div>-->
+    <!--    {% else %}-->
+
+    <!--    &lt;!&ndash;Modal: modal2&ndash;&gt;-->
+    <!--    <div class="modal fade top" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
+    <!--      aria-hidden="true" data-backdrop="true">-->
+    <!--      <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">-->
+    <!--        &lt;!&ndash;Content&ndash;&gt;-->
+    <!--        <div class="modal-content">-->
+    <!--          &lt;!&ndash;Body&ndash;&gt;-->
+    <!--          <div class="modal-body">-->
+    <!--            <div class="row d-flex justify-content-center align-items-center">-->
+    <!--              <img src="/media/robot2.png" width="50"><p style="margin: 10px;">おすすめ表示ロボット</p>-->
+    <!--              <p class="pt-3 pr-2">-->
+    <!--                  <form id="robot2" action="/" name="form2" method="POST">{% csrf_token %}-->
+    <!--                  <div class="evaluation">-->
+    <!--                    <input type="hidden" name="robot_name" value="carnews_robot">-->
+    <!--                    <input id="star6" type="radio" name="star" value="5" />-->
+    <!--                    <label for="star6"><span class="text">最高</span>★</label>-->
+    <!--                    <input id="star7" type="radio" name="star" value="4" />-->
+    <!--                    <label for="star7"><span class="text">良い</span>★</label>-->
+    <!--                    <input id="star8" type="radio" name="star" value="3" />-->
+    <!--                    <label for="star8"><span class="text">普通</span>★</label>-->
+    <!--                    <input id="star9" type="radio" name="star" value="2" />-->
+    <!--                    <label for="star9"><span class="text">悪い</span>★</label>-->
+    <!--                    <input id="star10" type="radio" name="star" value="1" />-->
+    <!--                    <label for="star10"><span class="text">最悪</span>★</label>-->
+    <!--                  </div>-->
+    <!--                  <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">-->
+    <!--                  <input type="submit" class="btn btn-primary" value="評価する">-->
+    <!--                </form>-->
+    <!--              </p>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--        &lt;!&ndash;/.Content&ndash;&gt;-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--    &lt;!&ndash;Modal: modal2&ndash;&gt;-->
+
+    <!--    <div class="suggest_area">-->
+    <!--        {% if carsensor_records %}-->
+    <!--        <div class="robot_route clearfix">-->
+    <!--            <div class="question_robot">-->
+    <!--                <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal2">-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="question_route">-->
+    <!--            <div class="question_form">-->
+    <!--                &lt;!&ndash;  おすすめの車情報を表示 &ndash;&gt;-->
+    <!--                <input type="button" id="car_news_button" value="おすすめ情報を表示" style="width:100%;">-->
+    <!--                <div id='car_news' class="suggestion">-->
+    <!--                    {{car_news}}-->
+    <!--                        <div class="result">-->
+    <!--                            <div class="recommend_car clearfix">-->
+    <!--                                {% for carsensor_rec in carsensor_records %}-->
+    <!--                                    <div class="result">-->
+    <!--                                        <p>{{ carsensor_rec.brand.name }}</p>-->
+    <!--                                            <p><a href="{{ carsensor_rec.urls.pc }}"><img src="{{ carsensor_rec.photo.main.l }}"></a></p>-->
+    <!--                                        <p>価格：{{ carsensor_rec.price | division:10000 | floatformat:0 }}万円</p>-->
+    <!--                                        <p>年式：{{ carsensor_rec.year}}年</p>-->
+    <!--                                        <p>走行：{{ carsensor_rec.odd }}</p>-->
+    <!--                                    </div>-->
+    <!--                                {% endfor %}-->
+    <!--                            </div>-->
+
+    <!--                            <hr>-->
+    <!--                            <div class="recommend_car">-->
+    <!--                                &lt;!&ndash; ちなみに・・・ &ndash;&gt;-->
+    <!--                                <p>{{ add_car_news | linebreaksbr }}</p>-->
+    <!--                                {% for carsensor_rec_ver2 in carsensor_records_ver2 %}-->
+    <!--                                    <div class="result">-->
+    <!--                                        <p>{{ carsensor_rec_ver2.brand.name }}</p>-->
+    <!--                                            <p><a href="{{ carsensor_rec_ver2.urls.pc }}"><img src="{{ carsensor_rec_ver2.photo.main.l }}"></a></p>-->
+    <!--                                        <p>年式：{{ carsensor_rec_ver2.year}}年</p>-->
+    <!--                                        <p>走行：{{ carsensor_rec_ver2.odd }}</p>-->
+    <!--                                    </div>-->
+    <!--                                {% endfor %}-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        {% endif %}-->
+    <!--    {% endif %}-->
 
 
-<script>
-    var id = $('form').attr('id');
-    // 上記の入力欄にフォーカスを与える
-    document.getElementById(id).focus();
-</script>
+    <!--    {% if health_not_show_eva %}-->
+    <!--        <div class="delete_robot">-->
+    <!--            <img src="/media/robot2.png" width="50">-->
+    <!--            <p>健康表示ロボット削除済</p>-->
+    <!--        </div>-->
+    <!--    {% else %}-->
+    <!--        &lt;!&ndash;Modal: modal3&ndash;&gt;-->
+    <!--        <div class="modal fade top" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
+    <!--          aria-hidden="true" data-backdrop="true">-->
+    <!--          <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">-->
+    <!--            &lt;!&ndash;Content&ndash;&gt;-->
+    <!--            <div class="modal-content">-->
+    <!--              &lt;!&ndash;Body&ndash;&gt;-->
+    <!--              <div class="modal-body">-->
+    <!--                <div class="row d-flex justify-content-center align-items-center">-->
+    <!--                  <img src="/media/robot2.png" width="50"><p style="margin: 10px;">健康表示ロボット</p>-->
+    <!--                  <p class="pt-3 pr-2">-->
+    <!--                      <form id="robot3" action="/" name="form2" method="POST">{% csrf_token %}-->
+    <!--                      <div class="evaluation">-->
+    <!--                        <input type="hidden" name="robot_name" value="health_robot">-->
+    <!--                        <input id="star11" type="radio" name="star" value="5" />-->
+    <!--                        <label for="star11"><span class="text">最高</span>★</label>-->
+    <!--                        <input id="star12" type="radio" name="star" value="4" />-->
+    <!--                        <label for="star12"><span class="text">良い</span>★</label>-->
+    <!--                        <input id="star13" type="radio" name="star" value="3" />-->
+    <!--                        <label for="star13"><span class="text">普通</span>★</label>-->
+    <!--                        <input id="star14" type="radio" name="star" value="2" />-->
+    <!--                        <label for="star14"><span class="text">悪い</span>★</label>-->
+    <!--                        <input id="star15" type="radio" name="star" value="1" />-->
+    <!--                        <label for="star15"><span class="text">最悪</span>★</label>-->
+    <!--                      </div>-->
+    <!--                      <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">-->
+    <!--                      <input type="submit" class="btn btn-primary" value="評価する">-->
+    <!--                    </form>-->
+    <!--                  </p>-->
+    <!--                </div>-->
+    <!--              </div>-->
+    <!--            </div>-->
+    <!--            &lt;!&ndash;/.Content&ndash;&gt;-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--        &lt;!&ndash;Modal: modal3&ndash;&gt;-->
+    <!--        <div class="suggest_area">-->
+    <!--            {% if overweight %}-->
+    <!--            <div class="robot_route clearfix">-->
+    <!--                <div class="question_robot">-->
+    <!--                    <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal3">-->
+    <!--                    <i class="fa fa-heart" aria-hidden="true"></i>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="question_route">-->
+    <!--                <div class="question_form">-->
+    <!--                    <input type="button" id="weight_news_button" value="体に変化があります" style="width:100%;">-->
+    <!--                    &lt;!&ndash;  健康情報を表示 &ndash;&gt;-->
+    <!--                    <div id='weight_news' class="suggestion">-->
+    <!--                        <div class="health">-->
+    <!--                            <p>{{ weight_result }}</p>-->
+    <!--                            <p>{{ overweight_text }}</p>-->
+
+    <!--                            <table>-->
+    <!--                                <tr><td style="width: 30%;">現在の体重</td><td style="width: 26%;">{{ weight.answer }}kg</td></tr>-->
+    <!--                                <tr><td>標準の体重</td><td>{{ suitable_weight | floatformat:0 }}kg</td></tr>-->
+    <!--                                <tr><td>体重差</td><td>{{ overweight }}kg</td></tr>-->
+    <!--                            </table>-->
+    <!--                            {% if youtube_records %}-->
+    <!--                            <div id="text-wrap">-->
+    <!--                                <div class="show-text">-->
+    <!--                                    <p>ダイエット方法を動画で見ませんか？</p>-->
+    <!--                                </div>-->
+    <!--                                <div class="hide-text">-->
+    <!--                                    {% for youtube_rec in youtube_records %}-->
+    <!--                                        <div class="result">-->
+    <!--                                            <a href="https://www.youtube.com/watch?v={{ youtube_rec.id.videoId }}">-->
+    <!--                                                <p>{{ youtube_rec.snippet.title | truncatechars:17 }}</p>-->
+    <!--                                                <p><img src="{{ youtube_rec.snippet.thumbnails.medium.url }}"></p>-->
+    <!--                                            </a>-->
+    <!--                                        </div>-->
+    <!--                                    {% endfor %}-->
+    <!--                                </div>-->
+    <!--                                <button class="readmore">動画をみる</button>-->
+    <!--                            </div>-->
+    <!--                            {% endif %}-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            {% endif %}-->
+    <!--        </div>-->
+    <!--    {% endif %}-->
 
 
-<script>
-$(window).on('load',function(){
-    // ここから文字を<span></span>で囲む記述
-    $('.typ').children().andSelf().contents().each(function() {
-        if (this.nodeType == 3) {
-            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
-        }
-    });
-    // ここから一文字ずつフェードインさせる記述
-    $('.typ').css({'opacity':1});
-    for (var i = 0; i <= $('.typ').children().size(); i++) {
-        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
-    };
-});
-</script>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-$(function() {
-	// 初期表示は非表示にする
-	$('#tenki').toggle();
+    <!--    {% if not_show_eva %}-->
+    <!--    <div class="delete_robot">-->
+    <!--        <img src="/media/robot2.png" width="50">-->
+    <!--        <p>スケジュールロボット削除済</p>-->
+    <!--    </div>-->
+    <!--    {% else %}-->
+    <!--   &lt;!&ndash;Modal: modal4&ndash;&gt;-->
+    <!--    <div class="modal fade top" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
+    <!--      aria-hidden="true" data-backdrop="true">-->
+    <!--          <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">-->
+    <!--            &lt;!&ndash;Content&ndash;&gt;-->
+    <!--            <div class="modal-content">-->
+    <!--              &lt;!&ndash;Body&ndash;&gt;-->
+    <!--              <div class="modal-body">-->
+    <!--                <div class="row d-flex justify-content-center align-items-center">-->
+    <!--                    <img src="/media/robot2.png" width="50"><p style="margin: 10px;">スケジュール表示ロボット</p>-->
+    <!--                    <p class="pt-3 pr-2">-->
+    <!--                      <form id="robot4" action="/" name="form2" method="POST">{% csrf_token %}-->
+    <!--                      <div class="evaluation">-->
+    <!--                        <input type="hidden" name="robot_name" value="schedule_robot">-->
+    <!--                        <input id="star16" type="radio" name="star" value="5" />-->
+    <!--                        <label for="star16"><span class="text">最高</span>★</label>-->
+    <!--                        <input id="star17" type="radio" name="star" value="4" />-->
+    <!--                        <label for="star17"><span class="text">良い</span>★</label>-->
+    <!--                        <input id="star18" type="radio" name="star" value="3" />-->
+    <!--                        <label for="star18"><span class="text">普通</span>★</label>-->
+    <!--                        <input id="star19" type="radio" name="star" value="2" />-->
+    <!--                        <label for="star19"><span class="text">悪い</span>★</label>-->
+    <!--                        <input id="star20" type="radio" name="star" value="1" />-->
+    <!--                        <label for="star20"><span class="text">最悪</span>★</label>-->
+    <!--                      </div>-->
+    <!--    &lt;!&ndash;                  <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">やめる</a>&ndash;&gt;-->
+    <!--                        <input type="submit" name="ng_robot" class="btn btn-outline-primary waves-effect" value="削除">-->
+    <!--                        <input type="submit" class="btn btn-primary" value="評価する">-->
+    <!--                    </form>-->
+    <!--                  </p>-->
+    <!--                </div>-->
+    <!--              </div>-->
+    <!--            </div>-->
+    <!--            &lt;!&ndash;/.Content&ndash;&gt;-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--        &lt;!&ndash;Modal: modal4&ndash;&gt;-->
 
-	$("#tenki_button").click(function() {
-		$("#tenki").toggle("1000",function(){
-			$("#tenki_button").attr("value","天気を表示する");
-		});
-	});
-});
-</script>
 
-<script>
-$(function() {
-	// 初期表示は非表示にする
-	$('#car_news').toggle();
 
-	$("#car_news_button").click(function() {
-		$("#car_news").toggle("1000",function(){
-			$("#car_news_button").attr("value","おすすめ情報を見る");
-		});
-	});
-});
-</script>
+    <!--        <div class="suggest_area">-->
+    <!--            {% if schedule_records %}-->
+    <!--                <div class="robot_route clearfix">-->
+    <!--                    <div class="question_robot">-->
+    <!--                        <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal4">-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <div class="question_route">-->
+    <!--                    <div class="question_form">-->
+    <!--                        &lt;!&ndash;  スケジュールを表示 &ndash;&gt;-->
+    <!--                        <input type="button" id="schedule_button" value="スケジュールを表示" style="width:100%;">-->
+    <!--                        <div id='schedule' class="suggestion">-->
+    <!--                            <div class="result">-->
+    <!--                                <div class="todays_schedule">-->
+    <!--                                    <h2>今日の予定</h2>-->
+    <!--                                    <ul>-->
+    <!--                                    {% for schedule in schedule_records %}-->
+    <!--                                        <li>{{ schedule.start_time }}〜{{ schedule.end_time }}</li>-->
+    <!--                                        <li>{{ schedule.summary }}</li>-->
+    <!--                                    {% endfor %}-->
+    <!--                                    </ul>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            {% endif %}-->
+    <!--        </div>-->
+    <!--        {% endif %}-->
+    <!--    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>-->
+    <!--</div>-->
 
-<script>
-$(function() {
-	// 初期表示は非表示にする
-	$('#weight_news').toggle();
 
-	$("#weight_news_button").click(function() {
-		$("#weight_news").toggle("1000",function(){
-			$("#weight_news_button").attr("value","体に変化があります！");
-		});
-	});
-});
-</script>
+    <footer class="footer">
+        <nav class="global-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fas fa-star"></i>
+                        <span>Star</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fas fa-history"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fas fa-globe-asia"></i>
+                        <span>Map</span>
+                    </a>
+                </li>
 
-<!--スケジュール-->
-<script>
-$(function() {
-	// 初期表示は非表示にする
-	$('#schedule').toggle();
+            </ul>
+        </nav>
+    </footer>
 
-	$("#schedule_button").click(function() {
-		$("#schedule").toggle("1000",function(){
-			$("#schedule_button").attr("value","今日のスケジュールを表示");
-		});
-	});
-});
-</script>
 
-<script>
-$(function(){
-	$(".readmore").on("click", function() {
-		$(this).toggleClass("on-click");
-		$(".hide-text").slideToggle(1000);
-	});
-});
-</script>
 
-<!--リアルタイム時間表示-->
-<script>
-function showtime(){
-  var today = new Date();
-  $weekday = ['日','月','火','水','木','金','土'];
-  month = today.getMonth() + 1 ;
-  $('#datetime').html(today.getHours() + ":" + ('0'+today.getMinutes()).slice(-2) + ":" + ('0' +today.getSeconds()).slice(-2));
-}
-setInterval(showtime,1000);
-</script>
+    <script>
+        var id = $('form').attr('id');
+        // 上記の入力欄にフォーカスを与える
+        document.getElementById(id).focus();
+    </script>
 
-<!-- SCRIPTS -->
-  <!-- JQuery -->
-  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="js/popper.min.js"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="js/mdb.min.js"></script>
 
-{% endblock content %}
+    <script>
+        $(window).on('load',function(){
+            // ここから文字を<span></span>で囲む記述
+            $('.typ').children().andSelf().contents().each(function() {
+                if (this.nodeType == 3) {
+                    $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+                }
+            });
+            // ここから一文字ずつフェードインさせる記述
+            $('.typ').css({'opacity':1});
+            for (var i = 0; i <= $('.typ').children().size(); i++) {
+                $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+            };
+        });
+    </script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            // 初期表示は非表示にする
+            $('#tenki').toggle();
+
+            $("#tenki_button").click(function() {
+                $("#tenki").toggle("1000",function(){
+                    $("#tenki_button").attr("value","天気を表示する");
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(function() {
+            // 初期表示は非表示にする
+            $('#car_news').toggle();
+
+            $("#car_news_button").click(function() {
+                $("#car_news").toggle("1000",function(){
+                    $("#car_news_button").attr("value","おすすめ情報を見る");
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(function() {
+            // 初期表示は非表示にする
+            $('#weight_news').toggle();
+
+            $("#weight_news_button").click(function() {
+                $("#weight_news").toggle("1000",function(){
+                    $("#weight_news_button").attr("value","体に変化があります！");
+                });
+            });
+        });
+    </script>
+
+    <!--スケジュール-->
+    <script>
+        $(function() {
+            // 初期表示は非表示にする
+            $('#schedule').toggle();
+
+            $("#schedule_button").click(function() {
+                $("#schedule").toggle("1000",function(){
+                    $("#schedule_button").attr("value","今日のスケジュールを表示");
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(function(){
+            $(".readmore").on("click", function() {
+                $(this).toggleClass("on-click");
+                $(".hide-text").slideToggle(1000);
+            });
+        });
+    </script>
+
+
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+
+
+    <!--検索補完機能-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function() {
+            const arr1 = ['ぐるなび', 'Yotube', '質問', 'toDo', 'ブログ', 'ニュース', '予定', 'お出かけ'];
+
+            $("#autocomplete_search").autocomplete({
+                source:arr1
+            });
+        });
+    </script>
+
+
+    <script>
+        $(window).on('load',function(){
+            // ここから文字を<span></span>で囲む記述
+            $('.typ').children().andSelf().contents().each(function() {
+                if (this.nodeType == 3) {
+                    $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+                }
+            });
+            // ここから一文字ずつフェードインさせる記述
+            $('.typ').css({'opacity':1});
+            for (var i = 0; i <= $('.typ').children().size(); i++) {
+                $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+            };
+        });
+    </script>
+
+    {% endblock content %}

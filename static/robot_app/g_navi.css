@@ -1,0 +1,473 @@
+
+
+/*-- スマホ版表示CSS  --*/
+@media screen and (max-width: 480px) {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 45px;
+  }
+
+  table th, table td {
+    padding: 10px;
+    border: none;
+    font-size: 18px;
+  }
+
+  ul li {
+    list-style: none;
+  }
+
+  header {
+    border-bottom: 1px solid #000;
+    margin: 10px 0;
+  }
+
+  table tr td{
+    border: none;
+  }
+
+  .mypage{
+    width: 80%;
+  }
+
+  .loginpage .heading a{
+    color: #fff;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .close{
+    padding: 23px 16px;
+  }
+
+  .modal-dialog.modal-notify.modal-success .modal-header {
+    background-color: rgb(0, 123, 255);
+  }
+
+  .fa-check {
+    color: rgb(0, 123, 255);
+  }
+
+  .search_form{
+    margin: 20px 0;
+  }
+
+  .header_class{
+    margin: 10px;
+  }
+
+  .robot_icon{
+    width: 90%;
+    display: inline-block;
+    float: left;
+    padding: 0 10px;
+    font-size: 24px;
+  }
+
+  .robot_icon img{
+    width: 35px;
+  }
+
+  .user_icon{
+    font-size: 28px;
+    width: 30px;
+    display: inline-block;
+    float: left;
+  }
+
+  .user_login ul li{
+    width: 100%;
+    text-align: center;
+    margin: 10px;
+  }
+
+  .intro_list ul {
+    padding: 15px 0 15px 10px;
+  }
+
+  .intro_list ul li {
+    padding: 10px;
+    font-size: 18px;
+  }
+
+  .intro_list i.fas, .intro_list i.far {
+    margin-right: 10px;
+    font-size: 20px;
+    color: #999999!important;
+  }
+
+  .dtime{
+    text-align: right;
+    margin: 0 20px;
+  }
+
+  .question_robot {
+    width: 20%;
+    display: inline-block;
+    float: left;
+  }
+
+  .question_form p.tgt{
+    margin: 0 0 0 10px;
+    font-size: 20px;
+  }
+
+  .question_form p{
+    padding: 10px 0;
+    font-size: 18px;
+  }
+
+  .question_form ul {
+    padding: 0 0 0 15px;
+  }
+
+  .city_name{
+    width: 35%;
+    display: inline-block;
+    float: left;
+  }
+
+  .card-body{
+    padding: 0;
+  }
+
+  .card-body img{
+    width: 100%;
+  }
+
+  .card-body p{
+    display: inline-block;
+    float: left;
+    margin: 0;
+  }
+
+  p .hour{
+    width: 100px;
+  }
+
+  .d-flex p.templature{
+    margin-right: 15px;
+  }
+
+  .city_name{
+    width: 25%;
+    display: inline-block;
+    float: left;
+    margin: 37px 10px;
+  }
+
+  .font-weight-bold{
+    font-size: 18px;
+    margin: 12px 0;
+  }
+
+  .d-flex{
+    width: 40%;
+    float: left;
+    padding: 15px 0;
+  }
+
+  .d-flex ul{
+    padding: 0;
+    margin: 0;
+  }
+
+  .result p{
+    padding: 0;
+  }
+
+  .suggestion{
+    /*margin: 30px 10px;*/
+  }
+
+  #car_news_button, #weight_news_button{
+    margin: 10px 0px;
+  }
+
+  .question_route{
+    width: 85%;
+    margin: 0 0 0 18%;
+    text-align: left;
+  }
+
+  .robot_route{
+    position: sticky;/*固定する*/
+    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
+    top: 0;/*ブラウザの上からの距離はゼロ*/
+    width: 60px;
+    display: inline-block;
+    float: left;
+  }
+
+  .suggest_area{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 90%;
+    margin: 60px 0px;
+  }
+
+  .form-control {
+    padding: 25px !important;
+    font-size: 20px;
+  }
+
+  .health p{
+    padding: 0;
+    margin: 0;
+  }
+
+  .fa-heart{
+    position: relative;
+    top: -20px;
+    left: 33px;
+    color: rgb(224, 36, 94);
+    font-size: 20px;
+  }
+
+  .recommend_car .result img{
+    width: 100%;
+  }
+
+  .recommend_car .result p {
+    margin: 0;
+  }
+
+  .recommend_car .result {
+      margin: 30px 0;
+  }
+
+  #car_news li{
+    background:#f2f2f2;
+    width:200px;
+    height:50px;
+    line-height:50px;
+    text-align:center;
+    border:#666 1px solid;
+    display:none;
+  }
+
+
+  #text-wrap p {
+    margin: 0;
+  }
+
+  #text-wrap {
+    width: 100%;
+    display: block;
+  }
+
+  .hide-text {
+    display: none;
+  }
+
+  .hide-text .result {
+    margin: 20px 0;
+  }
+
+  button.readmore {
+    position: relative;
+    margin: 10px auto;
+    display: block;
+    background-color: transparent;
+    color: #666;
+    padding-bottom: 40px;
+    border: none;
+    outline: 0;
+    transition: .5s;
+    -erbkit-transition: .5s;
+  }
+
+  button.readmore::after {
+    content: " ";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-top: solid 3px #666;
+    border-right: solid 3px #666;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    right: 35px;
+    top: 25px;
+    transition: .5s;
+    -erbkit-transition: .5s;
+  }
+
+  button.readmore:hover::after {
+    top: 25px;
+  }
+
+  .on-click {
+    color: transparent!important;
+  }
+
+  .on-click {
+    transform: rotate(-180deg);
+    -webkit-transform: rotate(-180deg);
+  }
+
+  .show-text p{
+    margin-bottom: 30px;
+  }
+
+  .result img{
+    width: 100%;
+  }
+
+  /*  評価　*/
+  .evaluation{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  }
+  .evaluation input[type='radio']{
+    display: none;
+  }
+  .evaluation label{
+    position: relative;
+    padding: 10px 10px 0;
+    color: gray;
+    cursor: pointer;
+    font-size: 30px;
+    margin-top: 10px;
+  }
+  .evaluation label .text{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: gray;
+  }
+  .evaluation label:hover,
+  .evaluation label:hover ~ label,
+  .evaluation input[type='radio']:checked ~ label{
+    color: #ffcc00;
+  }
+
+  /* schedule */
+  .todays_schedule h2{
+    font-size: 16px;
+    margin: 14px 0;
+    font-weight: 600;
+  }
+
+  .todays_schedule ul li{
+  display: inline-block;
+  float: left;
+  }
+
+  .todays_schedule ul li:nth-child(odd){
+    width: 35%;
+  }
+
+  .todays_schedule ul li:nth-child(even){
+    width: 60%;
+    padding-top: 0;
+    margin-left: 5px;
+  }
+
+  .delete_robot {
+    margin: 30px 0;
+  }
+
+  .delete_robot img{
+    opacity: 0.2;
+    display: inline-block;
+  }
+
+  .delete_robot p{
+    width: 80%;
+    margin-left: 20px;
+    display: inline;
+    color: lightgrey;
+  }
+  /* scheduleここまで */
+
+  #gmap{
+    width: 100% !important;
+  }
+
+
+  .footer {
+  margin-bottom: 48px;
+  }
+  .global-nav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: white;
+  }
+  .nav-list {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    margin: 0;
+  }
+  .nav-item {
+    display: table-cell;
+    border-top: solid 1px gray;
+    padding: 8px 0px;
+  }
+  .nav-item a {
+    text-decoration: none;
+  }
+  .nav-item i {
+    display: block;
+    font-size: 24px;
+  }
+
+  .nav-item a span {
+    display: block;
+    font-size: 10px;
+  }
+
+  /* 検索自動補完機能ここから */
+  .ui-menu .ui-menu-item-wrapper {
+    position: relative;
+    padding: 15px 23px;
+  }
+  /* リスト全体の背景 */
+  .ui-widget-content {
+    border: 1px solid #c5c5c5;
+    background: #ffffff;
+    color: #333333;
+  }
+  /* リスト hover 時のカラー */
+  .ui-state-active {
+    border: 1px solid #007bff !important;
+    color: #000000 !important;
+  }
+  /* 検索自動補完機能ここまで */
+
+  .food_select {
+    margin-top: 50px;
+  }
+
+  .food_select h3 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .food_select ul li{
+    display: inline-block;
+    float: left;
+    margin: 0 10px 10px 0;
+    font-size: 18px;
+  }
+
+}
+
+  /*-- PC版表示CSS  --*/
+  @media screen and (min-width: 1200px) {
+
+  }

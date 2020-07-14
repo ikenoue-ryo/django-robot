@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block customcss %}
-<link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
+<link href="{% static 'robot_app/g_navi.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
 {% block content %}
@@ -17,9 +17,31 @@
             {% if type == "thanks" %}
                 {{ thanks }}
             {% endif %}
-            {% if type != "thanks" %}
+            {% if type == "address" %}
                 <input type="hidden" name="question" value="{{ type }}">
-                <input type="text" name="answer" class="form-control" autocomplete="off">
+                <input id="autocomplete_search" type="text" name="answer" class="form-control" autocomplete="off">
+            {% endif %}
+            {% if type == "keyword" %}
+                <input type="hidden" name="question" value="{{ type }}">
+                <input id="autocomplete_search" type="text" name="answer" class="form-control" autocomplete="off">
+                <div class="food_select">
+                    <h3>入力候補</h3>
+                    <ul>
+                        <li><input type="radio" name="food" value="焼肉" onClick="addTF(this.value)">焼肉</li>
+                        <li><input type="radio" name="food" value="ラーメン" onClick="addTF(this.value)">ラーメン</li>
+                        <li><input type="radio" name="food" value="魚" onClick="addTF(this.value)">魚</li>
+                        <li><input type="radio" name="food" value="かに料理" onClick="addTF(this.value)">かに料理</li>
+                        <li><input type="radio" name="food" value="天ぷら" onClick="addTF(this.value)">天ぷら</li>
+                        <li><input type="radio" name="food" value="しゃぶしゃぶ" onClick="addTF(this.value)">しゃぶしゃぶ</li>
+                        <li><input type="radio" name="food" value="刺身" onClick="addTF(this.value)">刺身</li>
+                        <li><input type="radio" name="food" value="ふぐ料理" onClick="addTF(this.value)">ふぐ料理</li>
+                        <li><input type="radio" name="food" value="すき焼き" onClick="addTF(this.value)">すき焼き</li>
+                        <li><input type="radio" name="food" value="鉄板焼き" onClick="addTF(this.value)">鉄板焼き</li>
+                        <li><input type="radio" name="food" value="バイキング" onClick="addTF(this.value)">バイキング</li>
+                        <li><input type="radio" name="food" value="パスタ" onClick="addTF(this.value)">パスタ</li>
+                        <li><input type="radio" name="food" value="ピザ" onClick="addTF(this.value)">ピザ</li>
+                    </ul>
+                </div>
             {% endif %}
         </form>
     </div>
@@ -34,13 +56,7 @@
         {% endfor %}
     </div>
 
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-
-
-
-
-
+    <br><br><br><br>
 </div>
 
 
@@ -48,6 +64,7 @@
     var id = $('form').attr('id');
     // 上記の入力欄にフォーカスを与える
     document.getElementById(id).focus();
+    dialogButton.focus()
 </script>
 
 
@@ -65,6 +82,30 @@ $(window).on('load',function(){
         $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
     };
 });
+</script>
+
+
+<!--検索補完機能-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+  $(function() {
+    const arr1 = [
+        '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県', '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県', '新潟県', '富山県', '石川県',
+        '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県', '三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県', '鳥取県', '島根県', '岡山県', '広島県',
+        '山口県', '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
+
+    $("#autocomplete_search").autocomplete({
+      source:arr1
+    });
+  });
+</script>
+
+
+<script>
+    function addTF(str) {
+	  document.form1.answer.value += str;
+    }
 </script>
 
 {% endblock content %}

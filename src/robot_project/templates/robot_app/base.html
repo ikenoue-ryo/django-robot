@@ -1,4 +1,6 @@
-<!doctype html>
+{% load static %}
+
+<!DOCTYPE html>
 <html lang="ja">
   <head>
     <!-- Required meta tags -->
@@ -25,43 +27,155 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'robot_app/index.css' %}">
 
-      {% block customcss %}
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 
+    {% block customcss %}
     {% endblock customcss %}
 
     <title>スマホ専用ロボット</title>
   </head>
-  <body onLoad="document.form1.answer.focus()">
-    {% block header %}
-    <a href="/">チャットロボット</a>
-    {%  for q in question %}
-        {{ q }}
-        {% endfor %}
+  <body onLoad="document.form1.answer.focus()" style="background-color: #F2F2F2!important;">
 
-    <ul class="nav justify-content-end py-4">
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'robot_app:signup' %}">新規登録</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'robot_app:login' %}">ログイン</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'robot_app:logout' %}">ログアウト</a>
-        </li>
-        <li class="nav-item">
-          {% if user.is_authenticated %}
-            <a class="nav-link" href="{% url 'robot_app:detail' user.id %}">{{ user.profname }}</a>
-          {% endif %}
-          </li>
-    </ul>
-    {% endblock header %}
+
+ <!-- Central Modal Medium Success -->
+ <div class="modal fade left" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="centralModalSuccess"
+   aria-hidden="true">
+   <div class="mypage modal-dialog modal-notify modal-success" role="document">
+     <!--Content-->
+     <div class="modal-content">
+       <!--Header-->
+       <div class="modal-header">
+         <p class="heading lead">My Profile</p>
+
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true" class="white-text">&times;</span>
+         </button>
+       </div>
+
+       <!--Body-->
+       <div class="modal-body">
+         <div class="intro_list">
+           <ul>
+             <li><i class="fas fa-user-circle"></i>プロフィール</li>
+             <li><i class="fas fa-list"></i>リスト</li>
+             <li><i class="far fa-comment-dots"></i>トピック</li>
+             <li><i class="far fa-bookmark"></i>ブックマーク </li>
+           </ul>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!-- Central Modal Medium Success-->
+
+
+    <header class="clearfix">
+        <div class="header_class clearfix">
+            <div class="header_menu">
+                <div class="robot_icon">
+                    <a href="/" data-toggle="modal" data-target="#centralModalSuccess">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </div>
+                <div class="user_icon">
+                    <i class="far fa-bell" aria-hidden="true" data-toggle="modal" data-target="#frameModalBottom"></i>
+                </div>
+            </div>
+
+             <!-- Central Modal Medium Success -->
+             <div class="modal fade right" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="centralModalSuccess"
+               aria-hidden="true">
+               <div class="loginpage modal-dialog modal-notify modal-success" role="document">
+                 <!--Content-->
+                 <div class="modal-content">
+                   <!--Header-->
+                   <div class="modal-header">
+                     <p class="heading lead">
+                       {% if user.is_authenticated %}
+                         <a href="{% url 'robot_app:detail' user.id %}">{{ user.profname }}</a>でログイン中
+                       {% else %}
+                         Sign in
+                       {% endif %}
+                     </p>
+
+
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true" class="white-text">&times;</span>
+                     </button>
+                   </div>
+
+                   <!--Body-->
+                   <div class="modal-body">
+                     <div class="intro_list">
+                       <ul>
+                         {% if user.is_authenticated %}
+                            {% if notify_count != 0 %}
+                              <li><i class="fas fa-bell"></i><a href="{% url 'robot_app:notify' %}">通知が届いています</a></li>
+                            {% endif %}
+                           <li><i class="fas fa-user-circle"></i><a href="{% url 'robot_app:detail' user.id %}">マイページ</a></li>
+                           <li><i class="fas fa-sign-out-alt"></i><a href="{% url 'robot_app:logout' %}">ログアウト</a></li>
+                         {% else %}
+                           <li><i class="fas fa-sign-in-alt"></i><a href="{% url 'robot_app:signup' %}">新規登録</a></li>
+                           <li><i class="far fa-arrow-alt-circle-right"></i><a href="{% url 'robot_app:login' %}">ログイン</a></li>
+                         {% endif %}
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+              </div>
+            </div>
+        </div>
+    </header>
+  {% block header %}
+
+  {% endblock header %}
 
     {% block content %}
     <div class="container">
 
     </div>
     {% endblock content %}
+
+
+  <footer class="footer">
+    <nav class="global-nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/robot_review">
+            <i class="fas fa-star"></i>
+            <span>Star</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/notify">
+            <i class="far fa-comment-dots"><span class="notify" style="display: inline; position: relative; top: -16px; color:#FF4D5B; font-weight: 600; margin: -6px;">
+              {{ notify_count }}</span></i>
+            <span>Notify</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/map">
+            <i class="fas fa-globe-asia"></i>
+            <span>Map</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+  </footer>
+
 
 
   <!-- 文字がふるアニメーション-->
@@ -82,9 +196,8 @@
    </script>
 
  <!-- MDB core JavaScript -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/js/mdb.min.js"></script>
-    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/js/mdb.min.js"></script>
+
 
 
   </body>

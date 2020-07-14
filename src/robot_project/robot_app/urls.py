@@ -27,4 +27,8 @@ urlpatterns = [
     ),
     path('month_with_schedule/<int:year>/<int:month>/', views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'
     ),
+    path('map/', views.map, name='map'),
+    path('robot_review/', views.robot_review, name='robot_review'),
+    path('notify/', views.notify, name='notify'),
+    path('week_tenki/', views.week_tenki, name='week_tenki'),
 ]

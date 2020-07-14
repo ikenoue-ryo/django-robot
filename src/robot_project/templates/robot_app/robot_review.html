@@ -1,0 +1,136 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/robot_review.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+<div class="container mt-4">
+  <!--吹き出しはじまり-->
+  <div class="balloon5">
+    <div class="faceicon">
+      <img src="/media/robot2.png">
+    </div>
+    <div class="chatting">
+      <div class="says">
+        {% if robot_query %}
+          <p>{{ user.profname }}さんが評価したロボットです</p>
+        {% else %}
+          <p>{{ user.profname }}さんが評価したロボットは<br>まだありません</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <!--吹き出し終わり-->
+
+
+  {% for robot in robot_query %}
+  <div class="star_robot">
+    <div class="card grey lighten-2">
+      <div class="card-body text-left">
+        <p><img src="/media/robot2.png" width="50"></p>
+        <div class="robot_name clearfix">
+          <div class="description clearfix">
+            <p class="font-weight-bold">{{ robot.robot_name }}<i class="fas fa-star"></i>{{ robot.score |floatformat:1 }}</p>
+            {% if robot.robot_name == 'annai_robot' %}
+              <p>案内してくれるロボット</p>
+            {% endif %}
+            {% if robot.robot_name == 'health_robot' %}
+              <p>健康状態を表示するロボット</p>
+            {% endif %}
+            {% if robot.robot_name == 'carnews_robot' %}
+              <p>おすすめの車を表示するロボット</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}<br><br><br><br>
+</div>
+
+
+<!--  <footer class="footer">-->
+<!--    <nav class="global-nav">-->
+<!--      <ul class="nav-list">-->
+<!--        <li class="nav-item">-->
+<!--          <a href="#">-->
+<!--            <i class="fas fa-home"></i>-->
+<!--            <span>Home</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a href="#">-->
+<!--            <i class="fas fa-star"></i>-->
+<!--            <span>Star</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a href="#">-->
+<!--            <i class="fas fa-history"></i>-->
+<!--            <span>History</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a href="#">-->
+<!--            <i class="fas fa-globe-asia"></i>-->
+<!--            <span>Map</span>-->
+<!--          </a>-->
+<!--        </li>-->
+
+<!--      </ul>-->
+<!--    </nav>-->
+<!--  </footer>-->
+
+
+
+
+<script>
+$(window).on('load',function(){
+    // ここから文字を<span></span>で囲む記述
+    $('.typ').children().andSelf().contents().each(function() {
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, '<span>$1</span>'));
+        }
+    });
+    // ここから一文字ずつフェードインさせる記述
+    $('.typ').css({'opacity':1});
+    for (var i = 0; i <= $('.typ').children().size(); i++) {
+        $('.typ').children('span:eq('+i+')').delay(50*i).animate({'opacity':1},50);
+    };
+});
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function() {
+	// 初期表示は非表示にする
+	$('#tenki').toggle();
+
+	$("#tenki_button").click(function() {
+		$("#tenki").toggle("1000",function(){
+			$("#tenki_button").attr("value","天気を表示する");
+		});
+	});
+});
+</script>
+
+
+
+
+
+<!--検索補完機能-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+  $(function() {
+    const arr1 = ['ぐるなび', 'Yotube', '質問', 'toDo', 'ブログ', 'ニュース', 'スケジュール', 'お出かけ'];
+
+    $("#autocomplete_search").autocomplete({
+      source:arr1
+    });
+  });
+</script>
+{% endblock content %}
