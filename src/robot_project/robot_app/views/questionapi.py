@@ -119,36 +119,6 @@ def tenki_api(request):
     pressure = ''
     wind = ''
 
-    # user_info = User_Question.objects.filter(user_name=request.user)
-    # address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
-    # # prefecture = address.answer
-    # # city_name = search(prefecture)
-    # city_name = 'Tokyo'
-    # app_id = settings.API_KEY
-    # URL = "https://api.openweathermap.org/data/2.5/weather?q={0},jp&units=metric&lang=ja&appid={1}".format(
-    #     city_name, app_id)
-    #
-    # response = requests.get(URL)
-    # data = response.json()
-    #
-    # weather = data["weather"][0]["description"]  # 最高気温
-    # icon = data["weather"][0]["icon"]
-    # temp_max = data["main"]["temp_max"]  # 最低気温
-    # temp_min = data["main"]["temp_min"]  # 寒暖差
-    # diff_temp = temp_max - temp_min  # 湿度
-    # humidity = data["main"]["humidity"]
-    # # 日付と曜日の取得
-    # today = datetime.datetime.now()
-    # date_time = today.strftime("%Y年%m月%d日 ")
-    # # locale.setlocale(locale.LC_TIME, 'ja_JP.UTF-8')
-    # locale.setlocale(locale.LC_ALL, '')
-    # now_w = "{0:%A}".format(today)
-    # day = date_time + now_w
-    #
-    # context = {"場所": city_name, "日付": day, "": icon, "最高気温": str(temp_max) + "度",
-    #            "最低気温": str(temp_min) + "度", "湿度": str(humidity) + "%"}
-    # return context
-    # 取得したAPIキーを入力
     apiKey = settings.API_KEY
     # ベースURL
     baseUrl = "http://api.openweathermap.org/data/2.5/weather?"
@@ -183,19 +153,6 @@ def tenki_api(request):
             print("都市名がみつかりませんでした。")
 
 
-        # 3時間ごとの天気
-        API_KEY = settings.API_KEY
-        city = 'Fukuoka'
-        API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&APPID='
-
-        url = API_URL + API_KEY
-        response = requests.get(url)
-        forecastData = json.loads(response.text)
-
-        print('これなんだ', forecastData['list'][0]['dt_txt'])
-        print('天気', forecastData['list'][0]['weather'][0]['main'])
-
-
     context = {
         'city_name': city_name,
         'weather': weather,
@@ -205,7 +162,6 @@ def tenki_api(request):
         'humidity': humidity,
         'pressure': pressure,
         'wind': wind,
-        'forecastData': forecastData,
         }
     return context
 

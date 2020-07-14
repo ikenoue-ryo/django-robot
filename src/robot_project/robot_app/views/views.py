@@ -1343,7 +1343,7 @@ def week_tenki(request):
     # 天気を表示
     week_tenki = questionapi.tenki_api(request)
 
-    API_Key = 'cdce5b2a82001e6a31a772b6a472bd67'
+    API_Key = settings.API_KEY
     city = 'Tokyo,jp'
     url = 'http://api.openweathermap.org/data/2.5/forecast'
 
@@ -1357,7 +1357,6 @@ def week_tenki(request):
     r = requests.get(url, params=query)
     #week
     result = (r.json()['list'])
-
 
 
     context = {
