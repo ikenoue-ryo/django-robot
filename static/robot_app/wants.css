@@ -527,7 +527,7 @@
   .week_tenki{
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
-    margin: 30px 0;
+    margin: 15px 0;
   }
 
   .week_tenki a {
@@ -564,10 +564,23 @@
     padding: 0;
     display: inline-block;
     float: left;
+    padding: 21px;
   }
 
   .week_info img {
-    width: 50%;
+    width: 80%;
+    position: relative;
+    top: -20px;
+  }
+
+  .week_info ul{
+    margin: 0;
+  }
+
+
+  .week_info ul li{
+    height: 63px;
+    padding: 20px;
   }
 
   .main_tenki {
@@ -584,6 +597,10 @@
   .week_tenki h2{
     font-size: 16px;
     margin: 20px 0;
+  }
+
+  .week_tenki p{
+    padding: 5px;
   }
 
   /* week_tenkiのcssここまで  */

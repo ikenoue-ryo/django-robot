@@ -6,16 +6,11 @@
 {% endblock customcss %}
 
 {% block content %}
- <script src="https://maps.googleapis.com/maps/api/js?key=ここにAPIキー&callback=initMap" async defer></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=ここにAPI&callback=initMap" async defer></script><!-- YOUR_API_KEYの部分は取得した APIキーで置き換えます -->
 
-<!--以下2行は緯度経度のテキスト表示とマップの描画場所の指定-->
+
 <div id="result"></div>
 <div id="map-canvas"></div>
-
-<!--以下2行は現在地アイコンをCSSデザインする指定に使用-->
-<div class='pin bounce'></div>
-<div class='pulse'></div>
-
 
 <script>
 // グローバル変数
@@ -63,6 +58,7 @@ function successFunc( position )
 			map: syncerWatchPosition.map ,
 			position: latlng ,
 		} ) ;
+
 	}
 	else
 	{
@@ -98,7 +94,6 @@ var optionObj = {
 
 // 現在位置を取得する
 navigator.geolocation.watchPosition( successFunc , errorFunc , optionObj ) ;
-
 </script>
 
 {% endblock content %}

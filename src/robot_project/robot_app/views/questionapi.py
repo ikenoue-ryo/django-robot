@@ -32,6 +32,8 @@ def selectAnswer(request, answer):
         question.question = 'mycalendar'
     elif request.POST['answer'] == '8' or request.POST['answer'] == 'お出かけ':
         question.question = 'map'
+    elif request.POST['answer'] == '9' or request.POST['answer'] == 'お買い物':
+        question.question = 'net_shop'
     else:
         question.question = 'none'
     return question.question

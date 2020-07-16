@@ -1,0 +1,77 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/notify.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+    <!--吹き出しはじまり-->
+    <div class="balloon1">
+        <div class="faceicon">
+            <img src="/media/robot2.png">
+        </div>
+        <div class="chatting">
+            <div class="says">
+                <p>{{ user.profname }}さんに質問があります</p>
+            </div>
+        </div>
+    </div>
+    <!--吹き出し終わり-->
+
+    <!--吹き出しはじまり-->
+    <div class="balloon1">
+        <div class="faceicon">
+            <img src="/media/robot2.png">
+        </div>
+        <div class="question_form">
+            <div class="chatting">
+                <div class="says">
+                    <p class="robot_text">{{ mesg }}</p>
+                </div>
+                <!--吹き出しはじまり-->
+                <div class="balloon1">
+                    <div class="usericon">
+                        <img src="/media/user.png">
+                    </div>
+                    <div class="says_no">
+                        <div id="ajax_response"></div>
+                    </div>
+                </div>
+                <!--吹き出し終わり-->
+            </div>
+        </div>
+    </div>
+    <!--吹き出し終わり-->
+
+    <form method="post" name="form1" action="/ajax/">{% csrf_token %}
+
+        <input type="text" name="name_input_text" class="form-control" autocomplete="off" placeholder="入力してください">
+    </form>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+
+<script>
+    $("form").submit(function(event){
+        event.preventDefault();
+        var form = $(this);
+        $.ajax({
+            url: form.prop("action"), //通信先のURL
+            method: form.prop("method"),
+            data: form.serialize(), //送信するデータ
+            timeout: 10000, //通信タイムアウト
+            dataType: "text",
+        })
+        .done(function(data){
+            $("div#ajax_response").text(data);
+        })
+    });
+</script>
+
+{% endblock content %}

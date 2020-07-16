@@ -86,3 +86,14 @@ class Schedule(models.Model):
 
     def __str__(self):
         return self.summary
+
+
+class Net_Shop(models.Model):
+    user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
+    question = models.CharField(max_length=50, blank=True, null=True)
+    answer = models.CharField(max_length=50, blank=True, null=True)
+    created_at = models.DateTimeField('作成日', default=timezone.now)
+    updated_at = models.DateTimeField('更新日', default=timezone.now)
+
+    def __str__(self):
+        return self.question

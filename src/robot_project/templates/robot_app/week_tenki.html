@@ -13,6 +13,7 @@
       background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
     }
 </style>
+{{ result_all_day }}
 
     <div class="main_tenki">
         <p>{{ week_tenki.city_name }}</p>
@@ -26,7 +27,7 @@
             <ul class="horizontal_scroll rank">
                 {% for tenki in result %}
                 <li>
-                    <p>{{ tenki.dt_txt }}</p>
+                    <p>{{ tenki.dt_txt | date:"n/j H" }}時</p>
                     <a href="">
                         {% for photo in tenki.weather %}
                         <img src="http://openweathermap.org/img/wn/{{ photo.icon }}@2x.png">
@@ -41,16 +42,16 @@
     <div class="week_info">
         <!-- day1 -->
         <ul class="clearfix">
-            <li>{{ result_day1.dt_txt }}</li>
+            <li>{{ result_date1 | date:"n/j" }}</li>
             {% for weather in result_day1.weather %}
-            <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
+                <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
             {% endfor %}
             <li style="padding: 15px;">{{ result_day1.main.temp |floatformat:0 }}°</li>
         </ul>
 
         <!-- day2 -->
         <ul class="clearfix">
-            <li>{{ result_day2.dt_txt }}<li>
+            <li>{{ result_date2 | date:"n/j" }}</li>
             {% for weather in result_day2.weather %}
                 <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
             {% endfor %}
@@ -59,7 +60,7 @@
 
         <!-- day3 -->
         <ul class="clearfix">
-            <li>{{ result_day3.dt_txt }}<li>
+            <li>{{ result_date3 | date:"n/j" }}</li>
             {% for weather in result_day3.weather %}
                 <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
             {% endfor %}
@@ -68,13 +69,14 @@
 
         <!-- day4 -->
         <ul class="clearfix">
-            <li>{{ result_day4.dt_txt }}<li>
+            <li>{{ result_date4 | date:"n/j" }}</li>
             {% for weather in result_day4.weather %}
                 <li><img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"></li>
             {% endfor %}
             <li style="padding: 15px;">{{ result_day4.main.temp |floatformat:0 }}°</li>
         </ul>
     </div>
+        <br><br>
 </div>
 
 

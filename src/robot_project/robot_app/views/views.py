@@ -1,11 +1,12 @@
 import urllib
+from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from newsapi import NewsApiClient
 from django.shortcuts import render
 from django.contrib import messages
-from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation, Blog, News
+from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation, Blog, News, Net_Shop
 from users.models import User
 from django.shortcuts import redirect
 from robot_project import settings
@@ -16,6 +17,7 @@ from robot_app.views import questionapi
 from urllib.parse import urlencode
 import datetime
 from datetime import date
+from datetime import datetime
 from django.views import generic
 from . import mixins
 from ..forms import ScheduleForm
@@ -76,6 +78,9 @@ def indexfunc(request):
             if request.POST.get('answer') == '8' or request.POST.get('answer') == 'お出かけ':
                 questionapi.selectAnswer(request, answer)
                 return redirect('/map')
+            if request.POST.get('answer') == '9' or request.POST.get('answer') == 'お買い物':
+                questionapi.selectAnswer(request, answer)
+                return redirect('/net_shop')
         else:
             #天気を表示
             tenki_api = questionapi.tenki_api(request)
@@ -205,6 +210,7 @@ def indexfunc(request):
                 'news': 'ニュース',
                 'schedule': '予定',
                 'map': 'お出かけ',
+                'net_shop': 'お買い物',
                 'type': question_type,
                 'mesg': question_mesg,
                 'tenki_api': tenki_api,
@@ -1332,7 +1338,6 @@ def notify(request):
         'annai_robot': annai_robot,
         'healthy_robot': healthy_robot,
         'schedule_robot': schedule_robot,
-
         # 'type': question_type,
         # 'mesg': question_mesg,
     }
@@ -1353,11 +1358,20 @@ def week_tenki(request):
         'cnt': '30',
         'appid': API_Key
     }
-    #
+
     r = requests.get(url, params=query)
     #week
     result = (r.json()['list'])
+    print('テスト1', result)
 
+    for i in range(r.json()['cnt']):
+        all_day = (result[i]['dt_txt'])
+        result[i]['dt_txt'] = datetime.strptime(all_day, "%Y-%m-%d %H:%M:%S")
+
+    result_date1 = result[0]['dt_txt']
+    result_date2 = result[8]['dt_txt']
+    result_date3 = result[16]['dt_txt']
+    result_date4 = result[24]['dt_txt']
 
     context = {
         'week_tenki': week_tenki,
@@ -1366,6 +1380,245 @@ def week_tenki(request):
         'result_day2': result[8],
         'result_day3': result[16],
         'result_day4': result[24],
+        'result_date1': result_date1,
+        'result_date2': result_date2,
+        'result_date3': result_date3,
+        'result_date4': result_date4,
     }
 
     return render(request, 'robot_app/week_tenki.html', context)
+
+
+def net_shop(request):
+
+    def kick_rakten_api():
+        REQUEST_URL = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
+
+        # パラメーター生成
+        search_param = set_api_parameter()
+        # Get
+        response = requests.get(REQUEST_URL, search_param)
+        # APIから返却された出力パラメーターを取得
+        result = response.json()
+
+        # 確認のために出力
+        print(result)
+        #
+        item = result["Items"][0]["Item"]
+        print(item["itemPrice"])
+
+    def set_api_parameter():
+        app_id = settings.Rakuten_API_KEY
+        parameter = {
+            "format": "json"
+            , "keyword": "4562344360869"
+            , "applicationId": [app_id]
+            , "availability": 1
+            , "hits": 1
+            , "sort": "+itemPrice"
+        }
+        return parameter
+
+    kick_rakten_api()
+
+    if request.method == 'POST':
+
+        if request.POST['question'] == 'want_object':
+            news = Net_Shop()
+            news.question = request.POST['question']
+            news.answer = request.POST['answer']
+            news.user_name = request.user
+            news.save()
+            question_type = 'object_category'
+            question_mesg = 'どんなカテゴリが好きですか？'
+        if request.POST['question'] == 'object_category':
+            values = request.POST.getlist('answer')
+            if 'mens' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'mens'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'women' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'women'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'shoes' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'shoes'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'bag' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'bag'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'underwear' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'underwear'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'jewelry' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'jewelry'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'drink' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'drink'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'food' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'food'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'beer' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'beer'
+                net_shop.user_name = request.user
+                net_shop.save()
+            if 'sake' in values:
+                net_shop = Net_Shop()
+                net_shop.question = request.POST['question']
+                net_shop.answer = 'sake'
+                net_shop.user_name = request.user
+                net_shop.save()
+
+            question_type = 'thanks'
+            question_mesg = '商品を表示します。'
+            redirect('/')
+    else:
+        # 初回質問
+        question_type = 'want_object'
+        question_mesg = '何かほしいものはありますか？'
+
+
+    # celebrity = Net_Shop.objects.filter(question='celebrity', user_name=request.user).last()
+    # if celebrity:
+    #     celebrity_name = celebrity.answer
+    #
+    #     newsapi = NewsApiClient(api_key=settings.NEWS_API_KEY)
+    #
+    #     categories = newsapi.get_top_headlines(category='entertainment',
+    #                                           country='jp',
+    #                                           page_size=20,
+    #                                           )
+    #     sports = newsapi.get_top_headlines(category='sports',
+    #                                           country='jp',
+    #                                           page_size=7,
+    #                                           )
+    #     if originals:
+    #         originals = newsapi.get_top_headlines(q=celebrity_name,
+    #                                               country='jp',
+    #                                               page_size=7,
+    #                                               )
+    #     else:
+    #         technologys = newsapi.get_top_headlines(category='technology',
+    #                                               country='jp',
+    #                                               page_size=7,
+    #                                               )
+
+
+        #API表示
+        # categories = categories['articles']
+        # sports = sports['articles']
+        # technologys = technologys['articles']
+        # if originals:
+        #     originals = originals['articles']
+
+    return render(request, 'robot_app/net_shop.html', {
+        'mens': 'メンズファッション',
+        'women': 'レディースファッション',
+        'shoes': '靴',
+        'bag': 'バッグ・小物・ブランド・雑貨',
+        'underwear': '下着・ナイトウェア',
+        'jewelry': 'ジュエリー・アクセサリー',
+        'drink': '水・ソフトドリンク',
+        'food': '食品',
+        'beer': 'ビール',
+        'sake': '日本酒',
+        # 'categories': categories,
+        # 'sports': sports,
+        # 'originals': originals,
+        # 'technologys': technologys,
+        'type': question_type,
+        'mesg': question_mesg,
+        'thanks': question_mesg
+    })
+
+
+def any_questions(request):
+    liquor = ''
+    beer = ''
+    wine = ''
+    sweet = ''
+    question_type = ''
+    question_mesg = ''
+    question_type2 = ''
+    question_mesg2 = ''
+
+
+    if request.method == 'POST':
+
+        if request.POST.get('answer') == '1':
+            question = User_Question()
+            question.question = 'お酒が好きか？'
+            question.answer = request.POST['answer']
+            question.user_name = request.user
+            question.save()
+
+            question_type2 = 'beer'
+            question_mesg2 = 'ビールは好きですか？'
+        if request.POST.get('answer') == '2':
+            question_type = 'wine'
+            question_mesg = 'ワインは好きですか？'
+        # if request.POST['question'] == 'wine':
+        #     question_type = 'sweet'
+        #     question_mesg = '甘いものは好きですか？'
+        # if request.POST['question'] == 'sweet':
+            question_type = 'thanks'
+            question_mesg = 'ありがとうございました。'
+            redirect('/')
+
+        # if request.POST.get('answer') == '1' or request.POST.get('answer') == 'ぐるなび':
+        #     questionapi.selectAnswer(request, answer)
+        #     return redirect('/g_navi/')
+        # if request.POST.get('answer') == '2' or request.POST.get('answer') == 'Youtube':
+        #     questionapi.selectAnswer(request, answer)
+        #     return redirect('/youtube/')
+
+    else:
+            # 初回質問
+        question_type = 'liquor'
+        question_mesg = 'お酒は好きですか？'
+
+
+    return render(request, 'robot_app/any_questions.html', {
+        'liquor': liquor,
+        'beer': beer,
+        'wine': wine,
+        'sweet': sweet,
+        'type': question_type,
+        'mesg': question_mesg,
+        'type2': question_type2,
+        'mesg2': question_mesg2,
+        'thanks': question_mesg
+    })
+
+
+def ajax(request):
+    input_text = request.POST.getlist('name_input_text')
+    hoge = input_text[0]
+    print('あああ', hoge)
+
+    return  HttpResponse(hoge)

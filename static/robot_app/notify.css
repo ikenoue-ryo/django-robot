@@ -488,7 +488,22 @@
   }
 
   .balloon1 .chatting, .balloon2 .chatting, .balloon3 .chatting, .balloon4 .chatting, .balloon5 .chatting{
-    width: 90%;
+    width: 100%!important;
+  }
+
+  .balloon1 .usericon {
+    float: left;
+    width: 40px;
+    position: relative;
+    top: 10px;
+    left: 90%;
+  }
+
+  .balloon1 .usericon img {
+    width: 100%;
+    height: auto;
+    border: solid 3px #d7ebfe;
+    border-radius: 50%;
   }
 
   .says {
@@ -518,6 +533,45 @@
   .description .fa-star{
     color: #FFB100;
     margin-left: 10px;
+  }
+
+  .says_no {
+    display: inline-block;
+    position: relative;
+    margin: 0 0 0 155px;
+    padding: 11px 35px 11px;
+    border-radius: 12px;
+    background: #d7ebfe;
+  }
+
+  .says_no:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 16px;
+    right: -24px;
+    border: 12px solid transparent;
+    border-right: 12px solid #d7ebfe;
+        transform: rotate(180deg);
+  }
+
+  .says_no p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .says_no a {
+    font-size: 16px;
+  }
+
+  .says_no ul li {
+    display: inline-block;
+    float: left;
+    margin: 0 10px;
+  }
+
+  .says p.robot_text {
+    font-size: 16px!important;
   }
 
   /* ロボットの吹き出しcss　ここまで */
