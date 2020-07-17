@@ -25,6 +25,7 @@ urlpatterns = [
     path('month_with_schedule/', views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
     path('month_with_schedule/<int:year>/<int:month>/', views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
     path('net_shop/', views.net_shop, name='net_shop'),
+    path('shop_detail/<str:itemId>/', views.shop_detail, name='shop_detail'),
     path('map/', views.map, name='map'),
     path('robot_review/', views.robot_review, name='robot_review'),
     path('notify/', views.notify, name='notify'),

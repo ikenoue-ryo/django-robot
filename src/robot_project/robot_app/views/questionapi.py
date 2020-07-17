@@ -310,3 +310,70 @@ def carsensor_api(request):
         'carsensor_records': carsensor_records
     }
     return context
+
+
+# 楽天API
+def kick_rakten_api():
+    REQUEST_URL = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
+
+    # パラメーター生成
+    search_param = set_api_parameter()
+    # Get
+    response = requests.get(REQUEST_URL, search_param)
+    # APIから返却された出力パラメーターを取得
+    result = response.json()
+
+    item_records = result['Items']
+
+    context = {
+        'item_records': item_records,
+    }
+    return context
+
+
+def set_api_parameter():
+    app_id = settings.Rakuten_API_KEY
+    parameter = {
+        'format': "json",
+        'keyword': 'アディダス'+ 'スニーカー' + 'サマークリアランスセール中',
+        'applicationId': [app_id],
+        'availability': 1,
+        'mobail':1,
+        'hits': 5,
+        'imageFlag':1,
+        'orFlag': 0,
+        'hasReviewFlag': 1,
+        'sort': '-reviewCount'
+    }
+    return parameter
+
+
+
+def itemcode_rakten_api(itemId):
+    REQUEST_URL = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
+
+    # パラメーター生成
+    search_param = set_item_api_parameter(itemId)
+    print('まずこれ', search_param)
+
+    # Get
+    response = requests.get(REQUEST_URL, search_param)
+    # APIから返却された出力パラメーターを取得
+    result = response.json()
+
+    item_records = result
+
+    context = {
+        'item_records': item_records,
+    }
+    return context
+
+
+def set_item_api_parameter(itemId):
+    app_id = settings.Rakuten_API_KEY
+    parameter = {
+        'format': "json",
+        'applicationId': [app_id],
+        'itemCode': itemId
+    }
+    return parameter

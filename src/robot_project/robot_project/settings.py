@@ -17,6 +17,7 @@ NEWS_API_KEY = os.environ.get("NEWS_API_KEY")
 EKISPART_API_KEY = os.environ.get("EKISPERT_API_KEY")
 Google_API_KEY = os.environ.get("Google_API_KEY")
 Rakuten_API_KEY = os.environ.get("Rakuten_API_KEY")
+Yahoo_API_KEY = os.environ.get("Yahoo_API_KEY")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

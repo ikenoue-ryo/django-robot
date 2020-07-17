@@ -1,11 +1,18 @@
 {% extends 'robot_app/base.html' %}
 {% load static %}
+{% load humanize %}
+{% load division_tag %}
 
 {% block customcss %}
 <link href="{% static 'robot_app/news.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
 {% block content %}
+
+
+
+
+
 
 <div class="container mt-5">
     <div class="question_robot">
@@ -16,68 +23,45 @@
         <form method="POST" action="" name="form1">{% csrf_token %}
             <p class="tgt">{{ mesg }}</p>
             {% if type == "thanks" %}
-<!--                <script>-->
-<!--                    window.location.href = 'http://localhost:8080/';-->
-<!--                </script>-->
-            <div class="news_area">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                  aria-selected="true">エンタメ</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                  aria-selected="false">スポーツ</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" id="originals-tab" data-toggle="tab" href="#originals" role="tab" aria-controls="originals"
-                  aria-selected="false">おすすめ</a>
-                </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                   <div class="container mt-5" style="padding:0;">
-                        <div class="news_articles">
-                        {% for category in categories %}
-                            <ul class="clearfix">
-                                <li><img src="{{ category.urlToImage }}" width="100"></li>
-                                <li><a href="{{ category.url }}">{{ category.title  | truncatechars:35 }}</a></li>
-                            </ul>
-                        {% endfor %}
+
+            {% for item_record in item_records %}
+              <div class="container my-5">
+                <!--Section: Content-->
+                <section class="text-center">
+                  <!--Grid row-->
+                  <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-12">
+                      <!-- Card -->
+                      <div class="card">
+                        <!-- Card image -->
+                        <div class="view overlay">
+                                <img class="card-img-top" src="{{ item_record.Item.mediumImageUrls.0.imageUrl | cut:'?_ex=128x128' }}" width="100%"></p>
+                          <a href="#!">
+                            <div class="mask rgba-white-slight"></div>
+                          </a>
                         </div>
+                        <!-- Card content -->
+                        <div class="card-body">
+                          <p class="mb-1 text-left catch_copy"><a href="" class="font-weight-bold black-text">{{item_record.Item.catchcopy}}</a></p>
+                          <p class="mb-1"><strong>{{ item_record.Item.itemPrice }}</strong><span class="yen">円</span></p>
+                          <div class="amber-text fa-xs mb-1">
+                            <i class="fas fa-star"></i>{{ item_record.Item.reviewAverage }}
+                          </div>
+                          <button type="button" class="btn btn-black btn-rounded btn-sm px-3">Buy Now</button>
+                          <button type="button" class="btn btn-outline-black btn-rounded btn-sm px-3 waves-effect"><a href="{% url 'robot_app:shop_detail' itemId=item_record.Item.itemCode %}">Details</a></button>
+                        </div>
+                      </div>
+                      <!-- Card -->
                     </div>
-                </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                   <div class="container mt-5" style="padding:0;">
-                        <div class="news_articles">
-                            {% for sport in sports %}
-                                <ul class="clearfix">
-                                    <li><img src="{{ sport.urlToImage }}" width="100"></li>
-                                    <li><a href="{{ sport.url }}">{{ sport.title  | truncatechars:35 }}</a></li>
-                                </ul>
-                            {% endfor %}
-                        </div>
-                   </div>
-                </div>
-                <div class="tab-pane fade" id="originals" role="tabpanel" aria-labelledby="originals-tab">
-                   <div class="container mt-5" style="padding:0;">
-                        <div class="news_articles">
-                            {% for original in originals %}
-                                <ul class="clearfix">
-                                    <li><img src="{{ original.urlToImage }}" width="100"></li>
-                                    <li><a href="{{ original.url }}">{{ original.title  | truncatechars:35 }}</a></li>
-                                </ul>
-                            {% endfor %}
-                            {% for technology in technologys %}
-                                <ul class="clearfix">
-                                    <li><img src="{{ technology.urlToImage }}" width="100"></li>
-                                    <li><a href="{{ technology.url }}">{{ technology.title  | truncatechars:35 }}</a></li>
-                                </ul>
-                            {% endfor %}
-                        </div>
-                   </div>
-                </div>
-            </div>
+                    <!--Grid column-->
+                  </div>
+                  <!--Grid row-->
+                </section>
+                <!--Section: Content-->
+              </div>
+            {% endfor %}
+
             {% endif %}
             {% if type != "thanks" and type != "object_category" %}
                 <input type="hidden" name="question" value="{{ type }}">
@@ -146,7 +130,7 @@
         {% endfor %}
     </div>
 
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br>
 </div>
 
 

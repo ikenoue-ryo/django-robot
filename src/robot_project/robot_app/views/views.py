@@ -1391,35 +1391,7 @@ def week_tenki(request):
 
 def net_shop(request):
 
-    def kick_rakten_api():
-        REQUEST_URL = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
-
-        # パラメーター生成
-        search_param = set_api_parameter()
-        # Get
-        response = requests.get(REQUEST_URL, search_param)
-        # APIから返却された出力パラメーターを取得
-        result = response.json()
-
-        # 確認のために出力
-        print(result)
-        #
-        item = result["Items"][0]["Item"]
-        print(item["itemPrice"])
-
-    def set_api_parameter():
-        app_id = settings.Rakuten_API_KEY
-        parameter = {
-            "format": "json"
-            , "keyword": "4562344360869"
-            , "applicationId": [app_id]
-            , "availability": 1
-            , "hits": 1
-            , "sort": "+itemPrice"
-        }
-        return parameter
-
-    kick_rakten_api()
+    item = ''
 
     if request.method == 'POST':
 
@@ -1502,6 +1474,26 @@ def net_shop(request):
         question_type = 'want_object'
         question_mesg = '何かほしいものはありますか？'
 
+    item_records = questionapi.kick_rakten_api()
+    item_records = item_records['item_records']
+
+
+    return render(request, 'robot_app/net_shop.html', {
+        'mens': 'メンズファッション',
+        'women': 'レディースファッション',
+        'shoes': '靴',
+        'bag': 'バッグ・小物・ブランド・雑貨',
+        'underwear': '下着・ナイトウェア',
+        'jewelry': 'ジュエリー・アクセサリー',
+        'drink': '水・ソフトドリンク',
+        'food': '食品',
+        'beer': 'ビール',
+        'sake': '日本酒',
+        'item_records': item_records,
+        'type': question_type,
+        'mesg': question_mesg,
+        'thanks': question_mesg
+    })
 
     # celebrity = Net_Shop.objects.filter(question='celebrity', user_name=request.user).last()
     # if celebrity:
@@ -1536,26 +1528,16 @@ def net_shop(request):
         # if originals:
         #     originals = originals['articles']
 
-    return render(request, 'robot_app/net_shop.html', {
-        'mens': 'メンズファッション',
-        'women': 'レディースファッション',
-        'shoes': '靴',
-        'bag': 'バッグ・小物・ブランド・雑貨',
-        'underwear': '下着・ナイトウェア',
-        'jewelry': 'ジュエリー・アクセサリー',
-        'drink': '水・ソフトドリンク',
-        'food': '食品',
-        'beer': 'ビール',
-        'sake': '日本酒',
-        # 'categories': categories,
-        # 'sports': sports,
-        # 'originals': originals,
-        # 'technologys': technologys,
-        'type': question_type,
-        'mesg': question_mesg,
-        'thanks': question_mesg
-    })
 
+
+def shop_detail(request, itemId):
+
+    item_records = questionapi.itemcode_rakten_api(itemId)
+    item_records = item_records['item_records']['Items'][0]['Item']
+
+    return render(request, 'robot_app/shop_detail.html', {
+        'item_records': item_records,
+    })
 
 def any_questions(request):
     liquor = ''
@@ -1598,7 +1580,7 @@ def any_questions(request):
         #     return redirect('/youtube/')
 
     else:
-            # 初回質問
+        # 初回質問
         question_type = 'liquor'
         question_mesg = 'お酒は好きですか？'
 
