@@ -1,0 +1,134 @@
+{% extends 'robot_app/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load division_tag %}
+
+{% block customcss %}
+<link href="{% static 'robot_app/notify.css' %}" rel="stylesheet">
+{% endblock customcss %}
+
+{% block content %}
+
+
+<div class="line_ui clearfix talk">
+
+    <div class="question">
+        <!-- 回答済みの質問 -->
+        {% for answered in answered_list %}
+            <p>{{ answered.question }}</p>
+        {% endfor %}
+
+        <!-- 未回答の質問(回答済み質問はブラウザ更新で消える) -->
+        <div id="first_question">
+            <p>
+                {{ non_answer.question }}
+            </p>
+        </div>
+        <div id="answers">
+        </div>
+        <div id="next_question">
+        </div>
+    </div>
+
+    <div class="answer">
+        <div id="">
+            <!-- 回答済みの回答 -->
+            {% for answered in answered_list %}
+                <p>{{ answered.answer }}</p>
+            {% endfor %}
+
+            <!-- 未回答の回答 -->
+            {% if non_answer %}
+                <p></p>
+            {% else %}
+                <p>{{ non_answer.answer }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+
+    <br><br><br>
+    {% if non_answer.question != 'ありがとうございました。' %}
+    <form id="ajax-add-answer" action="{% url 'robot_app:ajax_answer_add' %}" method="POST">
+        <input type="hidden" id="id_question" value="{{ answer_question }}">
+        <input type="text" id="id_answer" class="form-control" placeholder="入力してください" required>
+        {% csrf_token %}
+    </form>
+    {% endif %}
+
+
+{% endblock %}
+
+
+
+
+{% block extrajs %}
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        // 送信ボタンで呼ばれる
+        $('#ajax-add-answer').on('submit', e => {
+            // デフォルトのイベントをキャンセルし、ページ遷移しないように。
+            e.preventDefault();
+
+            $.ajax({
+                'url': '{% url "robot_app:ajax_answer_add" %}',
+                'type': 'POST',
+                'data': {
+                    'question': $('#id_question').val(),  // 質問
+                    'answer': $('#id_answer').val(),  // 回答
+                },
+                'dataType': 'json'
+            }).done( response => {
+                const p = $('<p>', {text: response.answer});
+                const q = $('<p>', {text: response.next_question});
+
+                $('#next_question').append(p);
+                $(function(){
+                    setTimeout(function(){
+                        $('#next_question').append(q);
+                    },1000);
+                });
+                $('#id_answer').val('');
+                $('#id_question').val(response.next_question);
+
+                if (response.next_question == 'ありがとうございました。'){
+                    $('form').remove();
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

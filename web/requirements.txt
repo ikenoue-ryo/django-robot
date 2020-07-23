@@ -10,3 +10,4 @@ apiclient
 Pillow
 newsapi-python
 foursquare
+beautifulsoup4

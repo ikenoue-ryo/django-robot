@@ -31,5 +31,5 @@ urlpatterns = [
     path('notify/', views.notify, name='notify'),
     path('week_tenki/', views.week_tenki, name='week_tenki'),
     path('any_questions/', views.any_questions, name='any_questions'),
-    path('ajax/', views.ajax, name='ajax'),
+    path('ajax_answer_add/', views.ajax_answer_add, name='ajax_answer_add'),
 ]

@@ -2,6 +2,10 @@
 
 /*-- スマホ版表示CSS  --*/
 @media screen and (max-width: 480px) {
+  body {
+    background-color: rgb(113, 147, 193) !important;
+  }
+
   table {
     border-collapse: collapse;
     width: 100%;
@@ -20,29 +24,31 @@
 
   header {
     border-bottom: 1px solid #000;
-    margin: 10px 0;
+    padding: 0;
+    margin-bottom: 0;
+    background: #F2F2F2;
   }
 
-  table tr td{
+  table tr td {
     border: none;
   }
 
-  .mypage, .loginpage{
+  .mypage, .loginpage {
     width: 80%;
   }
 
-  .loginpage{
+  .loginpage {
     margin-left: 70px;
   }
 
-  .loginpage .heading a{
+  .loginpage .heading a {
     color: #fff;
     margin-right: 10px;
     font-size: 18px;
     font-weight: 600;
   }
 
-  .close{
+  .close {
     padding: 23px 16px;
   }
 
@@ -54,15 +60,16 @@
     color: rgb(0, 123, 255);
   }
 
-  .search_form{
+  .search_form {
     margin: 20px 0;
   }
 
-  .header_class{
-    margin: 10px;
+  .header_class {
+    margin: 0;
+    padding: 10px;
   }
 
-  .robot_icon{
+  .robot_icon {
     width: 90%;
     display: inline-block;
     float: left;
@@ -74,18 +81,18 @@
     color: #007bff;
   }
 
-  .robot_icon img{
+  .robot_icon img {
     width: 35px;
   }
 
-  .user_icon{
+  .user_icon {
     font-size: 28px;
     width: 30px;
     display: inline-block;
     float: left;
   }
 
-  .user_login ul li{
+  .user_login ul li {
     width: 100%;
     text-align: center;
     margin: 10px;
@@ -103,10 +110,10 @@
   .intro_list i.fas, .intro_list i.far {
     margin-right: 10px;
     font-size: 20px;
-    color: #999999!important;
+    color: #999999 !important;
   }
 
-  .dtime{
+  .dtime {
     text-align: right;
     margin: 0 20px;
   }
@@ -117,12 +124,12 @@
     float: left;
   }
 
-  .question_form p.tgt{
+  .question_form p.tgt {
     margin: 0 0 0 10px;
     font-size: 20px;
   }
 
-  .question_form p{
+  .question_form p {
     padding: 10px 0;
     font-size: 18px;
   }
@@ -131,91 +138,91 @@
     padding: 0 0 0 15px;
   }
 
-  .city_name{
+  .city_name {
     width: 35%;
     display: inline-block;
     float: left;
   }
 
-  .card-body{
+  .card-body {
     padding: 0;
   }
 
-  .card-body img{
+  .card-body img {
     width: 100%;
   }
 
-  .card-body p{
+  .card-body p {
     display: inline-block;
     float: left;
     margin: 0;
   }
 
-  p .hour{
+  p .hour {
     width: 100px;
   }
 
-  .d-flex p.templature{
+  .d-flex p.templature {
     margin-right: 15px;
   }
 
-  .city_name{
+  .city_name {
     width: 25%;
     display: inline-block;
     float: left;
     margin: 37px 10px;
   }
 
-  .font-weight-bold{
+  .font-weight-bold {
     font-size: 18px;
     margin: 12px 0;
   }
 
-  .d-flex{
+  .d-flex {
     width: 108%;
     float: left;
     padding: 15px 0;
   }
 
-  .d-flex ul{
+  .d-flex ul {
     padding: 0;
     margin: 0;
   }
 
-  .result p{
+  .result p {
     padding: 0;
     width: 40%;
     margin-left: 15px;
   }
 
-  .result h3{
+  .result h3 {
     font-size: 14px;
   }
 
-  .suggestion{
+  .suggestion {
     /*margin: 30px 10px;*/
   }
 
-  #car_news_button, #weight_news_button{
+  #car_news_button, #weight_news_button {
     margin: 10px 0px;
   }
 
-  .question_route{
+  .question_route {
     width: 85%;
     margin: 0;
     text-align: left;
   }
 
-  .robot_route{
-    position: sticky;/*固定する*/
-    position: -webkit-sticky;/*Safari用ベンダープレフィックス*/
-    top: 0;/*ブラウザの上からの距離はゼロ*/
+  .robot_route {
+    position: sticky; /*固定する*/
+    position: -webkit-sticky; /*Safari用ベンダープレフィックス*/
+    top: 0; /*ブラウザの上からの距離はゼロ*/
     width: 60px;
     display: inline-block;
     float: left;
   }
 
-  .suggest_area{
+  .suggest_area {
     width: 90%;
     margin: 0;
   }
@@ -225,12 +232,12 @@
     font-size: 20px;
   }
 
-  .health p{
+  .health p {
     padding: 0;
     margin: 0;
   }
 
-  .fa-heart{
+  .fa-heart {
     position: relative;
     top: -20px;
     left: 33px;
@@ -238,7 +245,7 @@
     font-size: 20px;
   }
 
-  .recommend_car .result img{
+  .recommend_car .result img {
     width: 100%;
   }
 
@@ -262,19 +269,19 @@
     width: 45%;
   }
 
-  .recommend_car .result table tr td{
+  .recommend_car .result table tr td {
     font-size: 14px;
     padding: 0;
   }
 
-  #car_news li{
-    background:#f2f2f2;
-    width:200px;
-    height:50px;
-    line-height:50px;
-    text-align:center;
-    border:#666 1px solid;
-    display:none;
+  #car_news li {
+    background: #f2f2f2;
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border: #666 1px solid;
+    display: none;
   }
 
 
@@ -328,7 +335,7 @@
   }
 
   .on-click {
-    color: transparent!important;
+    color: transparent !important;
   }
 
   .on-click {
@@ -336,24 +343,26 @@
     -webkit-transform: rotate(-180deg);
   }
 
-  .show-text p{
+  .show-text p {
     margin-bottom: 30px;
   }
 
-  .result img{
+  .result img {
     width: 100%;
   }
 
   /*  評価　*/
-  .evaluation{
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
+  .evaluation {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
   }
-  .evaluation input[type='radio']{
+
+  .evaluation input[type='radio'] {
     display: none;
   }
-  .evaluation label{
+
+  .evaluation label {
     position: relative;
     padding: 10px 10px 0;
     color: gray;
@@ -361,7 +370,8 @@
     font-size: 30px;
     margin-top: 10px;
   }
-  .evaluation label .text{
+
+  .evaluation label .text {
     position: absolute;
     left: 0;
     top: 0;
@@ -370,29 +380,30 @@
     font-size: 12px;
     color: gray;
   }
+
   .evaluation label:hover,
   .evaluation label:hover ~ label,
-  .evaluation input[type='radio']:checked ~ label{
+  .evaluation input[type='radio']:checked ~ label {
     color: #ffcc00;
   }
 
   /* schedule */
-  .todays_schedule h2{
+  .todays_schedule h2 {
     font-size: 16px;
     margin: 14px 0;
     font-weight: 600;
   }
 
-  .todays_schedule ul li{
-  display: inline-block;
-  float: left;
+  .todays_schedule ul li {
+    display: inline-block;
+    float: left;
   }
 
-  .todays_schedule ul li:nth-child(odd){
+  .todays_schedule ul li:nth-child(odd) {
     width: 35%;
   }
 
-  .todays_schedule ul li:nth-child(even){
+  .todays_schedule ul li:nth-child(even) {
     width: 60%;
     padding-top: 0;
     margin-left: 5px;
@@ -402,33 +413,35 @@
     margin: 30px 0;
   }
 
-  .delete_robot img{
+  .delete_robot img {
     opacity: 0.2;
     display: inline-block;
   }
 
-  .delete_robot p{
+  .delete_robot p {
     width: 80%;
     margin-left: 20px;
     display: inline;
     color: lightgrey;
   }
-  /* scheduleここまで */
 
-  #gmap{
+  /* scheduleここまで */
+  #gmap {
     width: 100% !important;
   }
 
 
   .footer {
-  margin-bottom: 48px;
+    margin-bottom: 48px;
   }
+
   .global-nav {
     position: fixed;
     left: 0;
     bottom: 0;
     background: white;
   }
+
   .nav-list {
     display: table;
     table-layout: fixed;
@@ -439,14 +452,17 @@
     text-align: center;
     margin: 0;
   }
+
   .nav-item {
     display: table-cell;
     border-top: solid 1px gray;
     padding: 8px 0px;
   }
+
   .nav-item a {
     text-decoration: none;
   }
+
   .nav-item i {
     display: block;
     font-size: 24px;
@@ -457,18 +473,18 @@
     font-size: 10px;
   }
 
-  .loginpage .heading a{
+  .loginpage .heading a {
     color: #fff;
     margin-right: 10px;
     font-size: 18px;
     font-weight: 600;
   }
 
-    /* ロボットの吹き出しcssここから */
+  /* ロボットの吹き出しcssここから */
   .balloon1, .balloon2, .balloon3, .balloon4, .balloon5 {
-  width: 100%;
-  margin: 1.5em 0;
-  overflow: hidden;
+    width: 100%;
+    margin: 1.5em 0;
+    overflow: hidden;
   }
 
   .balloon1 .faceicon, .balloon2 .faceicon, .balloon3 .faceicon, .balloon4 .faceicon, .balloon5 .faceicon {
@@ -480,15 +496,15 @@
     left: 3px;
   }
 
-  .balloon1 .faceicon img, .balloon2 .faceicon img, .balloon3 .faceicon img, .balloon4 .faceicon img, .balloon5 .faceicon img{
+  .balloon1 .faceicon img, .balloon2 .faceicon img, .balloon3 .faceicon img, .balloon4 .faceicon img, .balloon5 .faceicon img {
     width: 100%;
     height: auto;
     border: solid 3px #d7ebfe;
     border-radius: 50%;
   }
 
-  .balloon1 .chatting, .balloon2 .chatting, .balloon3 .chatting, .balloon4 .chatting, .balloon5 .chatting{
-    width: 100%!important;
+  .balloon1 .chatting, .balloon2 .chatting, .balloon3 .chatting, .balloon4 .chatting, .balloon5 .chatting {
+    width: 100% !important;
   }
 
   .balloon1 .usericon {
@@ -530,7 +546,7 @@
     padding: 0;
   }
 
-  .description .fa-star{
+  .description .fa-star {
     color: #FFB100;
     margin-left: 10px;
   }
@@ -552,7 +568,7 @@
     right: -24px;
     border: 12px solid transparent;
     border-right: 12px solid #d7ebfe;
-        transform: rotate(180deg);
+    transform: rotate(180deg);
   }
 
   .says_no p {
@@ -571,10 +587,91 @@
   }
 
   .says p.robot_text {
-    font-size: 16px!important;
+    font-size: 16px !important;
   }
 
   /* ロボットの吹き出しcss　ここまで */
+  /* chatbot css　ここから */
+  .clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+
+
+  #next_question p:nth-child(odd) {
+    text-align: right;
+    background-color:white;
+    padding: 10px;
+    border-radius: 11px;
+    display: inline-block;
+    padding: 10px;
+    margin: 0 55px 0 250px;
+    /*content: '';*/
+    /*display: inline-block;*/
+    /*width: 35px;*/
+    /*height: 35px;*/
+    /*vertical-align: top;*/
+    /*right: -60px;*/
+    /*border-radius: 50%;*/
+    /*border: solid 1px #d7ebfe;*/
+    /*background-size: cover;*/
+    /*background-image: url(/media/user.png);*/
+  }
+
+
+
+
+
+
+    #next_question p:nth-child(even), #first_question p{
+      text-align: left;
+      background-color:white;
+      padding: 10px;
+      display: inline-block;
+      border-radius: 11px;
+      margin: 25px 40px;
+    /*content: '';*/
+    /*display: inline-block;*/
+    /*width: 35px;*/
+    /*height: 35px;*/
+    /*vertical-align: top;*/
+    /*right: -60px;*/
+    /*border-radius: 50%;*/
+    /*border: solid 1px #d7ebfe;*/
+    /*background-size: cover;*/
+    /*background-image: url(/media/robot2.png);*/
+  }
+
+    #next_question p:before, #first_question p:before{
+      background-image: url(/media/robot2.png);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: solid 1px #d7ebfe;
+      background-size: cover;
+    }
+
+
+  #ajax-add-answer{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 55px;
+    font-size: 18px;
+  }
+
+   .select_button .btn-outline-primary{
+    border-radius: 50px;
+    background: #fff!important;
+  }
+
+  .select_button .btn-outline-danger{
+    border-radius: 50px;
+    background: #fff!important;
+  }
+
 
 }
 

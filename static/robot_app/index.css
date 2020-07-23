@@ -34,7 +34,7 @@
 
   header {
     border-bottom: 1px solid #000;
-    margin: 10px 0;
+    margin: 0;
   }
 
   table tr td{
@@ -42,7 +42,7 @@
   }
 
   .header_class{
-    margin: 10px;
+    margin: 0;
   }
 
   .modal-dialog.modal-notify.modal-success .modal-header {

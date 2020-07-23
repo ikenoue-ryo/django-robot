@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, Blog, News, Schedule, Net_Shop
+from .models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, Blog, News, Schedule, Net_Shop, ChatBot
 
 
 class User_QuestionAdmin(admin.ModelAdmin):
@@ -59,3 +59,10 @@ class Net_ShopAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'user_name')
 
 admin.site.register(Net_Shop, Net_ShopAdmin)
+
+
+class ChatBotAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_name', 'question', 'answer')
+    list_display_links = ('id', 'user_name')
+
+admin.site.register(ChatBot, ChatBotAdmin)

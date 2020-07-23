@@ -6,10 +6,11 @@ from django.contrib.auth.views import LogoutView
 from newsapi import NewsApiClient
 from django.shortcuts import render
 from django.contrib import messages
-from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation, Blog, News, Net_Shop
+from robot_app.models import User_Question, Youtube_Question, GNAVI_Question, Robot_Evaluation, Blog, News, Net_Shop, ChatBot
 from users.models import User
 from django.shortcuts import redirect
 from robot_project import settings
+from bs4 import BeautifulSoup
 import requests
 import json
 from googleapiclient.discovery import build
@@ -23,7 +24,7 @@ from . import mixins
 from ..forms import ScheduleForm
 from ..models import Schedule
 from django.utils import timezone
-
+from django.http import JsonResponse
 
 
 DEFAULT_ROBOT_NAME = 'Roboko'
@@ -481,7 +482,6 @@ def g_navi(request):
     question_type = ''
     question_mesg = ''
     live = ''
-    test_name = ''
     city = ''
     freeword = ''
     name = ''
@@ -490,6 +490,7 @@ def g_navi(request):
     address = ''
     result_api = ''
     gnavi_records = ''
+    g_navi_top_image = ''
 
     if request.method == 'POST':
         question = GNAVI_Question()
@@ -508,6 +509,19 @@ def g_navi(request):
             question_type = 'thanks'
             question_mesg = '検索結果を表示します。'
 
+
+        url = 'https://www.gnavi.co.jp/'
+        responce = requests.get(url)
+        html = responce.text
+        soup = BeautifulSoup(html, 'html.parser')
+        items = soup.select('.c-triangle')
+
+        for item in items:
+            top_image = item.select_one('img')
+            images = item.select_one('.js-lazyload')
+
+        g_navi_top_image = images
+
         #レストラン検索APIのURL
         Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
         # パラメータの設定
@@ -523,7 +537,7 @@ def g_navi(request):
         if freeword:
             city = info[0]
             params['pref'] = questionapi.search(city)
-            print(params['pref'])
+            # print(params['pref'])
             params['freeword'] = info[1]
             Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
             result_api = requests.get(Url, params)
@@ -539,7 +553,8 @@ def g_navi(request):
     context = {
         'type': question_type,
         'mesg': question_mesg,
-        'gnavi_records': gnavi_records
+        'gnavi_records': gnavi_records,
+        'g_navi_top_image': g_navi_top_image,
     }
     return render(request, 'robot_app/g_navi.html', context)
 
@@ -1539,68 +1554,41 @@ def shop_detail(request, itemId):
         'item_records': item_records,
     })
 
+
 def any_questions(request):
-    liquor = ''
-    beer = ''
-    wine = ''
-    sweet = ''
-    question_type = ''
-    question_mesg = ''
-    question_type2 = ''
-    question_mesg2 = ''
+    non_answer = ChatBot.objects.filter(answer__isnull=True).first()
 
+    # 回答済みの質問
+    answered = ChatBot.objects.filter(answer__isnull=False).first()
 
-    if request.method == 'POST':
-
-        if request.POST.get('answer') == '1':
-            question = User_Question()
-            question.question = 'お酒が好きか？'
-            question.answer = request.POST['answer']
-            question.user_name = request.user
-            question.save()
-
-            question_type2 = 'beer'
-            question_mesg2 = 'ビールは好きですか？'
-        if request.POST.get('answer') == '2':
-            question_type = 'wine'
-            question_mesg = 'ワインは好きですか？'
-        # if request.POST['question'] == 'wine':
-        #     question_type = 'sweet'
-        #     question_mesg = '甘いものは好きですか？'
-        # if request.POST['question'] == 'sweet':
-            question_type = 'thanks'
-            question_mesg = 'ありがとうございました。'
-            redirect('/')
-
-        # if request.POST.get('answer') == '1' or request.POST.get('answer') == 'ぐるなび':
-        #     questionapi.selectAnswer(request, answer)
-        #     return redirect('/g_navi/')
-        # if request.POST.get('answer') == '2' or request.POST.get('answer') == 'Youtube':
-        #     questionapi.selectAnswer(request, answer)
-        #     return redirect('/youtube/')
-
-    else:
-        # 初回質問
-        question_type = 'liquor'
-        question_mesg = 'お酒は好きですか？'
-
-
-    return render(request, 'robot_app/any_questions.html', {
-        'liquor': liquor,
-        'beer': beer,
-        'wine': wine,
-        'sweet': sweet,
-        'type': question_type,
-        'mesg': question_mesg,
-        'type2': question_type2,
-        'mesg2': question_mesg2,
-        'thanks': question_mesg
+    return render(request, 'robot_app/chatbot.html', {
+        # 未回答
+        'non_answer': non_answer,
+        # 未回答の質問
+        'answer_question': non_answer.question,
+        # 回答済み
+        # 'answered_list': answered_list,
+        'answered': answered
     })
 
 
-def ajax(request):
-    input_text = request.POST.getlist('name_input_text')
-    hoge = input_text[0]
-    print('あああ', hoge)
+def ajax_answer_add(request):
+    question = request.POST.get('question')
+    answer = request.POST.get('answer')
+    print('1:',question)
+    print('2:',answer)
 
-    return  HttpResponse(hoge)
+    question_obj = ChatBot.objects.get(question=question)
+    question_obj.answer = answer
+    question_obj.save()
+
+    next_question = ChatBot.objects.filter(answer__isnull=True).first()
+
+    d = {
+        'question': question_obj.question,
+        'answer': question_obj.answer,
+        'next_question': next_question.question
+    }
+    print(d)
+
+    return JsonResponse(d)

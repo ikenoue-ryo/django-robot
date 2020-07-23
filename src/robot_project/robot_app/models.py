@@ -97,3 +97,12 @@ class Net_Shop(models.Model):
 
     def __str__(self):
         return self.question
+
+
+class ChatBot(models.Model):
+    user_name = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
+    question = models.CharField('質問', max_length=255, blank=True, null=True)
+    answer = models.CharField('回答', max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.question
