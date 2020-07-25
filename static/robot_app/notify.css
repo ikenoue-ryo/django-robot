@@ -598,61 +598,71 @@
     clear: both;
   }
 
+  #next_question .talk_right{
+    float: right;
+    display: inline-block;
+    /*max-width: 200px;*/
+    width: 100%;
+    text-align: right;
+  }
 
-
-  #next_question p:nth-child(odd) {
+  #next_question .talk_right p {
     text-align: right;
     background-color:white;
-    padding: 10px;
     border-radius: 11px;
     display: inline-block;
     padding: 10px;
-    margin: 0 55px 0 250px;
-    /*content: '';*/
-    /*display: inline-block;*/
-    /*width: 35px;*/
-    /*height: 35px;*/
-    /*vertical-align: top;*/
-    /*right: -60px;*/
-    /*border-radius: 50%;*/
-    /*border: solid 1px #d7ebfe;*/
-    /*background-size: cover;*/
-    /*background-image: url(/media/user.png);*/
+    /*margin: 0 5px 0 242px;*/
+    /*margin-left: 60%;*/
   }
 
-
-
-
-
-
-    #next_question p:nth-child(even), #first_question p{
-      text-align: left;
-      background-color:white;
-      padding: 10px;
-      display: inline-block;
-      border-radius: 11px;
-      margin: 25px 40px;
-    /*content: '';*/
-    /*display: inline-block;*/
-    /*width: 35px;*/
-    /*height: 35px;*/
-    /*vertical-align: top;*/
-    /*right: -60px;*/
-    /*border-radius: 50%;*/
-    /*border: solid 1px #d7ebfe;*/
-    /*background-size: cover;*/
-    /*background-image: url(/media/robot2.png);*/
+  #next_question .talk_left p, #first_question .talk_left p{
+    text-align: left;
+    background-color:white;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 11px;
+    margin: 25px 16px;
   }
 
-    #next_question p:before, #first_question p:before{
-      background-image: url(/media/robot2.png);
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      border: solid 1px #d7ebfe;
-      background-size: cover;
-    }
+  #next_question .talk_left:before, #first_question .talk_left:before {
+    content: '';
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    vertical-align: top;
+    left: -60px;
+    border-radius: 50%;
+    border: solid 1px #d7ebfe;
+    background-size: cover;
+    background-image: url(/media/robot2.png);
+    top: 33px;
+    position: relative;
+    left: 8px;
+  }
 
+  #next_question .talk_right:after {
+    content: '';
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    vertical-align: top;
+    right: 0;
+    border-radius: 50%;
+    border: solid 1px #d7ebfe;
+    background-size: cover;
+    background-image: url(/media/user.png);
+    margin-left: 5px;
+  }
+
+  #next_question p:before, #first_question p:before{
+    background-image: url(/media/robot2.png);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: solid 1px #d7ebfe;
+    background-size: cover;
+  }
 
   #ajax-add-answer{
     position: fixed;

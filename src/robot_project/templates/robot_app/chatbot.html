@@ -20,9 +20,9 @@
 
         <!-- 未回答の質問(回答済み質問はブラウザ更新で消える) -->
         <div id="first_question">
-            <p>
-                {{ non_answer.question }}
-            </p>
+            <div class="talk_left">
+                <p>{{ non_answer.question }}</p>
+            </div>
         </div>
         <div id="answers">
         </div>
@@ -112,8 +112,8 @@
                 },
                 'dataType': 'json'
             }).done( response => {
-                const p = $('<p>', {text: response.answer});
-                const q = $('<p>', {text: response.next_question});
+                const p = '<div class="talk_right">' + '<p class="ans">' + response.answer + '</p>' + '</div>'
+                const q = '<div class="talk_left">' +'<p class="next_q">' + response.next_question + '</p>' + '</div>'
 
                 $('#next_question').append(p);
                 $(function(){
