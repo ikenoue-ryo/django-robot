@@ -27,6 +27,7 @@ cd django-robot/src/robot_project/robot_project && touch .env
 - CARSENSOR_API_KEY=ここにカーセンサーのAPIキー
 - NEWS_API_KEY=ここにNewsAPIのキー
 - Google_API_KEY=ここにGoogleAPIのキー
+- Rakuten_API_KEY=ここに楽天市場eAPIのキー
 
 APIキー取得先
 - #openwathermap：https://openweathermap.org/api
@@ -35,6 +36,7 @@ APIキー取得先
 - #カーセンサー：https://webservice.recruit.co.jp/doc/carsensor/
 - #News: https://newsapi.org/
 - #Google: Google Cloud Platformより
+- #Rakuten: https://webservice.rakuten.co.jp/api/ichibaitemsearch/
 
 ## 起動
 - ./docom.sh build web
@@ -48,3 +50,6 @@ APIキー取得先
 <img src="https://user-images.githubusercontent.com/61681360/88760296-b551c500-d1a7-11ea-8bbf-b1359d27478d.png">
 <img src="https://user-images.githubusercontent.com/61681360/88760565-42951980-d1a8-11ea-8a9e-46fad09f731f.png">
 <img src="https://user-images.githubusercontent.com/61681360/88760796-c0f1bb80-d1a8-11ea-8e9c-79f32695da66.png">
+<img src="https://user-images.githubusercontent.com/61681360/88804164-7db73d00-d1e8-11ea-8955-8bc32a9fb5b0.png">
+<img src="https://user-images.githubusercontent.com/61681360/88804248-9889b180-d1e8-11ea-926d-295ff3857cb8.png">
+<img src="https://user-images.githubusercontent.com/61681360/88804295-ac351800-d1e8-11ea-8cbb-823aa5ec456a.png">

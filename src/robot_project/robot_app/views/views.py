@@ -821,7 +821,7 @@ def morning(request):
             address1 = nearest_station.answer
             address2 = arrival_station.answer
 
-            Url = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+            Url = 'https://maps.googleapis.com/maps/api/geocode/json?address=APIキー'
             #Jsonデータの取得
             result_api = Url + address1 + 'components=country:JP&key=' + settings.Google_API_KEY
             result_api2 = Url + address2 + 'components=country:JP&key=' + settings.Google_API_KEY
