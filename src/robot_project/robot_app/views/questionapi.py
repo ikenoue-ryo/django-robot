@@ -335,7 +335,7 @@ def set_api_parameter():
     app_id = settings.Rakuten_API_KEY
     parameter = {
         'format': "json",
-        'keyword': 'アディダス'+ 'スニーカー' + 'サマークリアランスセール中',
+        'keyword': 'アディダス'+ 'スニーカー',
         'applicationId': [app_id],
         'availability': 1,
         'mobail':1,
@@ -354,7 +354,6 @@ def itemcode_rakten_api(itemId):
 
     # パラメーター生成
     search_param = set_item_api_parameter(itemId)
-    print('まずこれ', search_param)
 
     # Get
     response = requests.get(REQUEST_URL, search_param)

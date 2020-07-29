@@ -476,7 +476,6 @@ class Logout(LogoutView):
     template_name = 'robot_app/index.html'
 
 
-#検索を途中で止めるとinfoのデータが残りエラーになるバグ
 info= []
 def g_navi(request):
     question_type = ''
@@ -489,6 +488,7 @@ def g_navi(request):
     url = ''
     address = ''
     result_api = ''
+    elems_all = ''
     gnavi_records = ''
     g_navi_top_image = ''
 
@@ -512,15 +512,39 @@ def g_navi(request):
 
         url = 'https://www.gnavi.co.jp/'
         responce = requests.get(url)
-        html = responce.text
-        soup = BeautifulSoup(html, 'html.parser')
-        items = soup.select('.c-triangle')
 
-        for item in items:
-            top_image = item.select_one('img')
-            images = item.select_one('.js-lazyload')
+        soup = BeautifulSoup(responce.text, 'html.parser')
+        elems = soup.select('#top > main > section:nth-child(6) > div > div')
+        elems_all = elems[0].find_all('section')
 
-        g_navi_top_image = images
+        for elem in elems_all:
+            print('1', elem.h2.string)
+            print('2', elem.p.string)
+            print('3', 'https:' + elem.img['data-src'])
+            print('4', elem.a['href'])
+
+
+        # elems_all = elems[0].find_all('img')
+        # print('これ', elems_all)
+        #
+        # for elem in elems_all:
+        #     print('3', elem[0].img)
+
+        # elems_images = elems[0].find_all('img')
+        # elems_image = elems_images[0]
+        # print('あああ', elems_image.img['data-src'])
+        # for image in elems_image:
+        #     print('ここ', image)
+
+        # elems_all = elems[0].find_all('section')
+
+        # for elem in elems_all:
+        #     test1 = elem.h2.string
+        #     test2 = elem.p.string
+        #     test3 = 'https:' + elem.img['data-src']
+        #     test4 = elem.a['href']
+
+
 
         #レストラン検索APIのURL
         Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
@@ -555,6 +579,7 @@ def g_navi(request):
         'mesg': question_mesg,
         'gnavi_records': gnavi_records,
         'g_navi_top_image': g_navi_top_image,
+        'elems_all': elems_all,
     }
     return render(request, 'robot_app/g_navi.html', context)
 
@@ -1490,6 +1515,7 @@ def net_shop(request):
         question_mesg = '何かほしいものはありますか？'
 
     item_records = questionapi.kick_rakten_api()
+    print('ここは', item_records)
     item_records = item_records['item_records']
 
 
@@ -1575,11 +1601,14 @@ def any_questions(request):
 def ajax_answer_add(request):
     question = request.POST.get('question')
     answer = request.POST.get('answer')
+    username = request.user
     print('1:',question)
     print('2:',answer)
+    print('3:',username)
 
     question_obj = ChatBot.objects.get(question=question)
     question_obj.answer = answer
+    question_obj.user_name = username
     question_obj.save()
 
     next_question = ChatBot.objects.filter(answer__isnull=True).first()

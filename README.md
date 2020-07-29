@@ -44,4 +44,7 @@ APIキー取得先
 - python manage.py createsuperuser
 
 ## 画面イメージ
-<img src="https://user-images.githubusercontent.com/61681360/85812198-f9ae0780-b79a-11ea-8a1f-d44316e1b3cf.png">
+<img src="https://user-images.githubusercontent.com/61681360/88757858-fb0b8f00-d1a1-11ea-81a3-e49f985500ae.png">
+<img src="https://user-images.githubusercontent.com/61681360/88760296-b551c500-d1a7-11ea-8bbf-b1359d27478d.png">
+<img src="https://user-images.githubusercontent.com/61681360/88760565-42951980-d1a8-11ea-8a9e-46fad09f731f.png">
+<img src="https://user-images.githubusercontent.com/61681360/88760796-c0f1bb80-d1a8-11ea-8e9c-79f32695da66.png">

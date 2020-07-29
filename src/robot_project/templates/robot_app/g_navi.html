@@ -52,12 +52,15 @@
                   <p><a href="{{ gnavi_rec.url }}">{{ gnavi_rec.name }}</a></p>
                   <p><img src="{{ gnavi_rec.image_url.shop_image1 }}"></p>
                   <p>{{ gnavi_rec.address }}</p>
-                  {{ g_navi_top_image }}
             </div>
         {% endfor %}
+
     </div>
 
-    <br><br><br><br>
+{% for elems in elems_all %}
+    {{ elems.h2.string }}
+    {% endfor %}
+
 </div>
 
 
