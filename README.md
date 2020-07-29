@@ -53,3 +53,4 @@ APIキー取得先
 <img src="https://user-images.githubusercontent.com/61681360/88804164-7db73d00-d1e8-11ea-8955-8bc32a9fb5b0.png">
 <img src="https://user-images.githubusercontent.com/61681360/88804248-9889b180-d1e8-11ea-926d-295ff3857cb8.png">
 <img src="https://user-images.githubusercontent.com/61681360/88804295-ac351800-d1e8-11ea-8cbb-823aa5ec456a.png">
+<img src="https://user-images.githubusercontent.com/61681360/88805176-cd4a3880-d1e9-11ea-814c-01dfccc5eed3.png">
