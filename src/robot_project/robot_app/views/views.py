@@ -480,17 +480,9 @@ info= []
 def g_navi(request):
     question_type = ''
     question_mesg = ''
-    live = ''
-    city = ''
     freeword = ''
-    name = ''
-    image = ''
-    url = ''
-    address = ''
-    result_api = ''
-    elems_all = ''
+    g_navi_params = ''
     gnavi_records = ''
-    g_navi_top_image = ''
 
     if request.method == 'POST':
         question = GNAVI_Question()
@@ -517,32 +509,16 @@ def g_navi(request):
         elems = soup.select('#top > main > section:nth-child(6) > div > div')
         elems_all = elems[0].find_all('section')
 
+        g_navi_params = []
+
         for elem in elems_all:
-            print('1', elem.h2.string)
-            print('2', elem.p.string)
-            print('3', 'https:' + elem.img['data-src'])
-            print('4', elem.a['href'])
-
-
-        # elems_all = elems[0].find_all('img')
-        # print('これ', elems_all)
-        #
-        # for elem in elems_all:
-        #     print('3', elem[0].img)
-
-        # elems_images = elems[0].find_all('img')
-        # elems_image = elems_images[0]
-        # print('あああ', elems_image.img['data-src'])
-        # for image in elems_image:
-        #     print('ここ', image)
-
-        # elems_all = elems[0].find_all('section')
-
-        # for elem in elems_all:
-        #     test1 = elem.h2.string
-        #     test2 = elem.p.string
-        #     test3 = 'https:' + elem.img['data-src']
-        #     test4 = elem.a['href']
+            element = {
+                'h2_string': elem.h2.string,
+                'p_string': elem.p.string,
+                'img': 'https:' + elem.img['data-src'],
+                'href': elem.a['href']
+            }
+            g_navi_params.append(element)
 
 
 
@@ -578,8 +554,7 @@ def g_navi(request):
         'type': question_type,
         'mesg': question_mesg,
         'gnavi_records': gnavi_records,
-        'g_navi_top_image': g_navi_top_image,
-        'elems_all': elems_all,
+        'g_navi_params': g_navi_params,
     }
     return render(request, 'robot_app/g_navi.html', context)
 
@@ -1515,7 +1490,6 @@ def net_shop(request):
         question_mesg = '何かほしいものはありますか？'
 
     item_records = questionapi.kick_rakten_api()
-    print('ここは', item_records)
     item_records = item_records['item_records']
 
 

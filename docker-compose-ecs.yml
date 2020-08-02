@@ -1,8 +1,10 @@
+from .settings_local import *
+
 version: '3'
 
 services:
   db:
-    image : xxxxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/robot-project-mysql:latest
+    image : AWS_KEY.dkr.ecr.ap-northeast-1.amazonaws.com/robot-project-mysql:latest
     volumes:
       - /db/data:/var/lib/mysql       # データの永続化を行う
     environment:
@@ -11,13 +13,13 @@ services:
       - TZ=Asia/Tokyo
 
   web:
-    image: xxxxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/robot-project-web:latest
+    image: AWS_KEY.dkr.ecr.ap-northeast-1.amazonaws.com/robot-project-web:latest
     command: bash /code/run-my-app.sh
     links:
       - db
 
   nginx :
-    image: xxxxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/robot-project-nginx:latest
+    image: AWS_KEY.dkr.ecr.ap-northeast-1.amazonaws.com/robot-project-nginx:latest
     ports:
       - "80:80"
     links:

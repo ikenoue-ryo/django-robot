@@ -8,6 +8,7 @@ __pycach
 src/robot_project/db.sqlite3
 media
 settings_local.py
+mydb.cnf
 /src/robot_project/robot_project/.env
 credentials.json
 .env.local

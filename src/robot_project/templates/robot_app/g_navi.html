@@ -46,21 +46,40 @@
         </form>
     </div>
 
-    <div class="result">
+
+    {% if gnavi_records %}
+    <div class="search_result">
         {% for gnavi_rec in gnavi_records %}
-            <div class="result">
-                  <p><a href="{{ gnavi_rec.url }}">{{ gnavi_rec.name }}</a></p>
-                  <p><img src="{{ gnavi_rec.image_url.shop_image1 }}"></p>
-                  <p>{{ gnavi_rec.address }}</p>
+            <div class="result card">
+                <p><i class="fas fa-utensils"></i>{{ gnavi_rec.category }}</p>
+                <p><i class="fas fa-home"></i><a href="{{ gnavi_rec.url }}">{{ gnavi_rec.name }}</a></p>
+                <p><a href="{{ gnavi_rec.url }}"><img src="{{ gnavi_rec.image_url.shop_image1 }}"><img src="{{ gnavi_rec.image_url.shop_image2 }}"></a></p>
+<!--                <p>{{ gnavi_rec.address }}</p>-->
+
+                <p><i class="fas fa-yen-sign"></i>平均予算：{{ gnavi_rec.budget }}円</p>
+                <p><i class="fas fa-phone"></i>{{ gnavi_rec.tel }}</p>
+                <p><i class="fas fa-map-marker-alt"></i>{{ gnavi_rec.access.line }} {{ gnavi_rec.access.station }} {{ gnavi_rec.access.station_exit }} {{ gnavi_rec.access.walk }}分</p>
+                <p>{{ gnavi_rec.access.note }}</p>
+                <p>{{ gnavi_rec.pr.pr_short | truncatechars:25 }}</p>
+                <p>{{ gnavi_rec.pr.pr_long | truncatechars:25 }}</p>
             </div>
         {% endfor %}
 
+        {% for e in g_navi_params %}
+        <div class="g_navi_top_image">
+            <h2>{{ e.h2_string }}</h2>
+            <p>{{ e.p_string }}</p>
+            <a href="{{ e.href }}"><img src="{{ e.img }}"></a>
+        </div>
+        {% endfor %}
     </div>
 
-{% for elems in elems_all %}
-    {{ elems.h2.string }}
-    {% endfor %}
 
+    {% endif %}
+
+
+
+    <br>
 </div>
 
 
