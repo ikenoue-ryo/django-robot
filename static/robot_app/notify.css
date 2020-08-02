@@ -635,7 +635,7 @@
     border-radius: 50%;
     border: solid 1px #d7ebfe;
     background-size: cover;
-    background-image: url(/media/robot2.png);
+    background-image: url(/static/media/robot2.png);
     top: 33px;
     position: relative;
     left: 8px;
@@ -651,12 +651,12 @@
     border-radius: 50%;
     border: solid 1px #d7ebfe;
     background-size: cover;
-    background-image: url(/media/user.png);
+    background-image: url(/static/media/user.png);
     margin-left: 5px;
   }
 
   #next_question p:before, #first_question p:before{
-    background-image: url(/media/robot2.png);
+    background-image: url(/static/media/robot2.png);
     width: 35px;
     height: 35px;
     border-radius: 50%;

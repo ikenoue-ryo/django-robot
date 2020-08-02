@@ -3,7 +3,7 @@
 app=robot_project
 while :
 do
-        if python /code/$app/manage.py migrate; then
+        if python /z/$app/manage.py migrate; then
                 break
         else
                 sleep 1
