@@ -11,3 +11,5 @@ Pillow
 newsapi-python
 foursquare
 beautifulsoup4
+setuptools
+selenium
