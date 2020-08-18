@@ -39,7 +39,7 @@ def selectAnswer(request, answer):
     return question.question
 
 
-
+#サインアップ後の最初の質問
 def firstQuestion(request, previous_question):
     question_type = ''
     question_mesg = ''
@@ -56,7 +56,6 @@ def firstQuestion(request, previous_question):
     elif request.POST['question'] == 'family':
         question_type = 'thanks'
         question_mesg = 'ありがとうございました。'
-
     return (question_type, question_mesg)
 
 
@@ -172,44 +171,44 @@ def tenki_api(request):
 def search_map_code(city):
     tenki_dict = {
         '北海道': 'Hokkaido',
-        '青森県': 'PREF02',
-        '岩手県': 'PREF03',
-        '宮城県': 'PREF04',
-        '秋田県': 'PREF05',
-        '山形県': 'PREF06',
-        '福島県': 'PREF07',
-        '茨城県': 'PREF08',
-        '栃木県': 'PREF09',
-        '群馬県': 'PREF10',
+        '青森県': 'Aomori',
+        '岩手県': 'Iwate',
+        '宮城県': 'Miyagi',
+        '秋田県': 'Akita',
+        '山形県': 'Yamagata',
+        '福島県': 'Fukushima',
+        '茨城県': 'Ibaraki',
+        '栃木県': 'Tochigi',
+        '群馬県': 'Gunma',
         '埼玉県': 'Saitama',
         '千葉県': 'Chiba',
         '東京都': 'Tokyo',
         '神奈川県': 'Kanagawa',
-        '新潟県': 'PREF15',
-        '富山県': 'PREF16',
-        '石川県': 'PREF17',
-        '福井県': 'PREF18',
-        '山梨県': 'PREF19',
-        '長野県': 'PREF20',
-        '岐阜県': 'PREF21',
-        '静岡県': 'PREF22',
-        '愛知県': 'PREF23',
-        '三重県': 'PREF24',
-        '滋賀県': 'PREF25',
+        '新潟県': 'Niigata',
+        '富山県': 'Toyama',
+        '石川県': 'Ishikawa',
+        '福井県': 'Fukui',
+        '山梨県': 'Yamanashi',
+        '長野県': 'Nagano',
+        '岐阜県': 'Gifu',
+        '静岡県': 'Shizuoka',
+        '愛知県': 'Aichi',
+        '三重県': 'Mie',
+        '滋賀県': 'Shiga',
         '京都府': 'Kyoto',
         '大阪府': 'Osaka',
-        '兵庫県': 'PREF28',
+        '兵庫県': 'Hyogo',
         '奈良県': 'Nara',
-        '和歌山県': 'PREF30',
-        '鳥取県': 'PREF31',
-        '島根県': 'PREF32',
-        '岡山県': 'PREF33',
+        '和歌山県': 'Wakayama',
+        '鳥取県': 'Tottori',
+        '島根県': 'Shimane',
+        '岡山県': 'Okayama',
         '広島県': 'Hiroshima',
-        '山口県': 'PREF35',
-        '徳島県': 'PREF36',
-        '香川県': 'PREF37',
-        '愛媛県': 'PREF38',
-        '高知県': 'PREF39',
+        '山口県': 'Yamaguchi',
+        '徳島県': 'Tokushima',
+        '香川県': 'Kagawa',
+        '愛媛県': 'Ehime',
+        '高知県': 'Kouchi',
         '福岡県': 'Fukuoka',
         '佐賀県': 'Saga',
         '長崎県': 'Nagasaki',
@@ -376,3 +375,4 @@ def set_item_api_parameter(itemId):
         'itemCode': itemId
     }
     return parameter
+

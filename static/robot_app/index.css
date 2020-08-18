@@ -41,8 +41,9 @@
     border: none;
   }
 
+
   .header_class{
-    margin: 0;
+    margin: 10px;
   }
 
   .modal-dialog.modal-notify.modal-success .modal-header {

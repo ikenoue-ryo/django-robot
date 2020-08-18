@@ -27,9 +27,6 @@ from django.utils import timezone
 from django.http import JsonResponse
 
 
-DEFAULT_ROBOT_NAME = 'Roboko'
-
-
 def indexfunc(request):
     thanks = ''
     answer = ''
@@ -86,42 +83,7 @@ def indexfunc(request):
             #天気を表示
             tenki_api = questionapi.tenki_api(request)
 
-            #ぐるなび
-            ## レストラン検索APIのURL
-            Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
-            ## パラメータの設定
-            params = {}
-            params['keyid'] = settings.GNAVI_API_KEY
-            params['hit_per_page'] = 1
-            ## 都道府県コードを取ってきて変換
-            address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
-            # prefecture = address.answer
-            # params['pref'] = questionapi.search(prefecture)
-            params['pref'] = 'PREF13'
-            params['freeword'] = '冷たい,そば,うどん'
-            Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
-            result_api = requests.get(Url, params)
-            result_api = result_api.json()
-            gnavi_records = result_api['rest']
-
-
-
-            # レストラン検索APIのURL
-            Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
-            # パラメータの設定
-            params = {}
-            params['keyid'] = settings.GNAVI_API_KEY
-            params['hit_per_page'] = 1
-            params['shop_name'] = '焼き鳥'
-            params['sort'] = 1
-
-            Url = 'https://api.gnavi.co.jp/PhotoSearchAPI/v3/'
-            # result_api = requests.get(Url, params)
-            # result_api = result_api.json()
-            # gnavi_records2 = result_api['response']['0']['photo']
-
-            # gnavi_records2 = result_api['response']
-
+            # FoursquareAPIを使う場合
             # import foursquare
             #
             # # 作成したアプリの情報を設定
@@ -134,13 +96,13 @@ def indexfunc(request):
             #
             # # アプリの認証
             # auth_uri = client.oauth.auth_url()
-            # print('この値', auth_uri)
+            # print('値', auth_uri)
             #
             # # 表示されたauth_uriにブラウザからアクセスし、URIの「?code=」の後から「#」の前までの文字列を入力
             # code = ""
             # # アクセストークンを取得
             # access_token = client.oauth.get_token(code)
-            # print('こちらは、access_token', access_token)
+            # print('アクセストークン', access_token)
             #
             # # アクセストークンを設定
             # client.set_access_token(access_token)
@@ -173,30 +135,6 @@ def indexfunc(request):
             #
             # photos_records = prefix + '300x300' + suffix
 
-
-
-            # #スケジュール機能
-            # today = timezone.now().date()
-            # schedule_records = Schedule.objects.order_by('date').filter(date=today, user_name=request.user)
-            #
-            # eva = Robot_Evaluation.objects.filter(robot_name='schedule_robot', user_name=request.user)
-            #
-            # if eva:
-            #     print('ロボットの評価がされています、1以上か削除のどちらかです')
-            #     # ロボットが存在していない時とゼロじゃないなら表示する
-            #     for evaluation in eva:
-            #         # ロボットの評価が存在していてゼロ(削除)されていないなら
-            #         if evaluation.score != 0:
-            #             show_eva = eva
-            #             print('表示します')
-            #         else:
-            #             not_show_eva = eva
-            #             print('表示しません')
-            # else:
-            #     print('ロボットの評価がありません。表示します')
-            #     # ロボットの評価がない時でも表示する
-            #     show_eva = eva
-
             annai_robot = Robot_Evaluation.objects.filter(robot_name='annai_robot', user_name=request.user).last()
             address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
 
@@ -215,10 +153,7 @@ def indexfunc(request):
                 'type': question_type,
                 'mesg': question_mesg,
                 'tenki_api': tenki_api,
-                'gnavi_records': gnavi_records,
-                'user': user,
                 'youtube_records': youtube_records,
-                # 'gnavi_records2': gnavi_records2,
                 'annai_robot': annai_robot,
                 # 'foursquare_records': foursquare_records,
                 # 'photos_records': photos_records,
@@ -332,7 +267,6 @@ def updatefunc(request, pk):
     nearest_station = User_Question.objects.filter(question='nearest_station', user_name=request.user).first()
     arrival_station = User_Question.objects.filter(question='arrival_station', user_name=request.user).first()
 
-
     if request.method == 'POST':
         # addressはあえてGNAVI_Questionを使用
         address = GNAVI_Question.objects.filter(question='address', user_name=request.user).first()
@@ -398,7 +332,6 @@ def updatefunc(request, pk):
             question.answer = request.POST['arrival_station']
             question.user_name = request.user
             question.save()
-
         return redirect('robot_app:index')
 
     return render(request, 'robot_app/question_edit.html', {
@@ -419,7 +352,6 @@ def updatefunc(request, pk):
         'nearest_station': nearest_station,
         'arrival_station': arrival_station,
     })
-
 
 
 def signupfunc(request):
@@ -501,7 +433,7 @@ def g_navi(request):
             question_type = 'thanks'
             question_mesg = '検索結果を表示します。'
 
-
+        #スクレイピング
         url = 'https://www.gnavi.co.jp/'
         responce = requests.get(url)
 
@@ -520,8 +452,6 @@ def g_navi(request):
             }
             g_navi_params.append(element)
 
-
-
         #レストラン検索APIのURL
         Url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
         # パラメータの設定
@@ -532,7 +462,6 @@ def g_navi(request):
         # params['pref'] = search(city)
         #キーワード検索
         params['freeword'] = freeword
-
 
         if freeword:
             city = info[0]
@@ -563,7 +492,6 @@ def youtube(request):
     youtube_records = ''
     question_type = ''
     question_mesg = ''
-
 
     if request.method == 'POST':
         question = Youtube_Question()
@@ -603,9 +531,7 @@ def youtube(request):
     })
 
 
-
 def add_questions(request):
-    weight = ''
     question_type = ''
     question_mesg = ''
 
@@ -632,7 +558,6 @@ def add_questions(request):
             question_type = 'thanks'
             question_mesg = 'ありがとうございました。'
             redirect('/')
-
     else:
         height = User_Question.objects.filter(question='height', user_name=request.user).first()
         weight = User_Question.objects.filter(question='weight', user_name=request.user).first()
@@ -1406,10 +1331,7 @@ def week_tenki(request):
 
 def net_shop(request):
 
-    item = ''
-
     if request.method == 'POST':
-
         if request.POST['question'] == 'want_object':
             news = Net_Shop()
             news.question = request.POST['question']
@@ -1492,7 +1414,6 @@ def net_shop(request):
     item_records = questionapi.kick_rakten_api()
     item_records = item_records['item_records']
 
-
     return render(request, 'robot_app/net_shop.html', {
         'mens': 'メンズファッション',
         'women': 'レディースファッション',
@@ -1509,40 +1430,6 @@ def net_shop(request):
         'mesg': question_mesg,
         'thanks': question_mesg
     })
-
-    # celebrity = Net_Shop.objects.filter(question='celebrity', user_name=request.user).last()
-    # if celebrity:
-    #     celebrity_name = celebrity.answer
-    #
-    #     newsapi = NewsApiClient(api_key=settings.NEWS_API_KEY)
-    #
-    #     categories = newsapi.get_top_headlines(category='entertainment',
-    #                                           country='jp',
-    #                                           page_size=20,
-    #                                           )
-    #     sports = newsapi.get_top_headlines(category='sports',
-    #                                           country='jp',
-    #                                           page_size=7,
-    #                                           )
-    #     if originals:
-    #         originals = newsapi.get_top_headlines(q=celebrity_name,
-    #                                               country='jp',
-    #                                               page_size=7,
-    #                                               )
-    #     else:
-    #         technologys = newsapi.get_top_headlines(category='technology',
-    #                                               country='jp',
-    #                                               page_size=7,
-    #                                               )
-
-
-        #API表示
-        # categories = categories['articles']
-        # sports = sports['articles']
-        # technologys = technologys['articles']
-        # if originals:
-        #     originals = originals['articles']
-
 
 
 def shop_detail(request, itemId):

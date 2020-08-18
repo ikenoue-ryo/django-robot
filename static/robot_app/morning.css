@@ -123,6 +123,10 @@
     padding: 15px 0 15px 0;
   }
 
+  .header_class{
+    margin: 10px;
+  }
+
   .question_route{
     width: 80%;
     margin: 0 0 0 20%;
