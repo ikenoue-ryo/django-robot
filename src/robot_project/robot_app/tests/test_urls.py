@@ -15,22 +15,25 @@ class HomePageTest(TestCase):
     #     found = resolve('/')
     #     self.assertEqual(found.func, indexfunc)
 
-    # def test_home_template(self):
-    #     response = self.client.get('/')
-    #     self.assertTemplateUsed(response, 'robot_app/index.html')
+    def test_home_template(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'robot_app/index.html')
 
-    # def test_can_save_a_POST_requset(self):
-    #     postmethod = self.client.post('/', data={'answer': '焼肉'})
-    #     # 追加されたかどうか
-    #     self.assertEqual(User_Question.objects.count(), 1)
-    #     # 正しく取り出せているかどうか
-    #     question = User_Question.objects.first()
-    #     self.assertEqual(question.question, "焼肉")
+    def test_can_save_a_POST_requset(self):
+        postmethod = self.client.post('/', data={'question': '好きな食べ物はなんですか？', 'answer': '焼肉'})
+        # 追加されたかどうか
+        self.assertEqual(User_Question.objects.count(), 1)
+        # 正しく取り出せているかどうか
+        question = User_Question.objects.first()
+        self.assertEqual(question.question, "好きな食べ物はなんですか？")
+        self.assertEqual(question.answer, "焼肉")
 
-    # def test_redirects_after_POST(self):
-    #     response = self.client.post('/', data={'answer': '焼肉'})
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(response['location'], '/')
+    def test_redirects_after_POST(self):
+        #POST後にリダイレクトされるか確認
+        response = self.client.post('/', data={'question': '好きなスポーツはなんですか？', 'answer': 'サッカー'})
+        self.assertEqual(response.status_code, 302)
+        #リダイレクト先が正しいか確認
+        self.assertEqual(response['location'], '/')
 
     def test_displays_all_lits_items(self):
         User_Question.objects.create(question='好きな食べ物は何ですか？', answer='焼肉')
