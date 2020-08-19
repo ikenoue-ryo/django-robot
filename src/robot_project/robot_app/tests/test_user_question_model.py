@@ -3,6 +3,11 @@ from robot_app.models import User_Question
 
 
 class UserQuestionModelTest(TestCase):
+
+    def test_is_empty(self):
+        saved_answer = User_Question.objects.all()
+        self.assertEqual(saved_answer.count(), 0)
+
     #内容が保存されているかの検証
     def test_saving_and_retrieving_question(self):
         first_question = User_Question()
