@@ -1,5 +1,6 @@
 import urllib
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
@@ -27,6 +28,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 
 
+@login_required
 def indexfunc(request):
     thanks = ''
     answer = ''
@@ -979,7 +981,7 @@ def news(request):
 
 
 class MyCalendar(mixins.MonthCalendarMixin, generic.CreateView):
-    """月間カレンダー、週間カレンダー、スケジュール登録画面のある欲張りビュー"""
+    """月間カレンダー、週間カレンダー、スケジュール登録画面のあるビュー"""
     template_name = 'robot_app/mycalendar.html'
     model = Schedule
     date_field = 'date'
@@ -1069,8 +1071,6 @@ def map(request):
         question_type = 'address'
         question_mesg = '都道府県を入力してください'
 
-
-
     context = {
         'type': question_type,
         'mesg': question_mesg,
@@ -1088,7 +1088,6 @@ def robot_review(request):
         # 'mesg': question_mesg,
     }
     return render(request, 'robot_app/robot_review.html', context)
-
 
 
 def notify(request):

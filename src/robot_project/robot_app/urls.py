@@ -5,7 +5,7 @@ from .views import views
 app_name = 'robot_app'
 
 urlpatterns = [
-    path('', login_required(views.indexfunc), name='index'),
+    path('', views.indexfunc, name='index'),
     path('detail/<int:pk>/', views.detailfunc, name='detail'),
     path('update/<int:pk>/', views.updatefunc, name='update'),
     path('signup/', views.signupfunc, name='signup'),
