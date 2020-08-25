@@ -492,6 +492,7 @@ def g_navi(request):
 
 def youtube(request):
     youtube_records = ''
+    keyword = ''
     question_type = ''
     question_mesg = ''
 
@@ -871,6 +872,9 @@ def news(request):
     sports = ''
     originals = ''
     technologys = ''
+    question_type = ''
+    question_mesg = ''
+
 
     if request.method == 'POST':
 
@@ -1329,6 +1333,9 @@ def week_tenki(request):
 
 
 def net_shop(request):
+
+    question_type = ''
+    question_mesg = ''
 
     if request.method == 'POST':
         if request.POST['question'] == 'want_object':

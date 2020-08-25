@@ -13,7 +13,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.quit()
 
     def test_can_start_web_site(self):
-        self.browser.get("http://localhost:8080/signup/")
+        self.browser.get("http://localhost:8000/signup/")
         # self.browser.get(self.live_server_url)
         #タイトルに文字列が含まれるかを確認
         self.assertIn('スマホ専用ロボット', self.browser.title)

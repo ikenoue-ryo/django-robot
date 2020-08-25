@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, login
 from django.test import TestCase, Client
 from robot_app.models import User_Question, GNAVI_Question, Youtube_Question, Robot_Evaluation, \
     Blog, News, Schedule, Net_Shop, ChatBot

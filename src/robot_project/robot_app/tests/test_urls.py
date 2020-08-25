@@ -32,10 +32,10 @@ class UrlResolveTests(TestCase):
         found = resolve('/login/')
         self.assertEqual(found.func, loginfunc)
 
-    # def test_url_resolves_to_logout_view(self):
-    #     """logoutが呼び出されるかを検証"""
-    #     found = resolve('/logout/')
-    #     self.assertEqual(found.func, Logout)
+    def test_url_resolves_to_logout_view(self):
+        """logoutが呼び出されるかを検証"""
+        found = resolve('/logout/')
+        self.assertEqual(found.func.__name__, Logout.as_view().__name__)
 
     def test_url_resolves_to_gnavi_view(self):
         """g_naviが呼び出されるかを検証"""
@@ -72,15 +72,15 @@ class UrlResolveTests(TestCase):
         found = resolve('/news/')
         self.assertEqual(found.func, news)
 
-    # def test_url_resolves_to_mycalendar_view(self):
-    #     """MyCalendarが呼び出されるかを検証"""
-    #     found = resolve('/mycalendar/')
-    #     self.assertEqual(found.func, MyCalendar)
+    def test_url_resolves_to_mycalendar_view(self):
+        """MyCalendarが呼び出されるかを検証"""
+        found = resolve('/mycalendar/')
+        self.assertEqual(found.func.__name__, MyCalendar.as_view().__name__)
 
-    # def test_url_resolves_to_monthcalendar_view(self):
-    #     """MonthCalendarが呼び出されるかを検証"""
-    #     found = resolve('/month/01/01/')
-    #     self.assertEqual(found.func, MonthCalendar)
+    def test_url_resolves_to_monthcalendar_view(self):
+        """MonthCalendarが呼び出されるかを検証"""
+        found = resolve('/month/01/01/')
+        self.assertEqual(found.func.__name__, MonthCalendar.as_view().__name__)
 
     def test_url_resolves_to_net_shop_view(self):
         """net_shopが呼び出されるかを検証"""

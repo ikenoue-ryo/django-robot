@@ -8,7 +8,7 @@
 {% endblock customcss %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4 pc_display">
     {% if address %}
     <!-- 天気 -->
     <a href="{% url 'robot_app:week_tenki' %}">
@@ -74,7 +74,7 @@
                 <img src="/media/robot2.png" width="50" data-toggle="modal" data-target="#modal1">
             </div>
         </div>
-        <div class="question_route">
+        <div class="question_route clearfix">
             <div class="question_form">
                 <p class="tgt">{{ nav_menu }}</p>
             </div>
