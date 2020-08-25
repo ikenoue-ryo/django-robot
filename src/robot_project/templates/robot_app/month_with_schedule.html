@@ -5,6 +5,8 @@
 <link href="{% static 'robot_app/calender.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
+{% block title %}カレンダー{% endblock title %}
+
 {% block content %}
     <div class="container">
         <p><a href="{% url 'robot_app:mycalendar' %}">カレンダーを登録する</a></p>

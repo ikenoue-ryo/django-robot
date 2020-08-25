@@ -5,12 +5,13 @@
 <link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
+{% block title %}追加の質問{% endblock title %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="question_robot">
         <img src="/media/robot2.png" width="50">
     </div>
-
 
     <div class="question_form">
         <form method="POST" action="" name="form1">{% csrf_token %}
@@ -23,14 +24,12 @@
             {% endif %}
             {% if type != "thanks" and type != "no_question" %}
                 <input type="hidden" name="question" value="{{ type }}">
-                <input type="text" name="answer" class="form-control" autocomplete="off">
+                <input type="text" id="id_question" name="answer" class="form-control" autocomplete="off">
             {% else %}
                 <script>
                     window.location.href = 'http://localhost:8080/';
                 </script>
             {% endif %}
-
-
         </form>
     </div>
 

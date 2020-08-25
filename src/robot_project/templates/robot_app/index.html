@@ -5,6 +5,8 @@
 <link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
+{% block title %}ロボット{% endblock title %}
+
 {% block content %}
     {% if messages %}
         <div class="messages_ul">
@@ -29,7 +31,7 @@
                 {% endif %}
                 {% if type != "thanks" %}
                 <input type="hidden" name="question" value="{{ type }}">
-                <input type="text" name="answer" class="form-control" autocomplete="off">
+                <input type="text" id="id_answer" name="answer" class="form-control" autocomplete="off">
                 {% else %}
                 <script>
                     window.location.href = 'http://localhost:8080/';

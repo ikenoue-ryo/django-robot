@@ -5,6 +5,8 @@
 <link href="{% static 'robot_app/calender.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
+{% block title %}カレンダー{% endblock title %}
+
 {% block content %}
 <div class="container mt-5">
     <a href="{% url 'robot_app:month_with_schedule' month_current.year month_current.month %}">予定を見る</a>

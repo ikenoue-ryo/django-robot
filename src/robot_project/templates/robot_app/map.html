@@ -5,6 +5,8 @@
 <link href="{% static 'robot_app/map.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
+{% block title %}マップ{% endblock title %}
+
 {% block content %}
  <script src="https://maps.googleapis.com/maps/api/js?key=ここにAPI&callback=initMap" async defer></script><!-- YOUR_API_KEYの部分は取得した APIキーで置き換えます -->
 

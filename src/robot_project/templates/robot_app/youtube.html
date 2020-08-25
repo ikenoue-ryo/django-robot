@@ -5,6 +5,8 @@
 <link href="{% static 'robot_app/youtube.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
+{% block title %}Youtube{% endblock title %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="question_robot">
@@ -21,7 +23,7 @@
             {% endif %}
             {% if type != "thanks" %}
             <input type="hidden" name="question" value="{{ type }}">
-            <input type="text" name="answer" class="form-control" autocomplete="off">
+            <input type="text" id="id_youtube" name="answer" class="form-control" autocomplete="off">
             {% endif %}
         </form>
     </div>

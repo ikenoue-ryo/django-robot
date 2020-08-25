@@ -5,6 +5,8 @@
 <link href="{% static 'robot_app/index.css' %}" rel="stylesheet">
 {% endblock customcss %}
 
+{% block title %}ログイン{% endblock title %}
+
 
 {% block content %}
 
@@ -30,7 +32,7 @@
                     <p class="tgt">{{ mesg }}</p>
                     <input type="hidden" name="email" value="{{ email }}">
                     <input type="hidden" name="question" value="{{ type }}">
-                    <input type="password" name="answer" class="form-control" autocomplete="off">
+                    <input id="id_pass" type="password" name="answer" class="form-control" autocomplete="off">
                 </form>
             </div>
         {% else %}
@@ -38,7 +40,7 @@
                 <form method="POST" action="" name="form1">{% csrf_token %}
                     <p class="tgt">{{ mesg }}</p>
                     <input type="hidden" name="question" value="{{ type }}">
-                    <input type="text" name="answer" class="form-control" autocomplete="off">
+                    <input id="id_mail" type="text" name="answer" class="form-control" autocomplete="off">
                 </form>
             </div>
         {% endif %}
